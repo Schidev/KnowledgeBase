@@ -5,8 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -71,6 +73,25 @@ namespace UWP_PROJECT_06
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            // Hide title bar.
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            SolidColorBrush backgroundColor = Application.Current.Resources["TopMenuBackground"] as SolidColorBrush;
+            SolidColorBrush foregroundColor = Application.Current.Resources["TopMenuForeground"] as SolidColorBrush;
+            SolidColorBrush btnHoverColor = Application.Current.Resources["TopMenuBtnHoverBackground"] as SolidColorBrush;
+            SolidColorBrush btnHoverForegroundColor = Application.Current.Resources["colorDarkerGrey"] as SolidColorBrush;
+
+
+            titleBar.BackgroundColor = backgroundColor.Color;
+            titleBar.ButtonBackgroundColor = backgroundColor.Color;
+            titleBar.ButtonForegroundColor = foregroundColor.Color;
+            titleBar.ButtonHoverBackgroundColor = btnHoverColor.Color;
+            titleBar.ButtonHoverForegroundColor = btnHoverForegroundColor.Color;
+
         }
 
         /// <summary>
