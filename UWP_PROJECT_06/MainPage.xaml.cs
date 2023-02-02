@@ -26,5 +26,11 @@ namespace UWP_PROJECT_06
         {
             this.InitializeComponent();
         }
+        
+        private void tabView_TabCloseRequested(Microsoft.UI.Xaml.Controls.TabView sender, Microsoft.UI.Xaml.Controls.TabViewTabCloseRequestedEventArgs args)
+        {
+            sender.TabItems.Remove(args.Tab);
+        }
+
     }
 }
