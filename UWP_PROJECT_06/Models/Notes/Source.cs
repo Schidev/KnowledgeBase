@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace UWP_PROJECT_06.Models.Notes
 {
-    internal class Source
+    public partial class Source
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -24,7 +24,7 @@ namespace UWP_PROJECT_06.Models.Notes
         public int ActualTime { get; set; }
 
         [ForeignKey("State")]
-        public byte StateId { get; set; }
+        public byte State { get; set; }
         
         [ForeignKey("Theme")]
         public byte Theme { get; set; }

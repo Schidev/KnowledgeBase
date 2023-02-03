@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,41 +30,53 @@ namespace UWP_PROJECT_06.Services
 
                 commandText = "CREATE TABLE IF NOT EXISTS Languages ( Id INTEGER NOT NULL, Language TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
 
-                commandText = "INSERT INTO Languages (Language) VALUES ('Русский%% #Русский %%'), ('Немецкий%% #Deutsch %%'), ('Английский%% #English %%'), ('Французский%% #Français %%'), ('Итальянский%% #Italiano %%'), ('Испанский%% #Español %%')";
-                sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
-
+                if (!query.HasRows)
+                {
+                    commandText = "INSERT INTO Languages (Language) VALUES ('Русский%% #Русский %%'), ('Немецкий%% #Deutsch %%'), ('Английский%% #English %%'), ('Французский%% #Français %%'), ('Итальянский%% #Italiano %%'), ('Испанский%% #Español %%')";
+                    sqliteCommand = new SqliteCommand(commandText, conn);
+                    sqliteCommand.ExecuteReader();
+                }
+                
                 // Create Statuses table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS Statuses (Id INTEGER NOT NULL, Status TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
+                query = sqliteCommand.ExecuteReader();
 
-                commandText = "INSERT INTO Statuses(Status) VALUES ('BLUE_RARE%% #BLUE_RARE %%'), ('RARE%% #RARE  %%'), ('MEDIUM_RARE%% #MEDIUM_RARE %%'), ('MEDIUM%% #MEDIUM %%'), ('MEDIUM_WELL%% #MEDIUM_WELL %%'), ('WELL_DONE%% #WELL_DONE %%'), ('DOUBLE_WELL_DONE%% #DOUBLE_WELL_DONE %%')";
-                sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
-
+                if (!query.HasRows)
+                {
+                    commandText = "INSERT INTO Statuses(Status) VALUES ('BLUE_RARE%% #BLUE_RARE %%'), ('RARE%% #RARE  %%'), ('MEDIUM_RARE%% #MEDIUM_RARE %%'), ('MEDIUM%% #MEDIUM %%'), ('MEDIUM_WELL%% #MEDIUM_WELL %%'), ('WELL_DONE%% #WELL_DONE %%'), ('DOUBLE_WELL_DONE%% #DOUBLE_WELL_DONE %%')";
+                    sqliteCommand = new SqliteCommand(commandText, conn);
+                    sqliteCommand.ExecuteReader();
+                }
+                
                 // Create PartsOfSpeech table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS PartsOfSpeech (Id INTEGER NOT NULL, PartOfSpeech TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
+                query = sqliteCommand.ExecuteReader();
 
-                commandText = "INSERT INTO PartsOfSpeech(PartOfSpeech) VALUES ('существительное мужского рода'), ('существительное женского рода'), ('существительное среднего рода'), ('только_множественное_число'), ('множественное_число_от'), ('глагол'), ('прилагательное'), ('наречие'), ('предлог'), ('числительное'), ('местоимение'), ('союз'), ('частица'), ('междометие'), ('притяжательное местоимение'), ('определяющее слово'), ('префикс')";
-                sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
-
+                if (!query.HasRows)
+                {
+                    commandText = "INSERT INTO PartsOfSpeech(PartOfSpeech) VALUES ('существительное мужского рода'), ('существительное женского рода'), ('существительное среднего рода'), ('только_множественное_число'), ('множественное_число_от'), ('глагол'), ('прилагательное'), ('наречие'), ('предлог'), ('числительное'), ('местоимение'), ('союз'), ('частица'), ('междометие'), ('притяжательное местоимение'), ('определяющее слово'), ('префикс')";
+                    sqliteCommand = new SqliteCommand(commandText, conn);
+                    sqliteCommand.ExecuteReader();
+                }
+                
                 // Create LinkTypes table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS LinkTypes (Id INTEGER NOT NULL, LinkType TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
+                query = sqliteCommand.ExecuteReader();
 
-                commandText = "INSERT INTO LinkTypes(LinkType) VALUES ('Plural'), ('Synonym'), ('Antonym'), ('Figurative Meaning'), ('Meaning string'), ('Meaning'), ('Example'), ('Translation into russian'), ('Translation into german'), ('Translation into english'), ('Translation into spanish'), ('Translation into italian'), ('Translation into french')";
-                sqliteCommand = new SqliteCommand(commandText, conn);
-                sqliteCommand.ExecuteReader();
+                if (!query.HasRows)
+                {
+                    commandText = "INSERT INTO LinkTypes(LinkType) VALUES ('Plural'), ('Synonym'), ('Antonym'), ('Figurative Meaning'), ('Meaning string'), ('Meaning'), ('Example'), ('Translation into russian'), ('Translation into german'), ('Translation into english'), ('Translation into spanish'), ('Translation into italian'), ('Translation into french')";
+                    sqliteCommand = new SqliteCommand(commandText, conn);
+                    sqliteCommand.ExecuteReader();
+                }
 
                 // Create Words table and fill it
 

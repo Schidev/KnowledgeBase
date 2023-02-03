@@ -1,0 +1,187 @@
+﻿<Application
+    x:Class="UWP_PROJECT_06.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Colors for backgrounds and foregrounds -->
+            <SolidColorBrush x:Key="TopMenuBackground" Color="#FCFCFC"/>
+            <SolidColorBrush x:Key="SideMenuBackground" Color="#F2F2F2"/>
+            <SolidColorBrush x:Key="TopMenuForeground" Color="#434343"/>
+            <SolidColorBrush x:Key="SideMenuForeground" Color="#707070"/>
+            <SolidColorBrush x:Key="TopMenuBtnHoverBackground" Color="#E9E9E9"/>
+            <SolidColorBrush x:Key="TopMenuBtnHoverForeground" Color="#434343"/>
+            <SolidColorBrush x:Key="SplitterColor" Color="#D1D1D1" />
+
+            <!--Just background and foreground color for selected tab-->
+            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="TabViewItemHeaderForegroundSelected" Color="#434343"/>
+
+
+            <!-- Some colors I don't know if I use-->
+            <SolidColorBrush x:Key="colorPrimary" Color="#ADA2F2" />
+            <SolidColorBrush x:Key="colorPrimaryDark" Color="#8B6CEF" />
+            <SolidColorBrush x:Key="colorPrimaryLight" Color="#FFD0F2" />
+            <SolidColorBrush x:Key="colorSecondary" Color="#b39ddb" />
+            <SolidColorBrush x:Key="colorSecondaryDark" Color="#836fa9" />
+            <SolidColorBrush x:Key="colorSecondaryLight" Color="#e6ceff" />
+            <SolidColorBrush x:Key="colorDarkerGrey" Color="#434343" />
+            <SolidColorBrush x:Key="colorDarkGrey" Color="#595959" />
+            <SolidColorBrush x:Key="colorDimGrey" Color="#707070" />
+            <SolidColorBrush x:Key="colorLightGrey" Color="#E9E9E9" />
+            <SolidColorBrush x:Key="colorWhiteSmoke" Color="#F2F2F2" />
+            <SolidColorBrush x:Key="colorMenuBackground" Color="#F6F6F6" />
+            <SolidColorBrush x:Key="colorWhite" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="colorSWhite" Color="#FCFCFC" />
+            <SolidColorBrush x:Key="colorTransparent" Color="#00FFFFFF" />
+
+            <SolidColorBrush x:Key="colorPrimaryXAMARIN" Color="#25817C"/>
+            <SolidColorBrush x:Key="colorPrimaryDarkXAMARIN" Color="#247A75"/>
+            <SolidColorBrush x:Key="colorPrimaryLightXAMARIN" Color="#D4F1EE"/>
+            <SolidColorBrush x:Key="colorSecondaryXAMARIN" Color="#82BFA0"/>
+            <SolidColorBrush x:Key="colorSecondaryDarkXAMARIN" Color="#4DA38B"/>
+            <SolidColorBrush x:Key="colorSecondaryLightXAMARIN" Color="#EEFAF4"/>
+            <SolidColorBrush x:Key="colorAccentOrange" Color="Orange"/>
+            <SolidColorBrush x:Key="colorAccentBlue" Color="#6C61A5"/>
+            <SolidColorBrush x:Key="colorPelorous" Color="#34A1A9"/>
+            <SolidColorBrush x:Key="colorDimGray" Color="#707070"/>
+            <SolidColorBrush x:Key="colorCoral" Color="#B36363"/>
+            <SolidColorBrush x:Key="colorBlack" Color="#000000"/>
+            <SolidColorBrush x:Key="colorSilver" Color="Silver"/>
+            <SolidColorBrush x:Key="colorLightGrayXAMARIN" Color="#e0e0e0"/>
+            <SolidColorBrush x:Key="colorDarkGrayXAMARIN" Color="#424242"/>
+            <SolidColorBrush x:Key="GreenControlColor" Color="#216E6A"/>
+            <SolidColorBrush x:Key="RedControlColor" Color="#870000"/>
+
+            <!-- Dictionary colors-->
+            <SolidColorBrush x:Key="colorOrangeDictionary" Color="#ffd180"/>
+            <SolidColorBrush x:Key="colorPurpleDictionary" Color="#e6ceff"/>
+            <SolidColorBrush x:Key="colorGreenDictionary" Color="#b9f6ca"/>
+            <SolidColorBrush x:Key="colorPurpleLightDictionary" Color="#9fa8da"/>
+            <SolidColorBrush x:Key="colorPinkDictionary" Color="#f8bbd0"/>
+            <SolidColorBrush x:Key="colorYellowDictionary" Color="#fff9c4"/>
+
+
+            <Style x:Key="NumberTextStyle" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="LightSlateGray"/>
+                <Setter Property="HorizontalTextAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="10,0"/>
+            </Style>
+
+            <Style x:Key="TextStyle" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="LightSlateGray"/>
+            </Style>
+
+            <Style TargetType="GridViewItem">
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GridViewItem">
+                            <ContentPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Margin="{TemplateBinding Padding}" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Button" x:Key="CustomButtonColorsStyle">
+                <Setter Property="Background" Value="#F6F6F6" />
+                <Setter Property="Foreground" Value="#434343"/>
+                <Setter Property="BorderBrush" Value="#00FFFFFF" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="0,0,0,0" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                <Setter Property="UseSystemFocusVisuals" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid x:Name="RootGrid" CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#E9E9E9" />
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#00FFFFFF" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#434343" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#E9E9E9" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#00FFFFFF" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#434343" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <ContentPresenter x:Name="ContentPresenter" 
+                                          BorderBrush="{TemplateBinding BorderBrush}" 
+                                          BorderThickness="{TemplateBinding BorderThickness}" 
+                                          Content="{TemplateBinding Content}"
+                                          ContentTransitions="{TemplateBinding ContentTransitions}" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                          Padding="{TemplateBinding Padding}" 
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          AutomationProperties.AccessibilityView="Raw"/>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</Application>
+

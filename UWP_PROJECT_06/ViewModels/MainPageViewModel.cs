@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -39,6 +40,8 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
+            NotesService.InitializeDatabase();
+
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);

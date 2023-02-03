@@ -1,0 +1,349 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="UWP_PROJECT_06.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{StaticResource TopMenuBackground}"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    xmlns:local="using:UWP_PROJECT_06">
+
+    <Page.DataContext>
+        <viewmodels:MainPageViewModel/>
+    </Page.DataContext>
+    
+    <Grid TabFocusNavigation="Once">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar -->
+        <Grid Grid.Row="0" Background="{StaticResource TopMenuBackground}">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:Menu Grid.Column="0" Orientation="Horizontal" TooltipPlacement="Right" AllowTooltip="False">
+                <controls:MenuItem x:ConnectionId='11' Name="FileMenu" controls:Menu.InputGestureText="Alt+F">
+
+                    <controls:MenuItem.Header>
+                        <Button Margin="0" Padding="0" BorderThickness="0" BorderBrush="{StaticResource colorTransparent}" Foreground="{StaticResource colorTransparent}" Background="{StaticResource colorTransparent}">
+                            <Image Width="20" Source="ms-appx:///Assets/OBSIDIAN.png"/>
+                        </Button>
+                    </controls:MenuItem.Header>
+
+                    <MenuFlyoutSubItem Text="New" Margin="0">
+                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+N" Text="Project"/>
+                        <MenuFlyoutItem x:ConnectionId='16' controls:Menu.InputGestureText="Ctrl+N" Text="New tab" Command="{Binding AddTabCommand}"                                    />
+                    </MenuFlyoutSubItem>
+
+                    <MenuFlyoutSubItem Text="Open" Margin="0">
+                        <MenuFlyoutItem x:ConnectionId='12' controls:Menu.InputGestureText="Ctrl+D" Text="Open dictionary" 
+                                        Command="{Binding OpenDictionaryPageCommand}"                                    />
+                        <MenuFlyoutItem x:ConnectionId='13' controls:Menu.InputGestureText="Ctrl+V" Text="Open video list" 
+                                        Command="{Binding OpenVideosListPageCommand}"                                    />
+                        <MenuFlyoutItem x:ConnectionId='14' controls:Menu.InputGestureText="Ctrl+Shift+Alt+R" Text="Open right pane"
+                                        Command="{Binding OpenCloseExtraPaneCommand}"                                      />
+                        <MenuFlyoutItem x:ConnectionId='15' controls:Menu.InputGestureText="Ctrl+Shift+Alt+L" Text="Open left pane"
+                                        Command="{Binding OpenCloseExtraPaneCommand}"                                     />
+                    </MenuFlyoutSubItem>
+
+                    <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+S" Icon="Save" Text="Save"/>
+
+                    <MenuFlyoutSeparator/>
+
+                    <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+E" Text="Exit" Margin="0"/>
+
+                </controls:MenuItem>
+            </controls:Menu>
+
+            <TextBlock Grid.Column="1" Text="YFXENGT5TVHANIKDKJ7KM5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="{StaticResource colorDarkerGrey}" FontWeight="Bold"/>
+
+        </Grid>
+
+        <!-- Data-->
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="0.5"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="0.5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="0.5"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Left Panel Button -->
+            <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource TopMenuBackground}">
+                <Button x:ConnectionId='10'  Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
+                             Command="{Binding OpenCloseExtraPaneCommand}"                                     >
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEA4B;"/>
+                </Button>
+            </Border>
+
+            <!-- Line Right to Left panel Button -->
+            <Rectangle Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" Width="0.5" Margin="0" Stroke="{StaticResource TopMenuBackground}" />
+
+            <!-- Line Under Top Menu -->
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+
+            <!-- Left Side Menu Buttons-->
+            <StackPanel Grid.Row="0" Grid.Column="2" Visibility="{Binding LeftExtendedPanelVisibility}" Orientation="Horizontal" 
+                        Margin="0" Padding="0" HorizontalAlignment="Stretch" Background="{StaticResource TopMenuBackground}">
+
+                <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xED25;" />
+                </Button>
+
+                <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE721;" />
+                </Button>
+
+                <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE734;"/>
+                </Button>
+
+            </StackPanel>
+
+            <!-- Left Menu Panel Instruments-->
+            <Grid Grid.Column="0" Grid.Row="2" Padding="0" Background="{StaticResource SideMenuBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+
+                <!-- Dictionary Button -->
+                <Button x:ConnectionId='7' Grid.Row="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
+                        Command="{Binding OpenDictionaryPageCommand}"                                    >
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8C1;"/>
+                </Button>
+
+                <!-- Video List Button -->
+                <Button x:ConnectionId='8' Grid.Row="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
+                        Command="{Binding OpenVideosListPageCommand}"                                    >
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF71E;" />
+                </Button>
+
+                <!-- Films List Button -->
+                <Button x:ConnectionId='9' Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
+                        Command="{Binding OpenWordPageCommand}"                                    >
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE786;"/>
+                </Button>
+
+                <!-- Bookmarks Button -->
+                <Button Grid.Row="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8A4;"/>
+                </Button>
+
+                <!-- GTD Button -->
+                <Button Grid.Row="4" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF003;"/>
+                </Button>
+
+                <!-- GTD? Button -->
+                <Button Grid.Row="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE7C4;"/>
+                </Button>
+
+                <!-- Space Repetition Button -->
+                <Button Grid.Row="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE787;"/>
+                </Button>
+
+                <Border Grid.Row="7" BorderThickness="0">
+
+                </Border>
+
+                <!-- Settings Button -->
+                <Button Grid.Row="8" Margin="5,5,5,10" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" CornerRadius="5"  Background="{StaticResource SideMenuBackground}"
+                        VerticalAlignment="Bottom">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE713;"/>
+                </Button>
+
+            </Grid>
+
+            <!-- Line Right to Left Menu Panel Instruments -->
+            <Rectangle Grid.Row="0" Grid.Column="3" Visibility="{Binding LeftExtendedPanelVisibility}" VerticalAlignment="Stretch" Width="0.5" Margin="0" Stroke="{StaticResource TopMenuBackground}" />
+
+            <!-- Line Right To Left Side Menu -->
+            <Rectangle Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Width="0.5" Margin="0" Stroke="{StaticResource SplitterColor}"/>
+
+            <!-- Left Expander Panel-->
+            <Grid x:ConnectionId='2' Grid.Column="2" Grid.Row="2" x:Name="leftPane" Visibility="{Binding LeftExtendedPanelVisibility, Mode=TwoWay}" Background="{StaticResource SideMenuBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF742;" />
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8F4;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8D0;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8CB;"/>
+                    </Button>
+
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Text="YFXENGT5TVHANIKDKJ7KM5" TextAlignment="Center" Margin="10" FontSize="12" FontWeight="SemiBold"/>
+            </Grid>
+
+            <!-- Left Panel And Content Splitter-->
+            <controls:GridSplitter Grid.Row="2" Grid.Column="3" Visibility="{Binding LeftExtendedPanelVisibility, Mode=TwoWay}" 
+                                   Background="{StaticResource SplitterColor}" Width="0.5" />
+
+            <!-- Content-->
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="4" Margin="0" Padding="0" Background="{StaticResource TopMenuBackground}">
+
+                <muxc:TabView x:ConnectionId='5' x:Name="tabView" Grid.Row="0" VerticalAlignment="Stretch" 
+                                                                           
+                              AddTabButtonCommand="{Binding AddTabCommand}"
+                                                                             
+                              Foreground="{StaticResource colorDarkerGrey}">
+
+                    <muxc:TabViewItem Header="New tab" BackgroundSizing="OuterBorderEdge" Background="{StaticResource colorWhite}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
+                                </Button>
+
+                                <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
+                                </Button>
+
+                                <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
+                                </Button>
+                            </Grid>
+
+                            <WebView x:ConnectionId='6' x:Name="wv" Grid.Row="2" Margin="0,0,0,0" Source="http://www.google.com"/>
+                        </Grid>
+                    </muxc:TabViewItem>
+                </muxc:TabView>
+            </Grid>
+
+            <!-- Line Left to Right Panel Menu Instruments -->
+            <Rectangle Grid.Row="0" Grid.Column="5" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" VerticalAlignment="Stretch" Width="0.5" Margin="0" Stroke="{StaticResource TopMenuBackground}" />
+
+            <!-- Right Menu Instruments-->
+            <Grid Grid.Row="0" Grid.Column="6">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Right Menu Panel Instruments-->
+                <StackPanel Grid.Column="0" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" Orientation="Horizontal" Margin="0" Padding="0" HorizontalAlignment="Stretch" Background="{StaticResource TopMenuBackground}">
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xED25;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE721;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE734;"/>
+                    </Button>
+                </StackPanel>
+
+                <Border Grid.Column="1" Background="{StaticResource TopMenuBackground}"/>
+
+                <!-- Right Panel Button -->
+                <Border Grid.Column="2" Background="{StaticResource TopMenuBackground}">
+                    <Button x:ConnectionId='4' Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
+                            Command="{Binding OpenCloseExtraPaneCommand}"                                      >
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEA4C;" />
+                    </Button>
+                </Border>
+
+            </Grid>
+
+            <!-- Content And Right Panel Splitter-->
+            <controls:GridSplitter Grid.Column="5" Grid.Row="2" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" 
+                                   Background="{StaticResource SplitterColor}" Width="0.5" />
+
+            <!-- Right expander pane-->
+            <Grid x:ConnectionId='3' Grid.Column="6" Grid.Row="2" x:Name="rightPane" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" Margin="0,0,0,0" Background="{StaticResource SideMenuBackground}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,0" Padding="0" HorizontalAlignment="Center" >
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF742;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8F4;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8D0;"/>
+                    </Button>
+
+                    <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8CB;"/>
+                    </Button>
+
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+        
+    </Grid>
+</Page>
+
