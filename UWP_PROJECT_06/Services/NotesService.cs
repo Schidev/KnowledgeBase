@@ -463,7 +463,7 @@ namespace UWP_PROJECT_06.Services
 
             return notes;
         }
-        public static void UpdateSourceExtra(Note note)
+        public static void UpdateNote(Note note)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
@@ -495,6 +495,138 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Connection = conn;
 
                 sqliteCommand.CommandText = "DELETE FROM Notes WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
+        #endregion
+
+        #region Quotes
+
+        public static void CreateQuote(Quote quote)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO Quotes VALUES (NULL, @SourceID, @QuoteBegin, @QuoteEnd, @OriginalQuote, @TranslatedQuote);";
+                sqliteCommand.Parameters.AddWithValue("@SourceID", quote.SourceID);
+                sqliteCommand.Parameters.AddWithValue("@QuoteBegin", quote.QuoteBegin);
+                sqliteCommand.Parameters.AddWithValue("@QuoteEnd", quote.QuoteEnd);
+                sqliteCommand.Parameters.AddWithValue("@OriginalQuote", quote.OriginalQuote);
+                sqliteCommand.Parameters.AddWithValue("@TranslatedQuote", quote.TranslatedQuote);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static Quote ReadQuote(int id)
+        {
+            Quote quote = new Quote();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote FROM Quotes WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    quote = new Quote()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        QuoteBegin = query.GetString(2),
+                        QuoteEnd = query.GetString(3),
+                        OriginalQuote = query.GetString(4),
+                        TranslatedQuote = query.GetString(5)
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return quote;
+        }
+        public static List<Quote> ReadQuotes(int id)
+        {
+            List<Quote> quotes = new List<Quote>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote FROM Quotes WHERE SourceID = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    quotes.Add(new Quote()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        QuoteBegin = query.GetString(2),
+                        QuoteEnd = query.GetString(3),
+                        OriginalQuote = query.GetString(4),
+                        TranslatedQuote = query.GetString(5)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return quotes;
+        }
+        public static void UpdateQuote(Quote quote)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "UPDATE Quotes SET SourceID = @SourceID, QuoteBegin = @QuoteBegin, QuoteEnd = @QuoteEnd, OriginalQuote = @OriginalQuote, TranslatedQuote = @TranslatedQuote WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", quote.Id);
+                sqliteCommand.Parameters.AddWithValue("@SourceID", quote.SourceID);
+                sqliteCommand.Parameters.AddWithValue("@QuoteBegin", quote.QuoteBegin);
+                sqliteCommand.Parameters.AddWithValue("@QuoteEnd", quote.QuoteEnd);
+                sqliteCommand.Parameters.AddWithValue("@OriginalQuote", quote.OriginalQuote);
+                sqliteCommand.Parameters.AddWithValue("@TranslatedQuote", quote.TranslatedQuote);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteQuote(int id)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "DELETE FROM Quotes WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();
