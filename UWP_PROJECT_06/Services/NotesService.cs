@@ -104,7 +104,6 @@ namespace UWP_PROJECT_06.Services
             }
         }
 
-
         #region Sources CRUD
 
         public static void CreateSource(Source source)
@@ -369,6 +368,133 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Connection = conn;
 
                 sqliteCommand.CommandText = "DELETE FROM SourceExtras WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
+        #endregion
+
+        #region Notes
+
+        public static void CreateNote(Note note)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO Notes VALUES (NULL, @SourceID, @Stamp, @Title, @Note);";
+                sqliteCommand.Parameters.AddWithValue("@SourceID", note.SourceID);
+                sqliteCommand.Parameters.AddWithValue("@Stamp", note.Stamp);
+                sqliteCommand.Parameters.AddWithValue("@Title", note.Title);
+                sqliteCommand.Parameters.AddWithValue("@Note", note.Note1);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static Note ReadNote(int id)
+        {
+            Note note = new Note();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note FROM Notes WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    note = new Note()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        Stamp = query.GetString(2),
+                        Title = query.GetString(3),
+                        Note1 = query.GetString(4)
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return note;
+        }
+        public static List<Note> ReadNotes(int id)
+        {
+            List<Note> notes = new List<Note>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note FROM Notes WHERE SourceID = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    notes.Add(new Note()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        Stamp = query.GetString(2),
+                        Title = query.GetString(3),
+                        Note1 = query.GetString(4)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return notes;
+        }
+        public static void UpdateSourceExtra(Note note)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "UPDATE Notes SET SourceID = @SourceID, Stamp = @Stamp, Title = @Title, Note = @Note WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", note.Id);
+                sqliteCommand.Parameters.AddWithValue("@SourceID", note.SourceID);
+                sqliteCommand.Parameters.AddWithValue("@Stamp", note.Stamp);
+                sqliteCommand.Parameters.AddWithValue("@Title", note.Title);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteNote(int id)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "DELETE FROM Notes WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();

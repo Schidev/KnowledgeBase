@@ -23,7 +23,7 @@ namespace UWP_PROJECT_06.Models.Notes
 
         [Required]
         [StringLength(1000)]
-        public string Tilte { get; set; }
+        public string Title { get; set; }
 
         [SQLite.Column("Note")]
         [Required]
