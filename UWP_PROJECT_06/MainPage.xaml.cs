@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWP_PROJECT_06.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -24,6 +25,7 @@ namespace UWP_PROJECT_06
     {
         public MainPage()
         {
+            BookmarksService.InitializeDatabase();
             this.InitializeComponent();
         }
         

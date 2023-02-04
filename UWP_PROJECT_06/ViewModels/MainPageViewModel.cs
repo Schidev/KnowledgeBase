@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UWP_PROJECT_06.Models.Bookmarks;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
 using Windows.UI.Xaml;
@@ -40,7 +41,9 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
-            NotesService.InitializeDatabase();
+            TestBookmarksService();
+            TestNotesService();
+            TestProblemsService();
 
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
@@ -51,6 +54,109 @@ namespace UWP_PROJECT_06.ViewModels
             AddTabCommand = new AsyncCommand<object>(AddTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
         }
+
+
+        async void TestBookmarksService()
+        {
+            var t = 0;
+
+            var bookmark = new Bookmark()
+            { 
+                Date = DateTime.Now,
+                Content = "Some content to test this database."
+            };
+
+            BookmarksService.CreateBookmark(bookmark);
+
+            t = 1;
+
+            var bm = BookmarksService.ReadBookmark(1);
+            var bms =  BookmarksService.ReadBookmarks();
+
+            t = 2;
+
+            bm.Date = DateTime.Now.AddDays(13);
+            bm.Content = "Some another content to test this database.";
+
+            BookmarksService.UpdateBookmark(bm);
+
+            t = 3;
+
+            bm.Date = DateTime.Now.AddDays(1);
+            bm.Content = "Some another another content to test this database.";
+
+            BookmarksService.CreateBookmark(bm);
+
+            t = 4;
+
+            BookmarksService.DeleteBookmark(1);
+
+            t = 5;
+
+            var task = new DailyTask() 
+            { 
+                BookmarkID = 2,
+                TimeBegin = DateTime.Now,
+                TimeEnd = DateTime.Now.AddDays(1),
+                Task = "Some task to test"
+            };
+
+            var task1 = new DailyTask()
+            {
+                BookmarkID = 2,
+                TimeBegin = DateTime.Now,
+                TimeEnd = DateTime.Now.AddDays(4),
+                Task = "Some task1 to test"
+            };
+
+            var task2 = new DailyTask()
+            {
+                BookmarkID = 1,
+                TimeBegin = DateTime.Now,
+                TimeEnd = DateTime.Now.AddDays(18),
+                Task = "Some task2 to test"
+            };
+
+            BookmarksService.CreateDailyTask(task);
+            BookmarksService.CreateDailyTask(task1);
+            BookmarksService.CreateDailyTask(task2);
+
+            t = 6;
+
+            var dt = BookmarksService.ReadDailyTask(2);
+            var dts = BookmarksService.ReadDailyTasks(5);
+
+            t = 7;
+
+            dt.BookmarkID = 3;
+            dt.TimeBegin = DateTime.Now.AddDays(-20);
+            dt.TimeEnd = DateTime.Now.AddDays(-10);
+            dt.Task = "Updated task";
+
+            BookmarksService.UpdateDailyTask(dt);
+
+            t = 8;
+
+            BookmarksService.DeleteDailyTask(1);
+
+            t = 9;
+
+            BookmarksService.DeleteBookmark(2);
+
+            t = 10;
+        }
+
+        void TestNotesService()
+        {
+
+        }
+
+        void TestProblemsService()
+        {
+
+        }
+
+
 
         private async Task OpenDictionaryPage(object arg)
         {

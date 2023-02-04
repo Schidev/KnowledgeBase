@@ -133,10 +133,12 @@
     <Compile Include="Models\Notes\SourceType.cs" />
     <Compile Include="Models\Notes\State.cs" />
     <Compile Include="Models\Notes\Theme.cs" />
+    <Compile Include="Models\Problems\Problem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BookmarksService.cs" />
     <Compile Include="Services\DictionaryService.cs" />
     <Compile Include="Services\NotesService.cs" />
+    <Compile Include="Services\ProblemsService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\DictionaryPage.xaml.cs">
@@ -266,9 +268,7 @@
       <Version>2.1.4</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Problems\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

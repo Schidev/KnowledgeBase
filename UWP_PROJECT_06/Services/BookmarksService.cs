@@ -9,6 +9,7 @@ using UWP_PROJECT_06.Models.Bookmarks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.Notes;
 using Windows.Storage;
+using Windows.UI.Popups;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -153,7 +154,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "DELETE DailyTasks WHERE BookmarkID = @Id; DELETE FROM Bokmarks WHERE Id = @Id;";
+                sqliteCommand.CommandText = "DELETE FROM DailyTasks WHERE BookmarkID = @Id; DELETE FROM Bookmarks WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();
@@ -173,16 +174,22 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                SqliteCommand sqliteCommand = new SqliteCommand();
-                sqliteCommand.Connection = conn;
+                SqliteCommand sqliteCommand = new SqliteCommand($"SELECT Id FROM Bookmarks WHERE Id = {dailyTask.BookmarkID}", conn);
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
 
-                sqliteCommand.CommandText = "INSERT INTO DailyTasks VALUES (NULL, @BookmarkID, @TimeBegin, @TimeEnd, @Task);";
-                sqliteCommand.Parameters.AddWithValue("@BookmarkID", dailyTask.BookmarkID);
-                sqliteCommand.Parameters.AddWithValue("@TimeBegin", dailyTask.TimeBegin);
-                sqliteCommand.Parameters.AddWithValue("@TimeEnd", dailyTask.TimeEnd);
-                sqliteCommand.Parameters.AddWithValue("@Task", dailyTask.Task);
+                if (query.HasRows)
+                {
+                    sqliteCommand = new SqliteCommand();
+                    sqliteCommand.Connection = conn;
 
-                sqliteCommand.ExecuteReader();
+                    sqliteCommand.CommandText = "INSERT INTO DailyTasks VALUES (NULL, @BookmarkID, @TimeBegin, @TimeEnd, @Task);";
+                    sqliteCommand.Parameters.AddWithValue("@BookmarkID", dailyTask.BookmarkID);
+                    sqliteCommand.Parameters.AddWithValue("@TimeBegin", dailyTask.TimeBegin);
+                    sqliteCommand.Parameters.AddWithValue("@TimeEnd", dailyTask.TimeEnd);
+                    sqliteCommand.Parameters.AddWithValue("@Task", dailyTask.Task);
+
+                    sqliteCommand.ExecuteReader();
+                }
 
                 conn.Close();
             }
@@ -227,7 +234,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, BookmarkID, TimeBegin, TimeEnd, Task FROM DailyTasks WHERE WordId = {bookmarkId};";
+                string commandText = $"SELECT Id, BookmarkID, TimeBegin, TimeEnd, Task FROM DailyTasks WHERE BookmarkId = {bookmarkId};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -255,18 +262,23 @@ namespace UWP_PROJECT_06.Services
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
             {
                 conn.Open();
+                SqliteCommand sqliteCommand = new SqliteCommand($"SELECT Id FROM Bookmarks WHERE Id = {dailyTask.BookmarkID}", conn);
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
 
-                SqliteCommand sqliteCommand = new SqliteCommand();
-                sqliteCommand.Connection = conn;
+                if (query.HasRows)
+                {
+                    sqliteCommand = new SqliteCommand();
+                    sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE DailyTasks SET BookmarkID = @BookmarkID, TimeBegin = @TimeBegin, TimeEnd = @TimeEnd, Task = @Task WHERE Id = @Id;";
-                sqliteCommand.Parameters.AddWithValue("@Id", dailyTask.Id);
-                sqliteCommand.Parameters.AddWithValue("@BookmarkID", dailyTask.BookmarkID);
-                sqliteCommand.Parameters.AddWithValue("@TimeBegin", dailyTask.TimeBegin);
-                sqliteCommand.Parameters.AddWithValue("@TimeEnd", dailyTask.TimeEnd);
-                sqliteCommand.Parameters.AddWithValue("@Task", dailyTask.Task);
+                    sqliteCommand.CommandText = "UPDATE DailyTasks SET BookmarkID = @BookmarkID, TimeBegin = @TimeBegin, TimeEnd = @TimeEnd, Task = @Task WHERE Id = @Id;";
+                    sqliteCommand.Parameters.AddWithValue("@Id", dailyTask.Id);
+                    sqliteCommand.Parameters.AddWithValue("@BookmarkID", dailyTask.BookmarkID);
+                    sqliteCommand.Parameters.AddWithValue("@TimeBegin", dailyTask.TimeBegin);
+                    sqliteCommand.Parameters.AddWithValue("@TimeEnd", dailyTask.TimeEnd);
+                    sqliteCommand.Parameters.AddWithValue("@Task", dailyTask.Task);
 
-                sqliteCommand.ExecuteReader();
+                    sqliteCommand.ExecuteReader();
+                }
 
                 conn.Close();
             }
