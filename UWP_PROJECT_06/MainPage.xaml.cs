@@ -26,9 +26,10 @@ namespace UWP_PROJECT_06
         public MainPage()
         {
             DictionaryService.InitializeDatabase();
-            //NotesService.InitializeDatabase();
-            //ProblemsService.InitializeDatabase();
-            //BookmarksService.InitializeDatabase();
+            NotesService.InitializeDatabase();
+            ProblemsService.InitializeDatabase();
+            BookmarksService.InitializeDatabase();
+            
             this.InitializeComponent();
         }
         
