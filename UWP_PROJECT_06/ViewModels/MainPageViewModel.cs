@@ -2,10 +2,13 @@
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Bookmarks;
+using UWP_PROJECT_06.Models.Problems;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
 using Windows.UI.Xaml;
@@ -41,8 +44,8 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
-            TestBookmarksService();
-            TestNotesService();
+            //TestBookmarksService(); // Test Completed! :)
+            //TestNotesService();
             TestProblemsService();
 
             OpenCommand = new AsyncCommand<object>(OpenFile);
@@ -56,7 +59,7 @@ namespace UWP_PROJECT_06.ViewModels
         }
 
 
-        async void TestBookmarksService()
+        void TestBookmarksService()
         {
             var t = 0;
 
@@ -145,13 +148,80 @@ namespace UWP_PROJECT_06.ViewModels
 
             t = 10;
         }
-
-        void TestNotesService()
+        void TestProblemsService()
         {
+            var t = 0;
 
+            var problem = new Problem()
+            {
+                IsDone = false,
+                Problem1 = "Some Problem",
+                Link = "Some Link",
+                Week = 0,
+                Category = "M",
+                TimePeriodType = "L",
+                DueDateTimeBegin = DateTime.Now,
+                DueDateTimeEnd = DateTime.Now,
+                IsMonday = false,
+                IsTuesday = false,
+                IsWednesday = false,
+                IsThursday = false,
+                IsFriday = false,
+                IsSaturday = false,
+                IsSunday = false,
+                RepetitionFrequencyWeeks = 0,
+                RepetitionFrequencyDays = 12,
+                RepetitionDateFrom = DateTime.Now,
+                RepetitionDateTo = DateTime.Now,
+                Hash = "d3ac94",
+                CreatedOn = DateTime.Now,
+                LastModifiedOn = DateTime.Now
+            };
+
+            ProblemsService.CreateProblem(problem);
+            problem.Hash = "Adjv83";
+            ProblemsService.CreateProblem(problem);
+
+            t = 1;
+
+            var pm = ProblemsService.ReadProblem(1);
+            var pms = ProblemsService.ReadProblems();
+
+            t = 2;
+
+            pm.IsDone = true;
+            pm.Problem1 = "Some updated Problem";
+            pm.Link = "Some Updated Link";
+            pm.Week = 1;
+            pm.Category = "B";
+            pm.TimePeriodType = "P";
+            pm.DueDateTimeBegin = DateTime.Now.AddDays(3);
+            pm.DueDateTimeEnd = DateTime.Now.AddDays(3);
+            pm.IsMonday = true;
+            pm.IsTuesday = true;
+            pm.IsWednesday = true;
+            pm.IsThursday = true;
+            pm.IsFriday = true;
+            pm.IsSaturday = true;
+            pm.IsSunday = true;
+            pm.RepetitionFrequencyWeeks = 1;
+            pm.RepetitionFrequencyDays = 13;
+            pm.RepetitionDateFrom = DateTime.Now.AddDays(3);
+            pm.RepetitionDateTo = DateTime.Now.AddDays(3);
+            pm.Hash = "AAAc94";
+            pm.CreatedOn = DateTime.Now.AddDays(3);
+            pm.LastModifiedOn = DateTime.Now.AddDays(3);
+
+            ProblemsService.UpdateProblem(pm);
+
+            t = 3;
+
+            ProblemsService.DeleteProblem(1);
+
+            t = 4;
         }
 
-        void TestProblemsService()
+        void TestNotesService()
         {
 
         }

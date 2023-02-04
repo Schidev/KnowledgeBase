@@ -25,7 +25,8 @@ namespace UWP_PROJECT_06
     {
         public MainPage()
         {
-            BookmarksService.InitializeDatabase();
+            ProblemsService.InitializeDatabase();
+            //BookmarksService.InitializeDatabase();
             this.InitializeComponent();
         }
         

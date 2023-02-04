@@ -29,7 +29,7 @@ namespace UWP_PROJECT_06.Services
 
                 // Create Problems table
 
-                commandText = "CREATE TABLE Problems (Id INTEGER NOT NULL, IsDone BOOLEAN NOT NULL, Problem TEXT NOT NULL, Link TEXT NOT NULL, Week TINYINT NOT NULL, Category NVARCHAR(1) NOT NULL, TimePeriodType NVARCHAR(1) NOT NULL, DueDateTimeBegin DATETIME NOT NULL, DueDateTimeEnd DATETIME NOT NULL, IsMonday BOOLEAN NOT NULL, IsTuesday BOOLEAN NOT NULL, IsWednesday BOOLEAN NOT NULL, IsThursday BOOLEAN NOT NULL, IsFriday BOOLEAN NOT NULL, IsSaturday BOOLEAN NOT NULL, IsSunday BOOLEAN NOT NULL, RepetitionFrequencyWeeks TINYINT NOT NULL, RepetitionFrequencyDays TINYINT NOT NULL, RepetitionDateFrom DATETIME NOT NULL, RepetitionDateTo DATETIME NOT NULL, Hash TEXT NOT NULL UNIQUE, PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Problems (Id INTEGER NOT NULL, IsDone BOOLEAN NOT NULL, Problem TEXT NOT NULL, Link TEXT NOT NULL, Week TINYINT NOT NULL, Category NVARCHAR(1) NOT NULL, TimePeriodType NVARCHAR(1) NOT NULL, DueDateTimeBegin DATETIME NOT NULL, DueDateTimeEnd DATETIME NOT NULL, IsMonday BOOLEAN NOT NULL, IsTuesday BOOLEAN NOT NULL, IsWednesday BOOLEAN NOT NULL, IsThursday BOOLEAN NOT NULL, IsFriday BOOLEAN NOT NULL, IsSaturday BOOLEAN NOT NULL, IsSunday BOOLEAN NOT NULL, RepetitionFrequencyWeeks TINYINT NOT NULL, RepetitionFrequencyDays TINYINT NOT NULL, RepetitionDateFrom DATETIME NOT NULL, RepetitionDateTo DATETIME NOT NULL, Hash TEXT NOT NULL UNIQUE, CreatedOn DATETIME NOT NULL, LastModifiedOn DATETIME NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -56,7 +56,7 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Parameters.AddWithValue("@Link", problem.Link);
                 sqliteCommand.Parameters.AddWithValue("@Week", problem.Week);
                 sqliteCommand.Parameters.AddWithValue("@Category", problem.Category);
-                sqliteCommand.Parameters.AddWithValue("@TimePeiodType", problem.TimePeriodType);
+                sqliteCommand.Parameters.AddWithValue("@TimePeriodType", problem.TimePeriodType);
                 sqliteCommand.Parameters.AddWithValue("@DueDateTimeBegin", problem.DueDateTimeBegin);
                 sqliteCommand.Parameters.AddWithValue("@DueDateTimeEnd", problem.DueDateTimeEnd);
                 sqliteCommand.Parameters.AddWithValue("@IsMonday", problem.IsMonday);
@@ -79,7 +79,7 @@ namespace UWP_PROJECT_06.Services
                 conn.Close();
             }
         }
-        public static Problem ReadSource(int id)
+        public static Problem ReadProblem(int id)
         {
             Problem problem = new Problem();
 
@@ -88,7 +88,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, IsDone, Problem1, Link, Week, Category, TimePeriodType, DueDateTimeBegin, DueDateTimeEnd, IsMonday, IsTuesday, IsWednesday, IsThursday, IsFriday, IsSaturday, IsSunday, RepetitionFrequencyWeeks, RepetitionFrequencyDays, RepetitionDateFrom, RepetitionDateTo, Hash, CreatedOn, LastModifiedOn FROM Problems WHERE Id = {id};";
+                string commandText = $"SELECT Id, IsDone, Problem, Link, Week, Category, TimePeriodType, DueDateTimeBegin, DueDateTimeEnd, IsMonday, IsTuesday, IsWednesday, IsThursday, IsFriday, IsSaturday, IsSunday, RepetitionFrequencyWeeks, RepetitionFrequencyDays, RepetitionDateFrom, RepetitionDateTo, Hash, CreatedOn, LastModifiedOn FROM Problems WHERE Id = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -128,7 +128,7 @@ namespace UWP_PROJECT_06.Services
 
             return problem;
         }
-        public static List<Problem> ReadSources()
+        public static List<Problem> ReadProblems()
         {
             List<Problem> problems = new List<Problem>();
 
@@ -137,7 +137,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, IsDone, Problem1, Link, Week, Category, TimePeriodType, DueDateTimeBegin, DueDateTimeEnd, IsMonday, IsTuesday, IsWednesday, IsThursday, IsFriday, IsSaturday, IsSunday, RepetitionFrequencyWeeks, RepetitionFrequencyDays, RepetitionDateFrom, RepetitionDateTo, Hash, CreatedOn, LastModifiedOn FROM Problems;";
+                string commandText = $"SELECT Id, IsDone, Problem, Link, Week, Category, TimePeriodType, DueDateTimeBegin, DueDateTimeEnd, IsMonday, IsTuesday, IsWednesday, IsThursday, IsFriday, IsSaturday, IsSunday, RepetitionFrequencyWeeks, RepetitionFrequencyDays, RepetitionDateFrom, RepetitionDateTo, Hash, CreatedOn, LastModifiedOn FROM Problems;";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -177,7 +177,7 @@ namespace UWP_PROJECT_06.Services
 
             return problems;
         }
-        public static void UpdateSource(Problem problem)
+        public static void UpdateProblem(Problem problem)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
@@ -187,14 +187,14 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE Problems SET IsDone = @IsDone, Problem1 = @Problem1, Link = @Link, Week = @Week, Category = @Category, TimePeriodType = @TimePeriodType, DueDateTimeBegin = @DueDateTimeBegin, DueDateTimeEnd = @DueDateTimeEnd, IsMonday = @IsMonday, IsTuesday = @IsTuesday, IsWednesday = @IsWednesday, IsThursday = @IsThursday, IsFriday = @IsFriday, IsSaturday = @IsSaturday, IsSunday = @IsSunday, RepetitionFrequencyWeeks = @RepetitionFrequencyWeeks, RepetitionFrequencyDays = @RepetitionFrequencyDays, RepetitionDateFrom = @RepetitionDateFrom, RepetitionDateTo = @RepetitionDateTo, Hash = @Hash CreatedOn = @CreatedOn LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
+                sqliteCommand.CommandText = "UPDATE Problems SET IsDone = @IsDone, Problem = @Problem, Link = @Link, Week = @Week, Category = @Category, TimePeriodType = @TimePeriodType, DueDateTimeBegin = @DueDateTimeBegin, DueDateTimeEnd = @DueDateTimeEnd, IsMonday = @IsMonday, IsTuesday = @IsTuesday, IsWednesday = @IsWednesday, IsThursday = @IsThursday, IsFriday = @IsFriday, IsSaturday = @IsSaturday, IsSunday = @IsSunday, RepetitionFrequencyWeeks = @RepetitionFrequencyWeeks, RepetitionFrequencyDays = @RepetitionFrequencyDays, RepetitionDateFrom = @RepetitionDateFrom, RepetitionDateTo = @RepetitionDateTo, Hash = @Hash, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", problem.Id);
                 sqliteCommand.Parameters.AddWithValue("@IsDone", problem.IsDone);
-                sqliteCommand.Parameters.AddWithValue("@Problem1", problem.Problem1);
+                sqliteCommand.Parameters.AddWithValue("@Problem", problem.Problem1);
                 sqliteCommand.Parameters.AddWithValue("@Link", problem.Link);
                 sqliteCommand.Parameters.AddWithValue("@Week", problem.Week);
                 sqliteCommand.Parameters.AddWithValue("@Category", problem.Category);
-                sqliteCommand.Parameters.AddWithValue("@TimePeiodType", problem.TimePeriodType);
+                sqliteCommand.Parameters.AddWithValue("@TimePeriodType", problem.TimePeriodType);
                 sqliteCommand.Parameters.AddWithValue("@DueDateTimeBegin", problem.DueDateTimeBegin);
                 sqliteCommand.Parameters.AddWithValue("@DueDateTimeEnd", problem.DueDateTimeEnd);
                 sqliteCommand.Parameters.AddWithValue("@IsMonday", problem.IsMonday);
@@ -217,7 +217,7 @@ namespace UWP_PROJECT_06.Services
                 conn.Close();
             }
         }
-        public static void DeleteSource(int id)
+        public static void DeleteProblem(int id)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
