@@ -23,10 +23,6 @@ namespace UWP_PROJECT_06
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.19041.685")]
         private global::Windows.UI.Xaml.Controls.WebView wv; 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.19041.685")]
-#pragma warning disable 0618  //   Warning on Deprecated usage
-        private global::Microsoft.Toolkit.Uwp.UI.Controls.MenuItem FileMenu; 
-#pragma warning restore 0618
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.19041.685")]
         private bool _contentLoaded;
 
         /// <summary>
