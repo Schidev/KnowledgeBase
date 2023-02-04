@@ -94,6 +94,8 @@ namespace UWP_PROJECT_06.Services
             }
         }
 
+        #region Words
+        
         public static void CreateWord(Word word)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
@@ -118,28 +120,6 @@ namespace UWP_PROJECT_06.Services
                 conn.Close();
             }
         }
-        public static void CreateWordExtra(WordExtra wordExtra)
-        {
-            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
-            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
-            {
-                conn.Open();
-
-                SqliteCommand sqliteCommand = new SqliteCommand();
-                sqliteCommand.Connection = conn;
-
-                sqliteCommand.CommandText = "INSERT INTO WordsExtras VALUES (NULL, @WordId, @LinkedWordId, @LinkType, @ExtraText);";
-                sqliteCommand.Parameters.AddWithValue("@WordId", wordExtra.WordId);
-                sqliteCommand.Parameters.AddWithValue("@LinkedWordId", wordExtra.LinkedWordId);
-                sqliteCommand.Parameters.AddWithValue("@LinkType", wordExtra.LinkType);
-                sqliteCommand.Parameters.AddWithValue("@ExtraText", wordExtra.ExtraText);
-
-                sqliteCommand.ExecuteReader();
-
-                conn.Close();
-            }
-        }
-
         public static Word ReadWord(int id)
         {
             Word word = new Word();
@@ -208,6 +188,75 @@ namespace UWP_PROJECT_06.Services
 
             return words;
         }
+        public static void UpdateWord(Word word)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "UPDATE Words SET Word = @Word, Language = @Language, Status = @Status, PartOfSpeech = @PartOfSpeech, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn, LastRepeatedOn = @LastRepeatedOn WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", word.Id);
+                sqliteCommand.Parameters.AddWithValue("@Word", word.Word1);
+                sqliteCommand.Parameters.AddWithValue("@Language", word.Language);
+                sqliteCommand.Parameters.AddWithValue("@Status", word.Status);
+                sqliteCommand.Parameters.AddWithValue("@PartOfSpeech", word.PartOfSpeech);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", word.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", word.LastModifiedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastRepeatedOn", word.LastRepeatedOn);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteWord(int id)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "DELETE FROM Words WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
+        #endregion
+
+        #region WordsExtras
+
+        public static void CreateWordExtra(WordExtra wordExtra)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO WordsExtras VALUES (NULL, @WordId, @LinkedWordId, @LinkType, @ExtraText);";
+                sqliteCommand.Parameters.AddWithValue("@WordId", wordExtra.WordId);
+                sqliteCommand.Parameters.AddWithValue("@LinkedWordId", wordExtra.LinkedWordId);
+                sqliteCommand.Parameters.AddWithValue("@LinkType", wordExtra.LinkType);
+                sqliteCommand.Parameters.AddWithValue("@ExtraText", wordExtra.ExtraText);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
         public static WordExtra ReadWordExtra(int rowId)
         {
             WordExtra wordExtra = new WordExtra();
@@ -270,32 +319,6 @@ namespace UWP_PROJECT_06.Services
 
             return wordExtras;
         }
-
-        public static void UpdateWord(Word word)
-        {
-            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
-            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
-            {
-                conn.Open();
-
-                SqliteCommand sqliteCommand = new SqliteCommand();
-                sqliteCommand.Connection = conn;
-
-                sqliteCommand.CommandText = "UPDATE Words SET Word = @Word, Language = @Language, Status = @Status, PartOfSpeech = @PartOfSpeech, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn, LastRepeatedOn = @LastRepeatedOn WHERE Id = @Id;";
-                sqliteCommand.Parameters.AddWithValue("@Id", word.Id);
-                sqliteCommand.Parameters.AddWithValue("@Word", word.Word1);
-                sqliteCommand.Parameters.AddWithValue("@Language", word.Language);
-                sqliteCommand.Parameters.AddWithValue("@Status", word.Status);
-                sqliteCommand.Parameters.AddWithValue("@PartOfSpeech", word.PartOfSpeech);
-                sqliteCommand.Parameters.AddWithValue("@CreatedOn", word.CreatedOn);
-                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", word.LastModifiedOn);
-                sqliteCommand.Parameters.AddWithValue("@LastRepeatedOn", word.LastRepeatedOn);
-
-                sqliteCommand.ExecuteReader();
-
-                conn.Close();
-            }
-        }
         public static void UpdateWordExtra(WordExtra wordExtra)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
@@ -312,25 +335,6 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Parameters.AddWithValue("@LinkedWordId", wordExtra.LinkedWordId);
                 sqliteCommand.Parameters.AddWithValue("@LinkType", wordExtra.LinkType);
                 sqliteCommand.Parameters.AddWithValue("@ExtraText", wordExtra.ExtraText);
-
-                sqliteCommand.ExecuteReader();
-
-                conn.Close();
-            }
-        }
-
-        public static void DeleteWord(int id)
-        {
-            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
-            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
-            {
-                conn.Open();
-
-                SqliteCommand sqliteCommand = new SqliteCommand();
-                sqliteCommand.Connection = conn;
-
-                sqliteCommand.CommandText = "DELETE FROM Words WHERE Id = @Id;";
-                sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();
 
@@ -355,5 +359,8 @@ namespace UWP_PROJECT_06.Services
                 conn.Close();
             }
         }
+
+        #endregion
+
     }
 }

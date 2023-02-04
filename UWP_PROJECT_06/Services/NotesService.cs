@@ -196,7 +196,7 @@ namespace UWP_PROJECT_06.Services
                         SourceType = query.GetByte(6),
                         IsDownloaded = query.GetBoolean(7),
                         Description = query.GetString(8),
-                        SourceLink = query.GetString(9),
+                        SourceLink = query.GetString(9)
                     });
                 }
 
