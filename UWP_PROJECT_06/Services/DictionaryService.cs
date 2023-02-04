@@ -24,13 +24,18 @@ namespace UWP_PROJECT_06.Services
                 conn.Open();
 
                 SqliteCommand sqliteCommand;
+                SqliteDataReader query;
                 string commandText;
 
                 // Create Languages table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS Languages ( Id INTEGER NOT NULL, Language TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
-                SqliteDataReader query = sqliteCommand.ExecuteReader();
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT Language FROM Languages";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                query = sqliteCommand.ExecuteReader();
 
                 if (!query.HasRows)
                 {
@@ -42,6 +47,10 @@ namespace UWP_PROJECT_06.Services
                 // Create Statuses table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS Statuses (Id INTEGER NOT NULL, Status TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT Status FROM Statuses";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
@@ -56,6 +65,10 @@ namespace UWP_PROJECT_06.Services
 
                 commandText = "CREATE TABLE IF NOT EXISTS PartsOfSpeech (Id INTEGER NOT NULL, PartOfSpeech TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT PartOfSpeech FROM PartsOfSpeech";
+                sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
                 if (!query.HasRows)
@@ -68,6 +81,10 @@ namespace UWP_PROJECT_06.Services
                 // Create LinkTypes table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS LinkTypes (Id INTEGER NOT NULL, LinkType TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT LinkType FROM LinkTypes";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
@@ -223,7 +240,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "DELETE FROM Words WHERE Id = @Id;";
+                sqliteCommand.CommandText = "DELETE FROM WordsExtras WHERE WordId = @Id; DELETE FROM Words WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();

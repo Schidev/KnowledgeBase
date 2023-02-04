@@ -8,6 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Bookmarks;
+using UWP_PROJECT_06.Models.Dictionary;
+using UWP_PROJECT_06.Models.Notes;
 using UWP_PROJECT_06.Models.Problems;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
@@ -46,7 +48,8 @@ namespace UWP_PROJECT_06.ViewModels
         {
             //TestBookmarksService(); // Test Completed! :)
             //TestNotesService();
-            TestProblemsService();
+            //TestProblemsService();
+            //TestDictionaryService();
 
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
@@ -58,6 +61,101 @@ namespace UWP_PROJECT_06.ViewModels
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
         }
 
+        void TestDictionaryService()
+        {
+            var t = 0;
+
+            var word = new Word()
+            {
+                Word1 = "Some_word",
+                Language = 1,
+                Status = 1,
+                PartOfSpeech = 1,
+                CreatedOn = DateTime.Now,
+                LastModifiedOn = DateTime.Now,
+                LastRepeatedOn = DateTime.Now
+            };
+            DictionaryService.CreateWord(word);
+
+            word = new Word()
+            {
+                Word1 = "Some_another_word",
+                Language = 2,
+                Status = 2,
+                PartOfSpeech = 2,
+                CreatedOn = DateTime.Now.AddDays(2),
+                LastModifiedOn = DateTime.Now.AddDays(2),
+                LastRepeatedOn = DateTime.Now.AddDays(2)
+            };
+            DictionaryService.CreateWord(word);
+            word = new Word()
+            {
+                Word1 = "Some_another_word",
+                Language = 2,
+                Status = 2,
+                PartOfSpeech = 2,
+                CreatedOn = DateTime.Now.AddDays(2),
+                LastModifiedOn = DateTime.Now.AddDays(2),
+                LastRepeatedOn = DateTime.Now.AddDays(2)
+            };
+            DictionaryService.CreateWord(word);
+
+
+            var wordExtra = new WordExtra()
+            { 
+                WordId = 1,
+                LinkedWordId = 2,
+                LinkType = 2,
+                ExtraText = "Some_text",
+            };
+            DictionaryService.CreateWordExtra(wordExtra);
+
+            wordExtra = new WordExtra()
+            {
+                WordId = 1,
+                LinkedWordId = 2,
+                LinkType = 2,
+                ExtraText = "Some_anoter_text",
+            };
+            DictionaryService.CreateWordExtra(wordExtra);
+
+            t = 2;
+
+            var wd = DictionaryService.ReadWord(1);
+            var wds = DictionaryService.ReadWords();
+
+            var wde = DictionaryService.ReadWordExtra(1);
+            var wdes = DictionaryService.ReadWordExtras(1);
+
+            t = 3;
+
+            wd.Word1 = "Udated_word";
+            wd.Status = 3;
+            wd.Language = 3;
+            wd.PartOfSpeech = 3;
+            wd.CreatedOn = DateTime.Now.AddDays(10);
+            wd.LastModifiedOn = DateTime.Now.AddDays(10);
+            wd.LastRepeatedOn = DateTime.Now.AddDays(10);
+
+            DictionaryService.UpdateWord(wd);
+
+
+            wde.WordId = 2;
+            wde.LinkedWordId = 1;
+            wde.LinkType = 6;
+            wde.ExtraText = "some_updated_text";
+
+            DictionaryService.UpdateWordExtra(wde);
+
+
+            t = 4;
+
+            DictionaryService.DeleteWordExtra(1);
+            DictionaryService.DeleteWord(1);
+
+            t = 5;
+
+        }
 
         void TestBookmarksService()
         {
@@ -223,6 +321,230 @@ namespace UWP_PROJECT_06.ViewModels
 
         void TestNotesService()
         {
+            var t = 0;
+
+            var source = new Source()
+            {
+                SourceName = "Some source",
+                Duration = 12,
+                ActualTime = 15,
+                State = 1,
+                Theme = 2,
+                SourceType = 1,
+                IsDownloaded = false,
+                Description = "Some description",
+                SourceLink = "Some source link"
+            };
+            NotesService.CreateSource(source);
+            source = new Source()
+            {
+                SourceName = "Some another source",
+                Duration = 15,
+                ActualTime = 20,
+                State = 2,
+                Theme = 3,
+                SourceType = 2,
+                IsDownloaded = true,
+                Description = "Some another description",
+                SourceLink = "Some another source link"
+            };
+            NotesService.CreateSource(source);
+
+            t = 1;
+
+            #region test notes
+            //t = 1;
+
+            //var note = new Note()
+            //{
+            //    SourceID = 2,
+            //    Stamp = "00:00:00 - 00:01:12",
+            //    Title = "Some title",
+            //    Note1 = "Some note"
+            //};
+            ////NotesService.CreateNote(note);
+
+            //note = new Note()
+            //{
+            //    SourceID = 2,
+            //    Stamp = "00:01:12 - 00:05:43",
+            //    Title = "Some another title",
+            //    Note1 = "Some another note"
+            //};
+            ////NotesService.CreateNote(note);
+
+
+            //note = new Note()
+            //{
+            //    SourceID = 3,
+            //    Stamp = "00:03:12 - 00:45:47",
+            //    Title = "Some another 3 title",
+            //    Note1 = "Some another 4 note"
+            //};
+            ////NotesService.CreateNote(note);
+
+            //note = new Note()
+            //{
+            //    SourceID = 3,
+            //    Stamp = "01:01:12 - 20:05:43",
+            //    Title = "Some title",
+            //    Note1 = "Some another note"
+            //};
+            ////NotesService.CreateNote(note);
+
+            //note = new Note()
+            //{
+            //    SourceID = 3,
+            //    Stamp = "01:01:12 - 20:05:43",
+            //    Title = "Some title",
+            //    Note1 = "Some another note"
+            //};
+            ////NotesService.CreateNote(note);
+
+            //t = 2;
+
+            //var se = NotesService.ReadNote(5);
+            //var ses = NotesService.ReadNotes(3);
+
+            //t = 3;
+
+            //se.SourceID = 2;
+            //se.Stamp = "Updated stamp";
+            //se.Title = "Some udated title";
+            //se.Note1 = "Some updated note";
+
+            //NotesService.UpdateNote(se);
+
+
+            //t = 4;
+
+            //NotesService.DeleteNote(1);
+            #endregion
+            #region test source extra
+            t = 1;
+
+            var sourseExtra = new SourceExtra()
+            {
+                SourceID = 2,
+                Key = "Some key",
+                Value = "Some value",
+            };
+            NotesService.CreateSourceExtra(sourseExtra);
+
+            NotesService.DeleteSourceExtra(1);
+
+            //sourseExtra = new SourceExtra()
+            //{
+            //    SourceID = 2,
+            //    Key = "Some key",
+            //    Value = "Some another value",
+            //};
+            //NotesService.CreateSourceExtra(sourseExtra);
+
+            //sourseExtra = new SourceExtra()
+            //{
+            //    SourceID = 3,
+            //    Key = "Some another key",
+            //    Value = "Some value",
+            //};
+            //NotesService.CreateSourceExtra(sourseExtra);
+
+            //sourseExtra = new SourceExtra()
+            //{
+            //    SourceID = 3,
+            //    Key = "Some another key",
+            //    Value = "Some value",
+            //};
+            //NotesService.CreateSourceExtra(sourseExtra);
+
+
+            //t = 2;
+
+            //var se = NotesService.ReadSourceExtra(4);
+            //var ses = NotesService.ReadSourceExtras(2);
+
+            //t = 3;
+
+            //se.SourceID = 1;
+            //se.Key = "Some updated key";
+            //se.Value = "Some udated value";
+
+            //NotesService.UpdateSourceExtra(se);
+
+            //t = 4;
+
+            #endregion
+
+            #region test qoutes
+
+            //t = 2;
+
+            //var quote = new Quote()
+            //{
+            //    SourceID = 2,
+            //    QuoteBegin = "Some begin",
+            //    QuoteEnd = "Some end",
+            //    OriginalQuote = "Some original qoute",
+            //    TranslatedQuote = "Some transalted qoute",
+            //};
+            //NotesService.CreateQuote(quote);
+
+            //quote = new Quote()
+            //{
+            //    SourceID = 2,
+            //    QuoteBegin = "Some anoter begin",
+            //    QuoteEnd = "Some another end",
+            //    OriginalQuote = "Some another original qoute",
+            //    TranslatedQuote = "Some another transalted qoute",
+            //};
+            //NotesService.CreateQuote(quote);
+
+            //quote = new Quote()
+            //{
+            //    SourceID = 3,
+            //    QuoteBegin = "Some third begin",
+            //    QuoteEnd = "Some third end",
+            //    OriginalQuote = "Some third original qoute",
+            //    TranslatedQuote = "Some third transalted qoute",
+            //};
+            //NotesService.CreateQuote(quote);
+
+            //quote = new Quote()
+            //{
+            //    SourceID = 3,
+            //    QuoteBegin = "Some third begin",
+            //    QuoteEnd = "Some third end",
+            //    OriginalQuote = "Some third original qoute",
+            //    TranslatedQuote = "Some third transalted qoute",
+            //};
+            //NotesService.CreateQuote(quote);
+
+
+            //t = 2;
+
+            //var se = NotesService.ReadQuote(3);
+            //var ses = NotesService.ReadQuotes(2);
+
+            //t = 3;
+
+            //se.SourceID = 1;
+            //se.QuoteBegin = "Updated Begin";
+            //se.QuoteEnd = "Udated End";
+            //se.OriginalQuote = "Udated original";
+            //se.TranslatedQuote = "Updated translation";
+
+            //NotesService.UpdateQuote(se);
+
+            //t = 4;
+
+            //NotesService.DeleteQuote(3);
+            //t = 5;
+
+            #endregion
+
+            NotesService.DeleteSource(2);
+
+            t = 5;
 
         }
 

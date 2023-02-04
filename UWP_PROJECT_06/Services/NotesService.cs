@@ -48,6 +48,10 @@ namespace UWP_PROJECT_06.Services
 
                 commandText = "CREATE TABLE IF NOT EXISTS Themes (Id INTEGER NOT NULL, Theme TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+                
+                commandText = "SELECT Theme FROM Themes";
+                sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
                 if (!query.HasRows)
@@ -61,6 +65,10 @@ namespace UWP_PROJECT_06.Services
 
                 commandText = "CREATE TABLE IF NOT EXISTS SourceTypes ( Id INTEGER NOT NULL, SourceType TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+                
+                commandText = "SELECT SourceType FROM SourceTypes";
+                sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
                 if (!query.HasRows)
@@ -72,6 +80,10 @@ namespace UWP_PROJECT_06.Services
                 // Create Sources table
 
                 commandText = "CREATE TABLE IF NOT EXISTS Sources (Id INTEGER NOT NULL, SourceName TEXT NOT NULL, Duration INTEGER NOT NULL, ActualTime INTEGER NOT NULL, State TINYINT NOT NULL,  Theme TINYINT NOT NULL, SourceType TINYINT NOT NULL, IsDownloaded BOOLEAN NOT NULL, Description TEXT NOT NULL, SourceLink TEXT NOT NULL, FOREIGN KEY(Theme) REFERENCES Themes (Id), FOREIGN KEY(SourceType) REFERENCES SourceTypes (Id), FOREIGN KEY(State) REFERENCES States (Id), PRIMARY KEY(Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT SourceName FROM Sources";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 query = sqliteCommand.ExecuteReader();
 
@@ -207,6 +219,9 @@ namespace UWP_PROJECT_06.Services
         }
         public static void UpdateSource(Source source)
         {
+            if (source.Id == 1)
+                return;
+
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
             {
@@ -234,6 +249,9 @@ namespace UWP_PROJECT_06.Services
         }
         public static void DeleteSource(int id)
         {
+            if (id == 1)
+                return;
+
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
             using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
             {
@@ -242,7 +260,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE SourceExtras SET SourceID = 1 WHERE SourceID = @Id;UPDATE Notes SET SourceID = 1 WHERE SourceID = @Id; UPDATE Quotes SET SourceID = 1 WHERE SourceID = @Id; DELETE FROM Sources WHERE Id = @Id;";
+                sqliteCommand.CommandText = "UPDATE SourcesExtras SET SourceID = 1 WHERE SourceID = @Id; UPDATE Notes SET SourceID = 1 WHERE SourceID = @Id; UPDATE Quotes SET SourceID = 1 WHERE SourceID = @Id; DELETE FROM Sources WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();
@@ -367,7 +385,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "DELETE FROM SourceExtras WHERE Id = @Id;";
+                sqliteCommand.CommandText = "DELETE FROM SourcesExtras WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();
@@ -478,6 +496,7 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Parameters.AddWithValue("@SourceID", note.SourceID);
                 sqliteCommand.Parameters.AddWithValue("@Stamp", note.Stamp);
                 sqliteCommand.Parameters.AddWithValue("@Title", note.Title);
+                sqliteCommand.Parameters.AddWithValue("@Note", note.Note1);
 
                 sqliteCommand.ExecuteReader();
 

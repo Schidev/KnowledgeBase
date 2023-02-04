@@ -124,6 +124,10 @@
     </Compile>
     <Compile Include="Models\Bookmarks\Bookmark.cs" />
     <Compile Include="Models\Bookmarks\DailyTask.cs" />
+    <Compile Include="Models\Dictionary\Language.cs" />
+    <Compile Include="Models\Dictionary\LinkType.cs" />
+    <Compile Include="Models\Dictionary\PartOfSpeech.cs" />
+    <Compile Include="Models\Dictionary\Status.cs" />
     <Compile Include="Models\Dictionary\Word.cs" />
     <Compile Include="Models\Dictionary\WordExtra.cs" />
     <Compile Include="Models\Notes\Note.cs" />
