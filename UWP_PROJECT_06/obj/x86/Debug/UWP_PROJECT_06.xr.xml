@@ -19,16 +19,21 @@
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
     <RootPropertyPathName Name="FrameContent" />
-    <RootPropertyPathName Name="CreatedOn" />
+    <RootPropertyPathName Name="LastModifiedOn" />
     <RootPropertyPathName Name="Language" />
-    <RootPropertyPathName Name="Word1" />
+    <RootPropertyPathName Name="Word" />
     <RootPropertyPathName Name="Key" />
+    <RootPropertyPathName Name="Languages" />
+    <RootPropertyPathName Name="ComboBoxSelectedIndexUnknownWord" />
+    <RootPropertyPathName Name="UnknownWordLanguageSelectedCommand" />
+    <RootPropertyPathName Name="AutoSuggestBoxTextUnknownWord" />
+    <RootPropertyPathName Name="UnknownWordTextChangedCommand" />
     <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="WordSelectedCommand" />
     <RootPropertyPathName Name="LastRepeatedOn" />
     <RootPropertyPathName Name="Status" />
+    <RootPropertyPathName Name="Word1" />
     <RootPropertyPathName Name="PartOfSpeech" />
-    <RootPropertyPathName Name="Languages" />
     <RootPropertyPathName Name="ComboBoxSelectedIndex" />
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
@@ -295,8 +300,21 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Content" />
       <RootProperty Name="BorderBrush" />
-      <RootProperty Name="Background" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.AutoSuggestBox">
+      <RootProperty Name="Text" />
+      <RootProperty Name="VerticalContentAlignment" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="CornerRadius" />
+      <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="Resources" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
+      <RootMethod Name="GetBehaviors" />
+      <RootMethod Name="SetBehaviors" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ComboBox">
       <RootProperty Name="Margin" />
@@ -330,21 +348,6 @@
       <RootProperty Name="HeaderContainerStyle" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewHeaderItem" />
-    <RootType FullName="Windows.UI.Xaml.Controls.AutoSuggestBox">
-      <RootProperty Name="Text" />
-      <RootProperty Name="VerticalContentAlignment" />
-      <RootProperty Name="Margin" />
-      <RootProperty Name="Padding" />
-      <RootProperty Name="CornerRadius" />
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="BorderThickness" />
-      <RootProperty Name="Foreground" />
-      <RootProperty Name="Resources" />
-    </RootType>
-    <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
-      <RootMethod Name="GetBehaviors" />
-      <RootMethod Name="SetBehaviors" />
-    </RootType>
     <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
       <RootProperty Name="EventName" />
       <RootProperty Name="Actions" />

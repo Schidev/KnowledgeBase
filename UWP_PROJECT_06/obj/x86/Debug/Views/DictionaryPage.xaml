@@ -5,6 +5,7 @@
     xmlns:local="using:UWP_PROJECT_06.Views"
     xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
     xmlns:models="using:UWP_PROJECT_06.Models.Dictionary"
+    xmlns:hmodels="using:UWP_PROJECT_06.Models.History"
     xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -93,7 +94,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox x:ConnectionId='12' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
+                    <AutoSuggestBox x:ConnectionId='16' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
                                     VerticalContentAlignment="Center" 
                          Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
                          BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
@@ -111,32 +112,32 @@
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
-                                <core:InvokeCommandAction x:ConnectionId='24' Command="{Binding TextChangedCommand}"                                        />
+                                <core:InvokeCommandAction x:ConnectionId='28' Command="{Binding TextChangedCommand}"                                        />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </AutoSuggestBox>
 
 
-                    <ComboBox x:ConnectionId='13' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                    <ComboBox x:ConnectionId='17' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction x:ConnectionId='23' Command="{Binding LanguageSelectedCommand}"                                              />
+                                <core:InvokeCommandAction x:ConnectionId='27' Command="{Binding LanguageSelectedCommand}"                                              />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </ComboBox>
 
-                    <ListView x:ConnectionId='14' x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" 
+                    <ListView x:ConnectionId='18' x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" 
                               ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding Source={StaticResource WordsGroups}}"
                               SelectedItem="{Binding SelectedWord, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction x:ConnectionId='15' Command="{Binding WordSelectedCommand}"                                      />
+                                <core:InvokeCommandAction x:ConnectionId='19' Command="{Binding WordSelectedCommand}"                                      />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
@@ -264,10 +265,41 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Frame Grid.Row="0" Grid.Column="0" Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Margin="10,10,0,0" CornerRadius="10,0,0,10">
-                        <TextBlock Margin="50,0,0,0" Text="OPTION 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Frame>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5">
+                    <AutoSuggestBox x:ConnectionId='5' x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
+                                    VerticalContentAlignment="Center" 
+                         Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
+                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+                        <AutoSuggestBox.Resources>
+                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#E9E9E9"/>
+                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                        </AutoSuggestBox.Resources>
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="TextChanged">
+                                <core:InvokeCommandAction x:ConnectionId='15' Command="{Binding UnknownWordTextChangedCommand}"                                                    />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
+                    </AutoSuggestBox>
+
+
+                    <ComboBox x:ConnectionId='6' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBoxUnknownWords" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                              Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
+                              ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction x:ConnectionId='14' Command="{Binding UnknownWordLanguageSelectedCommand}"                                                          />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
                     </ComboBox>
 
                     <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource UnknownWordsGroups}}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,10">
@@ -288,7 +320,7 @@
                         </ListView.ItemContainerStyle>
 
                         <ListView.ItemTemplate>
-                            <DataTemplate                         >
+                            <DataTemplate                                 >
                                 <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
                                     <Grid.RowDefinitions>
@@ -305,13 +337,13 @@
 
                                     <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Stretch" StrokeThickness="5" Stroke="{StaticResource colorDimGrey}"/>
 
-                                    <TextBlock Text="{Binding Word1}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Word}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
 
                                     <TextBlock Grid.Row="1" Grid.Column="1" FontSize="9" Padding="10,0,10,2" HorizontalAlignment="Left" Text="{Binding Language, Converter={StaticResource LanguageConverter}}" Foreground="{StaticResource colorDimGray}"/>
 
                                     <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
 
-                                    <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding CreatedOn, Converter={StaticResource DateConverter}}" Foreground="{StaticResource colorDimGray}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding LastModifiedOn, Converter={StaticResource DateConverter}}" Foreground="{StaticResource colorDimGray}"/>
 
                                 </Grid>
                             </DataTemplate>
