@@ -39,7 +39,7 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Languages (Language) VALUES ('Русский%% #Русский %%'), ('Немецкий%% #Deutsch %%'), ('Английский%% #English %%'), ('Французский%% #Français %%'), ('Итальянский%% #Italiano %%'), ('Испанский%% #Español %%')";
+                    commandText = "INSERT INTO Languages (Language) VALUES ('Русский'), ('Deutsch'), ('English'), ('Français'), ('Italiano'), ('Español')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
@@ -56,7 +56,7 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Statuses(Status) VALUES ('BLUE_RARE%% #BLUE_RARE %%'), ('RARE%% #RARE  %%'), ('MEDIUM_RARE%% #MEDIUM_RARE %%'), ('MEDIUM%% #MEDIUM %%'), ('MEDIUM_WELL%% #MEDIUM_WELL %%'), ('WELL_DONE%% #WELL_DONE %%'), ('DOUBLE_WELL_DONE%% #DOUBLE_WELL_DONE %%')";
+                    commandText = "INSERT INTO Statuses(Status) VALUES ('BLUE_RARE'), ('RARE'), ('MEDIUM_RARE'), ('MEDIUM'), ('MEDIUM_WELL'), ('WELL_DONE'), ('DOUBLE_WELL_DONE')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
@@ -376,6 +376,60 @@ namespace UWP_PROJECT_06.Services
                 conn.Close();
             }
         }
+
+        #endregion
+
+        #region Languages
+        public static string ReadLanguage(int id)
+        {
+            string language = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Language FROM Languages WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    language = query.GetString(0);
+                
+                conn.Close();
+            }
+
+            return language;
+        }
+
+        #endregion
+
+        #region Statuses
+
+        public static string ReadStatus(int id)
+        {
+            string status = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Status FROM Statuses WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    status = query.GetString(0);
+
+                conn.Close();
+            }
+
+            return status;
+        }
+
 
         #endregion
 
