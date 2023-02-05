@@ -2,6 +2,8 @@
 using MvvmHelpers.Commands;
 using System;
 using System.Threading.Tasks;
+using UWP_PROJECT_06.Models.History;
+using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -36,6 +38,8 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
+            TestHistoryDB();
+
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
@@ -44,6 +48,40 @@ namespace UWP_PROJECT_06.ViewModels
 
             AddTabCommand = new AsyncCommand<object>(AddTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
+        }
+
+        void TestHistoryDB()
+        {
+            var t = 0;
+
+            var word = new UnknownWord()
+            {
+                Word = "Some unknown word",
+                Language = 1,
+                LastModifiedOn = DateTime.Now
+            };
+
+            HistoryService.CreateUnknownWord(word);
+            HistoryService.CreateUnknownWord(word);
+
+            t = 1;
+
+            var uw = HistoryService.ReadUnknownWord(2);
+            var uws = HistoryService.ReadUnknownWords();
+
+            t = 2;
+
+            uw.Word = "Some updated word";
+            uw.Language = 3;
+            uw.LastModifiedOn = DateTime.Now.AddDays(4);
+
+            HistoryService.UpdateUnknownWord(uw);
+
+            t = 3;
+
+            HistoryService.DeleteUnknownWord(2);
+
+            t = 4;
         }
 
         private async Task OpenDictionaryPage(object arg)

@@ -402,6 +402,51 @@ namespace UWP_PROJECT_06.Services
 
             return language;
         }
+        public static int ReadLanguageId(string language)
+        {
+            int id = 1;
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id FROM Languages WHERE Language = {language};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    id = query.GetInt32(0);
+
+                conn.Close();
+            }
+
+            return id;
+        }
+        public static List<string> ReadLanguages()
+        {
+            List<string> languages = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Language FROM Languages;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    languages.Add(query.GetString(0));
+
+                conn.Close();
+            }
+
+            return languages;
+        }
+
 
         #endregion
 

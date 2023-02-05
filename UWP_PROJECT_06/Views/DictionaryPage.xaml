@@ -9,6 +9,8 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{StaticResource colorWhite}">
 
@@ -17,12 +19,17 @@
     </Page.DataContext>
 
     <Page.Resources>
+    
         <CollectionViewSource x:Name="WordsGroups" Source="{Binding WordsGroups}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:Name="UnknownWordsGroups" Source="{Binding UnknownWordsGroups}" IsSourceGrouped="True"/>
+        
         <converters:LanguageConverter x:Key="LanguageConverter" />
         <converters:StatusConverter x:Key="StatusConverter" />
         <converters:DateConverter x:Key="DateConverter" />
         <converters:WordColorAccentConverter x:Key="WordColorAccentConverter" />
         <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
+        <converters:ForegroundButtonConverter x:Key="ForegroundButtonConverter" />
+    
     </Page.Resources>
     
     <Grid>
@@ -86,13 +93,53 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Frame Grid.Row="0" Grid.Column="0" Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Margin="10,10,0,0" CornerRadius="10,0,0,10">
-                        <TextBlock Margin="50,0,0,0" Text="OPTION 4" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Frame>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5">
+                    <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
+                                    VerticalContentAlignment="Center" 
+                         Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
+                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+                        <AutoSuggestBox.Resources>
+                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#E9E9E9"/>
+                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                        </AutoSuggestBox.Resources>
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="TextChanged">
+                                <core:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{x:Bind Autosuggest}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
+                    </AutoSuggestBox>
+
+
+                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                              Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
+                              ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBox}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
                     </ComboBox>
 
-                    <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource WordsGroups}}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="40,0,40,0">
+                    <ListView x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding Source={StaticResource WordsGroups}}"
+                              SelectedItem="{Binding SelectedWord, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction Command="{Binding WordSelectedCommand}" CommandParameter="{x:Bind WordsList}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
 
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -146,8 +193,7 @@
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-
-
+                        
                         <ListView.Resources>
                             <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
                             <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
@@ -197,7 +243,6 @@
                             </GroupStyle>
                         </ListView.GroupStyle>
 
-
                     </ListView>
 
                     <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="0.5" Margin="40,0,40,0"  StrokeThickness="0.5" Stroke="{StaticResource SplitterColor}"/>
@@ -225,7 +270,7 @@
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5">
                     </ComboBox>
 
-                    <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource WordsGroups}}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,10">
+                    <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource UnknownWordsGroups}}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,10">
 
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -242,38 +287,36 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ListView.ItemTemplate >
+                        <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:Word">
-                                <Grid Margin="0" Padding="0">
-                                    <Frame CornerRadius="30" Padding="2,2,2,2" Margin="10,5,10,5" Background="{Binding PartOfSpeech, Converter={StaticResource WordColorAccentConverter}}">
-                                        <Frame CornerRadius="28" Padding="2,2,2,2" Margin="0" Background="White">
-                                            <Frame CornerRadius="26" Padding="5,5,5,5" Margin="0" Background="{Binding PartOfSpeech, Converter={StaticResource WordColorAccentConverter}}">
-                                                <StackPanel HorizontalAlignment="Stretch">
+                                <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
-                                                    <TextBlock Text="{Binding Word1}" HorizontalAlignment="Center" FontFamily="ThickFont"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
 
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                        <Frame  Padding="5" Margin="0,5,5,5" CornerRadius="10" HorizontalAlignment="Stretch" Background="{Binding PartOfSpeech, Converter={StaticResource WordColorLightConverter}}">
-                                                            <TextBlock FontSize="9" Text="{Binding Language,Converter={StaticResource LanguageConverter}}"/>
-                                                        </Frame>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="0.5"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                                        <Frame Padding="5" Margin="5" CornerRadius="10" HorizontalAlignment="Stretch" Background="{Binding PartOfSpeech, Converter={StaticResource WordColorLightConverter}}">
-                                                            <TextBlock FontSize="9" Text="{Binding Status, Converter={StaticResource StatusConverter}}"/>
-                                                        </Frame>
+                                    <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Stretch" StrokeThickness="5" Stroke="{StaticResource colorDimGrey}"/>
 
-                                                        <Frame Padding="5" Margin="5,5,0,5" CornerRadius="10" HorizontalAlignment="Stretch" Background="{Binding PartOfSpeech, Converter={StaticResource WordColorLightConverter}}">
-                                                            <TextBlock FontSize="9" Text="{Binding LastRepeatedOn, Converter={StaticResource DateConverter}}"/>
-                                                        </Frame>
-                                                    </StackPanel>
+                                    <TextBlock Text="{Binding Word1}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
 
-                                                </StackPanel>
-                                            </Frame>
-                                        </Frame>
-                                    </Frame>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" FontSize="9" Padding="10,0,10,2" HorizontalAlignment="Left" Text="{Binding Language, Converter={StaticResource LanguageConverter}}" Foreground="{StaticResource colorDimGray}"/>
+
+                                    <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding CreatedOn, Converter={StaticResource DateConverter}}" Foreground="{StaticResource colorDimGray}"/>
 
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+
 
 
                         <ListView.Resources>
@@ -336,11 +379,71 @@
                 </Grid>
 
             </Grid>
-            <Grid Grid.Column="1">
 
+            <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30,0,40,30" Padding="0,0,0,0.5" CornerRadius="10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.5"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Frame x:Name="DictionaryFrame" Grid.Row="0" CornerRadius="10,10,0,0" Margin="0,0,0,10" Content="{Binding FrameContent, Mode=TwoWay}" 
+                       BorderBrush="{StaticResource colorPrimaryDark}">
+
+                </Frame>
+
+                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding CardBackButtonPressedCommand}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
+                    </Button>
+
+                    <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding CardForwardButtonPressedCommand}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
+                    </Button>
+
+                    <TextBlock Grid.Column="2" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
+
+                    <!-- Btn Open local-->
+                    <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xF19D;" Foreground="{StaticResource colorPrimaryDark}"/>
+                    </Button>
+
+                    <!-- Open in browser-->
+                    <Button Grid.Column="4" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding SearchOnlineCommand}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE774;" Foreground="{Binding IsOnlineDictionaryActive, Converter={StaticResource ForegroundButtonConverter}}"/>
+                    </Button>
+
+                    <!-- Open in browser-->
+                    <Button Grid.Column="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;"/>
+                    </Button>
+
+                    <!-- Open in browser-->
+                    <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding SaveUnknownWordCommand}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
+                    </Button>
+
+                </Grid>
 
             </Grid>
-            
+
         </Grid>
 
     </Grid>

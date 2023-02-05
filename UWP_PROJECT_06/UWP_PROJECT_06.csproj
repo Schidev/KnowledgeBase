@@ -130,6 +130,7 @@
     <Compile Include="Models\Dictionary\Status.cs" />
     <Compile Include="Models\Dictionary\Word.cs" />
     <Compile Include="Models\Dictionary\WordExtra.cs" />
+    <Compile Include="Models\History\UnknownWord.cs" />
     <Compile Include="Models\Notes\Note.cs" />
     <Compile Include="Models\Notes\Quote.cs" />
     <Compile Include="Models\Notes\Source.cs" />
@@ -141,11 +142,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BookmarksService.cs" />
     <Compile Include="Services\Converters\DateConverter.cs" />
+    <Compile Include="Services\Converters\ForegroundButtonConverter.cs" />
     <Compile Include="Services\Converters\LanguageConverter.cs" />
     <Compile Include="Services\Converters\StatusConverter.cs" />
     <Compile Include="Services\Converters\WordColorAccentConverter.cs" />
     <Compile Include="Services\Converters\WordColorLightConverter.cs" />
     <Compile Include="Services\DictionaryService.cs" />
+    <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\NotesService.cs" />
     <Compile Include="Services\ProblemsService.cs" />
     <Compile Include="ViewModels\DictionaryPageViewModel.cs" />

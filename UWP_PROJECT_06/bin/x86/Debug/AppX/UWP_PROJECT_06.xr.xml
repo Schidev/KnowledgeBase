@@ -11,13 +11,28 @@
     <RootPropertyPathName Name="OpenWordPageCommand" />
     <RootPropertyPathName Name="OpenVideosListPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
+    <RootPropertyPathName Name="UnknownWordsGroups" />
     <RootPropertyPathName Name="WordsGroups" />
-    <RootPropertyPathName Name="PartOfSpeech" />
-    <RootPropertyPathName Name="LastRepeatedOn" />
-    <RootPropertyPathName Name="Status" />
+    <RootPropertyPathName Name="SaveUnknownWordCommand" />
+    <RootPropertyPathName Name="SearchOnlineCommand" />
+    <RootPropertyPathName Name="IsOnlineDictionaryActive" />
+    <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
+    <RootPropertyPathName Name="CardBackButtonPressedCommand" />
+    <RootPropertyPathName Name="FrameContent" />
+    <RootPropertyPathName Name="CreatedOn" />
     <RootPropertyPathName Name="Language" />
     <RootPropertyPathName Name="Word1" />
     <RootPropertyPathName Name="Key" />
+    <RootPropertyPathName Name="SelectedWord" />
+    <RootPropertyPathName Name="WordSelectedCommand" />
+    <RootPropertyPathName Name="LastRepeatedOn" />
+    <RootPropertyPathName Name="Status" />
+    <RootPropertyPathName Name="PartOfSpeech" />
+    <RootPropertyPathName Name="Languages" />
+    <RootPropertyPathName Name="ComboBoxSelectedIndex" />
+    <RootPropertyPathName Name="LanguageSelectedCommand" />
+    <RootPropertyPathName Name="AutoSuggestBoxText" />
+    <RootPropertyPathName Name="TextChangedCommand" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -40,8 +55,8 @@
       <RootProperty Name="FontWeight" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="FontFamily" />
       <RootProperty Name="Padding" />
+      <RootProperty Name="FontFamily" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.FrameworkElement">
       <RootProperty Name="VerticalAlignment" />
@@ -204,13 +219,14 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="Mode" />
-      <RootProperty Name="Source" />
       <RootProperty Name="Converter" />
+      <RootProperty Name="Source" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.FontIcon">
       <RootProperty Name="FontFamily" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="Glyph" />
+      <RootProperty Name="Foreground" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension" />
     <RootType FullName="Microsoft.UI.Xaml.Controls.TabView">
@@ -273,15 +289,14 @@
     <RootType FullName="UWP_PROJECT_06.Services.Converters.DateConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.WordColorAccentConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.WordColorLightConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.ForegroundButtonConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.Frame">
-      <RootProperty Name="Background" />
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="BorderThickness" />
-      <RootProperty Name="Margin" />
       <RootProperty Name="CornerRadius" />
+      <RootProperty Name="Margin" />
       <RootProperty Name="Content" />
-      <RootProperty Name="Padding" />
-      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="BorderThickness" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ComboBox">
       <RootProperty Name="Margin" />
@@ -290,6 +305,8 @@
       <RootProperty Name="Background" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
+      <RootProperty Name="ItemsSource" />
+      <RootProperty Name="SelectedIndex" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="ItemsSource" />
@@ -298,6 +315,7 @@
       <RootProperty Name="ItemTemplate" />
       <RootProperty Name="Resources" />
       <RootProperty Name="GroupStyle" />
+      <RootProperty Name="SelectedItem" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
       <RootMethod Name="GetVerticalScrollBarVisibility" />
@@ -312,6 +330,29 @@
       <RootProperty Name="HeaderContainerStyle" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewHeaderItem" />
+    <RootType FullName="Windows.UI.Xaml.Controls.AutoSuggestBox">
+      <RootProperty Name="Text" />
+      <RootProperty Name="VerticalContentAlignment" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="CornerRadius" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="Resources" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
+      <RootMethod Name="GetBehaviors" />
+      <RootMethod Name="SetBehaviors" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
+      <RootProperty Name="EventName" />
+      <RootProperty Name="Actions" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.InvokeCommandAction">
+      <RootProperty Name="Command" />
+      <RootProperty Name="CommandParameter" />
+    </RootType>
     <RootType FullName="UWP_PROJECT_06.Views.DictionaryPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
     <RootType FullName="UWP_PROJECT_06.Views.WordPage" />

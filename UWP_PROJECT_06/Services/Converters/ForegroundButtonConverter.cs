@@ -7,18 +7,17 @@ using Windows.UI.Xaml.Data;
 
 namespace UWP_PROJECT_06.Services.Converters
 {
-    public class LanguageConverter : IValueConverter
+    internal class ForegroundButtonConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            int languageId = (int)value;
-            return DictionaryService.ReadLanguage(languageId);
+            bool isOnlineDictionaryActive = (bool)value;
+            return isOnlineDictionaryActive ? "#8B6CEF" : "#434343";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            string lang = (string)value;
-            return DictionaryService.ReadLanguageId(lang);
+            throw new NotImplementedException();
         }
     }
 }

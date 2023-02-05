@@ -2,7 +2,8 @@
     x:Class="UWP_PROJECT_06.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UWP_PROJECT_06">
+    xmlns:local="using:UWP_PROJECT_06"
+    xmlns:models="using:UWP_PROJECT_06.Models.Dictionary">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -22,7 +23,6 @@
             <!--Just background and foreground color for selected tab-->
             <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="#FFFFFF"/>
             <SolidColorBrush x:Key="TabViewItemHeaderForegroundSelected" Color="#434343"/>
-
 
             <!-- Some colors I don't know if I use-->
             <SolidColorBrush x:Key="colorPrimary" Color="#ADA2F2" />
