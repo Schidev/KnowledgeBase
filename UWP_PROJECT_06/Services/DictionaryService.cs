@@ -73,7 +73,7 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO PartsOfSpeech(PartOfSpeech) VALUES ('существительное мужского рода'), ('существительное женского рода'), ('существительное среднего рода'), ('только_множественное_число'), ('множественное_число_от'), ('глагол'), ('прилагательное'), ('наречие'), ('предлог'), ('числительное'), ('местоимение'), ('союз'), ('частица'), ('междометие'), ('притяжательное местоимение'), ('определяющее слово'), ('префикс')";
+                    commandText = "INSERT INTO PartsOfSpeech(PartOfSpeech) VALUES ('существительное_мужского_рода'), ('существительное_женского_рода'), ('существительное_среднего_рода'), ('только_множественное_число'), ('множественное_число_от'), ('глагол'), ('прилагательное'), ('наречие'), ('предлог'), ('числительное'), ('местоимение'), ('союз'), ('частица'), ('междометие'), ('притяжательное_местоимение'), ('определяющее_слово'), ('префикс')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
@@ -475,6 +475,32 @@ namespace UWP_PROJECT_06.Services
             return status;
         }
 
+        #endregion
+
+        #region Statuses
+
+        public static string ReadPartOfSpeech(int id)
+        {
+            string partOfSpeech = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT PartOfSpeech FROM PartsOfSpeech WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    partOfSpeech = query.GetString(0);
+
+                conn.Close();
+            }
+
+            return partOfSpeech;
+        }
 
         #endregion
 

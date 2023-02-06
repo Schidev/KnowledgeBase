@@ -11,31 +11,8 @@ namespace UWP_PROJECT_06.Services.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            List<string> colors = new List<string>
-        {
-            "Transparent",
-            "#ffd180",
-            "#e6ceff",
-            "#b9f6ca",
-            "#e6ceff",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#f8bbd0",
-            "#fff9c4",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-            "#B2E6F3",
-        };
-
-
             int partOfSpeechId = (int)value;
-            return colors[partOfSpeechId];
+            return SettingsService.ReadColor(partOfSpeechId);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

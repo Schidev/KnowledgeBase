@@ -61,7 +61,6 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref selectedWordUnknownWord, value);
         }
 
-
         object frameContent;
         public object FrameContent
         { 

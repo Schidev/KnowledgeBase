@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using UWP_PROJECT_06.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -30,10 +31,10 @@ namespace UWP_PROJECT_06
             ProblemsService.InitializeDatabase();
             BookmarksService.InitializeDatabase();
             HistoryService.InitializeDatabase();
-            
+
             this.InitializeComponent();
         }
-        
+
         private void tabView_TabCloseRequested(Microsoft.UI.Xaml.Controls.TabView sender, Microsoft.UI.Xaml.Controls.TabViewTabCloseRequestedEventArgs args)
         {
             sender.TabItems.Remove(args.Tab);

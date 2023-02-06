@@ -26,7 +26,6 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref rightExtendedPanelVisibility, value);
         }
 
-
         public AsyncCommand<object> OpenCommand { get; }
 
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
@@ -38,6 +37,8 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
+            Load();
+
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
@@ -46,6 +47,10 @@ namespace UWP_PROJECT_06.ViewModels
 
             AddTabCommand = new AsyncCommand<object>(AddTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
+        }
+
+        async Task Load()
+        {
         }
 
         private async Task OpenDictionaryPage(object arg)

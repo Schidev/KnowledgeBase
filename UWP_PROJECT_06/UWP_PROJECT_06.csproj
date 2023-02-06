@@ -149,8 +149,10 @@
     <Compile Include="Services\Converters\WordColorLightConverter.cs" />
     <Compile Include="Services\DictionaryService.cs" />
     <Compile Include="Services\HistoryService.cs" />
+    <Compile Include="Services\MarkdownService.cs" />
     <Compile Include="Services\NotesService.cs" />
     <Compile Include="Services\ProblemsService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\DictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
