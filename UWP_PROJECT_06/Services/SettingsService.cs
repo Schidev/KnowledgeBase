@@ -14,6 +14,32 @@ namespace UWP_PROJECT_06.Services
     {
         static string FileName = "Settings.xml";
 
+        public async static Task Initialize()
+        {
+            string folderName = await SettingsService.ReadPath("dictionary");
+
+            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Rus\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Deu\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Eng\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Fra\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Ita\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            folderName = @"\Spa\WORDS";
+            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+        }
+
         public async static Task<string> ReadPath(string localName)
         {
             XmlDocument document = new XmlDocument();

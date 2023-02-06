@@ -51,7 +51,40 @@ namespace UWP_PROJECT_06.ViewModels
 
         async Task Load()
         {
-        }
+            // Plural for ... OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(631), DictionaryService.ReadWordExtras(631));
+
+            // Only plural ~OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(2489), DictionaryService.ReadWordExtras(2489));
+
+            // masculine OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(2985), DictionaryService.ReadWordExtras(2985));
+            
+            // feminine OK       
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(1379), DictionaryService.ReadWordExtras(1379));
+            
+            // neutral OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(2324), DictionaryService.ReadWordExtras(2324));
+            
+            // verb OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(1326), DictionaryService.ReadWordExtras(1326));
+            
+            // adv OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(1267), DictionaryService.ReadWordExtras(1267));
+            
+            // conj OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(3269), DictionaryService.ReadWordExtras(3269));
+            
+            // adj OK
+            //await MarkdownService.WriteWord(DictionaryService.ReadWord(2090), DictionaryService.ReadWordExtras(2090));
+            
+            
+        //    await MarkdownService.WriteWord(DictionaryService.ReadWord(3250), DictionaryService.ReadWordExtras(3250));
+        //    await MarkdownService.WriteWord(DictionaryService.ReadWord(3263), DictionaryService.ReadWordExtras(3263));
+        //    await MarkdownService.WriteWord(DictionaryService.ReadWord(3379), DictionaryService.ReadWordExtras(3379));
+
+        //}
+
 
         private async Task OpenDictionaryPage(object arg)
         {

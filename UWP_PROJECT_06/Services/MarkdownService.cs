@@ -38,7 +38,13 @@ namespace UWP_PROJECT_06.Services
         public async static Task WriteWord(Word word, IEnumerable<WordExtra> wordExtras)
         {
             string folderName = await SettingsService.ReadPath("dictionary");
-            await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+            if (word.Language == 1) folderName += @"\Rus\WORDS";
+            if (word.Language == 2) folderName += @"\Deu\WORDS";
+            if (word.Language == 3) folderName += @"\Eng\WORDS";
+            if (word.Language == 4) folderName += @"\Fra\WORDS";
+            if (word.Language == 5) folderName += @"\Ita\WORDS";
+            if (word.Language == 6) folderName += @"\Spa\WORDS";
+
             StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
             StorageFile file = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.ReplaceExisting);
 
@@ -51,7 +57,7 @@ namespace UWP_PROJECT_06.Services
 
             int underscoresAmountWord = word.Word1.Split("_").Length - 1;
             string[] splittedTextWord = word.Word1.Split("_", underscoresAmountWord);
-            
+
             foreach (string str in splittedTextWord)
                 if (str != splittedTextWord.Last())
                     extras[0] += str;
@@ -105,7 +111,7 @@ namespace UWP_PROJECT_06.Services
                         foreach (string str in splittedText)
                             if (str != splittedText.Last())
                                 extraText += str;
-                        
+
                         if (extra != group.Items.Last())
                         {
                             extras[group.Key] += String.Format("[{0}]({1}.md), ", extraText, extraTextWithUnderscores);
@@ -119,44 +125,67 @@ namespace UWP_PROJECT_06.Services
             }
 
             #endregion
-            
-            #region Building string
-            
-            StringBuilder output = new StringBuilder();
 
-            if (word.PartOfSpeech == 6)
+            #region Building string
+
+            
+
+            if (word.PartOfSpeech == 5)
             {
-                output.AppendLine(String.Format("## Слово: **{0}**", extras[0]));
+                var colorId = DictionaryService.ReadWord(extras[1].Split("(")[1].Split(".md)")[0]).PartOfSpeech;
+
+                StringBuilder pluralOutput = new StringBuilder();
+
+                pluralOutput.AppendLine(String.Format("## Слово: <mark style=\"background: {0};\">{1}</mark>", await SettingsService.ReadColor(colorId), extras[0]));
+                pluralOutput.AppendLine(String.Format("**Язык:** {0}.", DictionaryService.ReadLanguage(word.Language)));
+                pluralOutput.AppendLine();
+                pluralOutput.AppendLine(String.Format("**См. слово:** {0}.", extras[1]));
+
+                StorageFile filePlural = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.ReplaceExisting);
+                await Windows.Storage.FileIO.WriteTextAsync(filePlural, pluralOutput.ToString());
+
             }
             else
-            { 
-                output.AppendLine(String.Format("## Слово: <mark style=\"background: {0};\">{1}</mark>", SettingsService.ReadColor(word.PartOfSpeech), extras[0]));
-            }
+            {
+                StringBuilder output = new StringBuilder();
 
-            output.AppendLine(String.Format("**Язык:** {0}.", DictionaryService.ReadLanguage(word.Language)));
-            output.AppendLine(String.Format("**Статус:** {0}.", DictionaryService.ReadStatus(word.Status)));
-            output.AppendLine(String.Format("**Дата:** {0}%%Формат даты: ММ-ДД-ГГГГ:ЧЧ-ММ-СС%%.", word.LastRepeatedOn.ToString("MM-dd-yyyy")));
-            output.AppendLine(String.Format(""));
-            output.AppendLine(String.Format("**Часть речи:** {0}.", DictionaryService.ReadPartOfSpeech(word.PartOfSpeech)));
-            output.AppendLine(String.Format("**Множественное число:** {0}.", extras[1]));
-            output.AppendLine(String.Format("**Синонимы:** {0}.", extras[2]));
-            output.AppendLine(String.Format("**Антонимы:** {0}.", extras[3]));
-            output.AppendLine(String.Format("**Переносное значение:** {0}.", extras[4]));
-            output.AppendLine(String.Format(""));
-            output.AppendLine(String.Format(""));
-            output.AppendLine(String.Format("**{0}**{1}.", extras[5], extras[6]));
-            output.AppendLine(String.Format(""));
-            output.AppendLine(String.Format("**Примеры употребления:** {0}", extras[7]));
-            output.Append(word.Language == 1 ? "" : String.Format("\n**Перевод на русский:** {0}.", extras[8]));
-            output.Append(word.Language == 2 ? "" : String.Format("\n**Перевод на немецкий:** {0}.", extras[9]));
-            output.Append(word.Language == 3 ? "" : String.Format("\n**Перевод на английский:** {0}.", extras[10]));
-            output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на итальянский:** {0}.", extras[11]));
-            output.Append(word.Language == 5 ? "" : String.Format("\n**Перевод на испанский:** {0}.", extras[12]));
-            output.Append(word.Language == 6 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
+                if (word.PartOfSpeech == 6)
+                {
+                    output.AppendLine(String.Format("## Слово: **{0}**", extras[0]));
+                }
+                else
+                {
+                    output.AppendLine(String.Format("## Слово: <mark style=\"background: {0};\">{1}</mark>", await SettingsService.ReadColor(word.PartOfSpeech), extras[0]));
+                }
+
+                output.AppendLine(String.Format("**Язык:** {0}.", DictionaryService.ReadLanguage(word.Language)));
+                output.AppendLine(String.Format("**Статус:** {0}.", DictionaryService.ReadStatus(word.Status)));
+                output.AppendLine(String.Format("**Дата:** {0}%%Формат даты: ММ-ДД-ГГГГ:ЧЧ-ММ-СС%%.", word.LastRepeatedOn.ToString("MM-dd-yyyy")));
+                output.AppendLine(String.Format(""));
+                output.AppendLine(String.Format("**Часть речи:** {0}.", DictionaryService.ReadPartOfSpeech(word.PartOfSpeech).Replace("_"," ")));
+                output.AppendLine(String.Format("**Множественное число:** {0}.", extras[1]));
+                output.AppendLine(String.Format("**Синонимы:** {0}.", extras[2]));
+                output.AppendLine(String.Format("**Антонимы:** {0}.", extras[3]));
+                output.AppendLine(String.Format("**Переносное значение:** {0}.", extras[4]));
+                output.AppendLine(String.Format(""));
+                output.AppendLine(String.Format(""));
+                output.AppendLine(String.Format("**{0}**{1}.", extras[5], extras[6]));
+                output.AppendLine(String.Format(""));
+                output.AppendLine(String.Format("**Примеры употребления:** {0}", extras[7]));
+                output.Append(word.Language == 1 ? "" : String.Format("\n**Перевод на русский:** {0}.", extras[8]));
+                output.Append(word.Language == 2 ? "" : String.Format("\n**Перевод на немецкий:** {0}.", extras[9]));
+                output.Append(word.Language == 3 ? "" : String.Format("\n**Перевод на английский:** {0}.", extras[10]));
+                output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на итальянский:** {0}.", extras[11]));
+                output.Append(word.Language == 5 ? "" : String.Format("\n**Перевод на испанский:** {0}.", extras[12]));
+                output.Append(word.Language == 6 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
+
+
+                await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());
+
+            }
 
             #endregion
 
-            await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());
         }
 
     }

@@ -31,6 +31,7 @@ namespace UWP_PROJECT_06
             ProblemsService.InitializeDatabase();
             BookmarksService.InitializeDatabase();
             HistoryService.InitializeDatabase();
+            SettingsService.Initialize();
 
             this.InitializeComponent();
         }

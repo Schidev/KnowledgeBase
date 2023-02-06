@@ -171,6 +171,41 @@ namespace UWP_PROJECT_06.Services
 
             return word;
         }
+        public static Word ReadWord(string word1)
+        {
+            Word word = new Word();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, Word, Language, Status, PartOfSpeech, CreatedOn, LastModifiedOn, LastRepeatedOn FROM Words WHERE Word = '{word1}';";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    word = new Word()
+                    {
+                        Id = query.GetInt32(0),
+                        Word1 = query.GetString(1),
+                        Language = query.GetInt32(2),
+                        Status = query.GetInt32(3),
+                        PartOfSpeech = query.GetInt32(4),
+                        CreatedOn = query.GetDateTime(5),
+                        LastModifiedOn = query.GetDateTime(6),
+                        LastRepeatedOn = query.GetDateTime(7),
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return word;
+        }
+
         public static List<Word> ReadWords()
         {
             List<Word> words = new List<Word>();
