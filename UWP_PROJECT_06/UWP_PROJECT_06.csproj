@@ -157,6 +157,7 @@
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WordCardPageViewModel.cs" />
+    <Compile Include="ViewModels\WordEditPageViewModel.cs" />
     <Compile Include="Views\DictionaryPage.xaml.cs">
       <DependentUpon>DictionaryPage.xaml</DependentUpon>
     </Compile>
@@ -165,6 +166,9 @@
     </Compile>
     <Compile Include="Views\WordCardPage.xaml.cs">
       <DependentUpon>WordCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WordEditPage.xaml.cs">
+      <DependentUpon>WordEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WordPage.xaml.cs">
       <DependentUpon>WordPage.xaml</DependentUpon>
@@ -248,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WordCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WordEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

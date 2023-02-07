@@ -85,6 +85,8 @@ namespace UWP_PROJECT_06.ViewModels
             get => isReadingMode;
             set => SetProperty(ref isReadingMode, value);
         }
+        
+
 
         WordCardPage LastOpenedWordCard { get; set; }
         WebView LastWebSearchRequest { get; set; }
@@ -101,10 +103,11 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> UnknownWordTextChangedCommand { get; }
         public AsyncCommand<object> UnknownWordLanguageSelectedCommand { get; }
 
-        public AsyncCommand ChangeModeCommand { get; }
-        public AsyncCommand SearchOnlineCommand { get; }
         public AsyncCommand CardBackButtonPressedCommand { get; }
         public AsyncCommand CardForwardButtonPressedCommand { get; }
+        public AsyncCommand ChangeModeCommand { get; }
+        public AsyncCommand SearchOnlineCommand { get; }
+        public AsyncCommand AddWordCommand { get; }
         public AsyncCommand SaveUnknownWordCommand { get; }
 
 
@@ -144,15 +147,16 @@ namespace UWP_PROJECT_06.ViewModels
             WordSelectedCommand = new AsyncCommand<object>(WordSelected);
             UnknownWordSelectedCommand = new AsyncCommand<object>(UnknownWordSelected);
 
-            ChangeModeCommand = new AsyncCommand(ChangeMode);
-            SearchOnlineCommand = new AsyncCommand(SearchOnline);
             CardBackButtonPressedCommand = new AsyncCommand(CardBackButtonPressed);
             CardForwardButtonPressedCommand = new AsyncCommand(CardForwardButtonPressed);
+            ChangeModeCommand = new AsyncCommand(ChangeMode);
+            SearchOnlineCommand = new AsyncCommand(SearchOnline);
+            AddWordCommand = new AsyncCommand(AddWord);
             SaveUnknownWordCommand = new AsyncCommand(SaveUnknownWord);
 
         }
 
-        
+
         void LoadWordsGroups()
         {
             List<Word> words = new List<Word>();
@@ -370,6 +374,21 @@ namespace UWP_PROJECT_06.ViewModels
                 return;
             }
         }
+        async Task AddWord()
+        {
+            if (SelectedWord == null)
+            {
+                WordEditPage page = new WordEditPage();
+                FrameContent = page;
+            }
+            else 
+            {
+                WordEditPage page = new WordEditPage();
+                FrameContent = page;
+            }
+        }
+
+
 
         async Task SaveUnknownWord()
         {

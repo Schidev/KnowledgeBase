@@ -37,6 +37,9 @@ namespace UWP_PROJECT_06.ViewModels
 
         public MainPageViewModel()
         {
+            rightExtendedPanelVisibility= Visibility.Collapsed;
+            leftExtendedPanelVisibility= Visibility.Visible;
+            
             InitializeServices();
 
             OpenCommand = new AsyncCommand<object>(OpenFile);

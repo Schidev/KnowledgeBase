@@ -182,9 +182,9 @@ namespace UWP_PROJECT_06.Services
                 output.Append(word.Language == 1 ? "" : String.Format("\n**Перевод на русский:** {0}.", extras[8]));
                 output.Append(word.Language == 2 ? "" : String.Format("\n**Перевод на немецкий:** {0}.", extras[9]));
                 output.Append(word.Language == 3 ? "" : String.Format("\n**Перевод на английский:** {0}.", extras[10]));
-                output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на итальянский:** {0}.", extras[11]));
-                output.Append(word.Language == 5 ? "" : String.Format("\n**Перевод на испанский:** {0}.", extras[12]));
-                output.Append(word.Language == 6 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
+                output.Append(word.Language == 5 ? "" : String.Format("\n**Перевод на итальянский:** {0}.", extras[11]));
+                output.Append(word.Language == 6 ? "" : String.Format("\n**Перевод на испанский:** {0}.", extras[12]));
+                output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
 
 
                 await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());

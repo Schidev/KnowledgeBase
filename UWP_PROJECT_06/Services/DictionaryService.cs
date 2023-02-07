@@ -482,7 +482,6 @@ namespace UWP_PROJECT_06.Services
             return languages;
         }
 
-
         #endregion
 
         #region Statuses
@@ -510,6 +509,29 @@ namespace UWP_PROJECT_06.Services
             return status;
         }
 
+        public static List<string> ReadStatuses()
+        {
+            List<string> statuses = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Status FROM Statuses;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    statuses.Add(query.GetString(0).Replace("_"," "));
+
+                conn.Close();
+            }
+
+            return statuses;
+        }
+
         #endregion
 
         #region PartsOfSpeech
@@ -535,6 +557,29 @@ namespace UWP_PROJECT_06.Services
             }
 
             return partOfSpeech;
+        }
+
+        public static List<string> ReadPartsOfSpeech()
+        {
+            List<string> partsOfSpeech = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT PartOfSpeech FROM PartsOfSpeech;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    partsOfSpeech.Add(query.GetString(0).Replace("_", " "));
+
+                conn.Close();
+            }
+
+            return partsOfSpeech;
         }
 
         #endregion

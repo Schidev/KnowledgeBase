@@ -375,6 +375,9 @@
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordCardPage.xbf">
       <PackagePath>Views\WordCardPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordEditPage.xbf">
+      <PackagePath>Views\WordEditPage.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordPage.xbf">
       <PackagePath>Views\WordPage.xbf</PackagePath>
     </AppxPackagedFile>

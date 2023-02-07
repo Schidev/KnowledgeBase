@@ -57,5 +57,6 @@ UWP_PROJECT_06.xr.xml
 Views\DictionaryPage.xbf
 Views\VideoListPage.xbf
 Views\WordCardPage.xbf
+Views\WordEditPage.xbf
 Views\WordPage.xbf
 Properties\Default.rd.xml

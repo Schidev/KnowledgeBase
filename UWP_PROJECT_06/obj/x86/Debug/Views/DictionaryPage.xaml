@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page x:ConnectionId='1'
     x:Class="UWP_PROJECT_06.Views.DictionaryPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,8 +22,8 @@
 
     <Page.Resources>
     
-        <CollectionViewSource x:Name="WordsGroups" Source="{Binding WordsGroups}" IsSourceGrouped="True"/>
-        <CollectionViewSource x:Name="UnknownWordsGroups" Source="{Binding UnknownWordsGroups}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:ConnectionId='2' x:Name="WordsGroups" Source="{Binding WordsGroups}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:ConnectionId='3' x:Name="UnknownWordsGroups" Source="{Binding UnknownWordsGroups}" IsSourceGrouped="True"/>
         
         <converters:LanguageConverter x:Key="LanguageConverter" />
         <converters:StatusConverter x:Key="StatusConverter" />
@@ -95,7 +95,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
+                    <AutoSuggestBox x:ConnectionId='18' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
                                     VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
                         <AutoSuggestBox.Resources>
@@ -112,32 +112,32 @@
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
-                                <core:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{x:Bind Autosuggest}"/>
+                                <core:InvokeCommandAction x:ConnectionId='30' Command="{Binding TextChangedCommand}"                                        />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </AutoSuggestBox>
 
-                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                    <ComboBox x:ConnectionId='19' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBox}"/>
+                                <core:InvokeCommandAction x:ConnectionId='29' Command="{Binding LanguageSelectedCommand}"                                              />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </ComboBox>
 
-                    <ListView x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,20,0" 
+                    <ListView x:ConnectionId='20' x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,20,0" 
                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
                               ItemsSource="{Binding Source={StaticResource WordsGroups}}"
                               SelectedItem="{Binding SelectedWord, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction Command="{Binding WordSelectedCommand}" CommandParameter="{x:Bind WordsList}"/>
+                                <core:InvokeCommandAction x:ConnectionId='21' Command="{Binding WordSelectedCommand}"                                      />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
@@ -158,7 +158,7 @@
                         </ListView.ItemContainerStyle>
 
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Word">
+                            <DataTemplate                         >
                                 <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
                                     <Grid.RowDefinitions>
@@ -265,7 +265,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
+                    <AutoSuggestBox x:ConnectionId='5' x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
                                     VerticalContentAlignment="Center" 
                          Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
                          BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
@@ -283,30 +283,30 @@
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
-                                <core:InvokeCommandAction Command="{Binding UnknownWordTextChangedCommand}" CommandParameter="{x:Bind AutosuggestUnknownWords}"/>
+                                <core:InvokeCommandAction x:ConnectionId='17' Command="{Binding UnknownWordTextChangedCommand}"                                                    />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </AutoSuggestBox>
 
-                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBoxUnknownWords" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                    <ComboBox x:ConnectionId='6' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBoxUnknownWords" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction Command="{Binding UnknownWordLanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBoxUnknownWords}"/>
+                                <core:InvokeCommandAction x:ConnectionId='16' Command="{Binding UnknownWordLanguageSelectedCommand}"                                                          />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </ComboBox>
 
-                    <ListView x:Name="UnknownWordsListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,0"
+                    <ListView x:ConnectionId='7' x:Name="UnknownWordsListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,0"
                               ItemsSource="{Binding Source={StaticResource UnknownWordsGroups}}" SelectedItem="{Binding SelectedWordUnknownWord, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction Command="{Binding UnknownWordSelectedCommand}" CommandParameter="{x:Bind UnknownWordsListView}"/>
+                                <core:InvokeCommandAction x:ConnectionId='8' Command="{Binding UnknownWordSelectedCommand}"                                                 />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                         
@@ -326,7 +326,7 @@
                         </ListView.ItemContainerStyle>
 
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="hmodels:UnknownWord">
+                            <DataTemplate                                 >
                                 <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
                                     <Grid.RowDefinitions>
@@ -424,7 +424,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <Frame x:Name="DictionaryFrame" Grid.Row="0" CornerRadius="10,10,0,0" Content="{Binding FrameContent, Mode=TwoWay}" 
+                <Frame x:ConnectionId='4' x:Name="DictionaryFrame" Grid.Row="0" CornerRadius="10,10,0,0" Content="{Binding FrameContent, Mode=TwoWay}" 
                        BorderBrush="{StaticResource colorPrimaryDark}"/>
                 <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
 
@@ -483,3 +483,4 @@
 
     </Grid>
 </Page>
+
