@@ -502,7 +502,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
 
                 while (query.Read())
-                    status = query.GetString(0);
+                    status = query.GetString(0).Replace("_"," ");
 
                 conn.Close();
             }
@@ -512,7 +512,7 @@ namespace UWP_PROJECT_06.Services
 
         #endregion
 
-        #region Statuses
+        #region PartsOfSpeech
 
         public static string ReadPartOfSpeech(int id)
         {

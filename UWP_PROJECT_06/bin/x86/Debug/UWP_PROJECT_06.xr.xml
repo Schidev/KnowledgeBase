@@ -16,9 +16,13 @@
     <RootPropertyPathName Name="SaveUnknownWordCommand" />
     <RootPropertyPathName Name="SearchOnlineCommand" />
     <RootPropertyPathName Name="IsOnlineDictionaryActive" />
+    <RootPropertyPathName Name="ChangeModeCommand" />
+    <RootPropertyPathName Name="IsReadingMode" />
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
     <RootPropertyPathName Name="FrameContent" />
+    <RootPropertyPathName Name="SelectedWordUnknownWord" />
+    <RootPropertyPathName Name="UnknownWordSelectedCommand" />
     <RootPropertyPathName Name="LastModifiedOn" />
     <RootPropertyPathName Name="Language" />
     <RootPropertyPathName Name="Word" />
@@ -38,6 +42,8 @@
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
     <RootPropertyPathName Name="TextChangedCommand" />
+    <RootPropertyPathName Name="MarkdownText" />
+    <RootPropertyPathName Name="CurrentWord" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -114,10 +120,10 @@
       <RootProperty Name="RowDefinitions" />
       <RootProperty Name="ColumnDefinitions" />
       <RootProperty Name="Padding" />
+      <RootProperty Name="MinWidth" />
       <RootProperty Name="Visibility" />
       <RootProperty Name="Margin" />
       <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="MinWidth" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
@@ -179,6 +185,7 @@
       <RootProperty Name="Background" />
       <RootProperty Name="DataContext" />
       <RootProperty Name="Content" />
+      <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Resources" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
@@ -188,6 +195,7 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ColumnDefinition">
       <RootProperty Name="Width" />
+      <RootProperty Name="MinWidth" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.Border">
       <RootProperty Name="Background" />
@@ -219,6 +227,7 @@
       <RootProperty Name="Visibility" />
       <RootProperty Name="Background" />
       <RootProperty Name="Width" />
+      <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="ResizeDirection" />
       <RootProperty Name="Height" />
     </RootType>
@@ -297,9 +306,12 @@
     <RootType FullName="UWP_PROJECT_06.Services.Converters.ForegroundButtonConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.Frame">
       <RootProperty Name="CornerRadius" />
-      <RootProperty Name="Margin" />
       <RootProperty Name="Content" />
       <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Background" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.AutoSuggestBox">
       <RootProperty Name="Text" />
@@ -327,17 +339,27 @@
       <RootProperty Name="SelectedIndex" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
-      <RootProperty Name="ItemsSource" />
       <RootProperty Name="Margin" />
+      <RootProperty Name="ItemsSource" />
+      <RootProperty Name="SelectedItem" />
       <RootProperty Name="ItemContainerStyle" />
       <RootProperty Name="ItemTemplate" />
       <RootProperty Name="Resources" />
       <RootProperty Name="GroupStyle" />
-      <RootProperty Name="SelectedItem" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
+      <RootProperty Name="VerticalScrollBarVisibility" />
+      <RootProperty Name="Content" />
       <RootMethod Name="GetVerticalScrollBarVisibility" />
       <RootMethod Name="SetVerticalScrollBarVisibility" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
+      <RootProperty Name="EventName" />
+      <RootProperty Name="Actions" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.InvokeCommandAction">
+      <RootProperty Name="Command" />
+      <RootProperty Name="CommandParameter" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewItem" />
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
@@ -348,16 +370,15 @@
       <RootProperty Name="HeaderContainerStyle" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewHeaderItem" />
-    <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
-      <RootProperty Name="EventName" />
-      <RootProperty Name="Actions" />
-    </RootType>
-    <RootType FullName="Microsoft.Xaml.Interactions.Core.InvokeCommandAction">
-      <RootProperty Name="Command" />
-      <RootProperty Name="CommandParameter" />
-    </RootType>
     <RootType FullName="UWP_PROJECT_06.Views.DictionaryPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.WordCardPageViewModel" />
+    <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock">
+      <RootProperty Name="Padding" />
+      <RootProperty Name="Text" />
+      <RootProperty Name="Background" />
+    </RootType>
+    <RootType FullName="UWP_PROJECT_06.Views.WordCardPage" />
     <RootType FullName="UWP_PROJECT_06.Views.WordPage" />
   </Roots.RootTypes>
 </Roots>

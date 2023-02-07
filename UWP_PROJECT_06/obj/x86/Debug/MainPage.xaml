@@ -191,7 +191,7 @@
             <Rectangle Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Width="0.5" Margin="0" Stroke="{StaticResource SplitterColor}"/>
 
             <!-- Left Expander Panel-->
-            <Grid x:ConnectionId='2' Grid.Column="2" Grid.Row="2" x:Name="leftPane" Visibility="{Binding LeftExtendedPanelVisibility, Mode=TwoWay}" Background="{StaticResource SideMenuBackground}">
+            <Grid x:ConnectionId='2' Grid.Column="2" Grid.Row="2" MinWidth="200" x:Name="leftPane" Visibility="{Binding LeftExtendedPanelVisibility, Mode=TwoWay}" Background="{StaticResource SideMenuBackground}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -313,7 +313,7 @@
                                    Background="{StaticResource SplitterColor}" Width="0.5" />
 
             <!-- Right expander pane-->
-            <Grid x:ConnectionId='3' Grid.Column="6" Grid.Row="2" x:Name="rightPane" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" Margin="0,0,0,0" Background="{StaticResource SideMenuBackground}">
+            <Grid x:ConnectionId='3' Grid.Column="6" Grid.Row="2" x:Name="rightPane" MinWidth="200" Visibility="{Binding RightExtendedPanelVisibility, Mode=TwoWay}" Margin="0,0,0,0" Background="{StaticResource SideMenuBackground}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>

@@ -1,4 +1,5 @@
 ﻿using ColorCode.Common;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using System;
@@ -11,8 +12,11 @@ using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.History;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Services.Converters;
+using UWP_PROJECT_06.Views;
 using Windows.Globalization;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace UWP_PROJECT_06.ViewModels
 {
@@ -54,8 +58,8 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref comboBoxSelectedIndexUnknownWord, value);
         }
 
-        Word selectedWordUnknownWord;
-        public Word SelectedWordUnknownWord
+        UnknownWord selectedWordUnknownWord;
+        public UnknownWord SelectedWordUnknownWord
         {
             get => selectedWordUnknownWord;
             set => SetProperty(ref selectedWordUnknownWord, value);
@@ -75,6 +79,16 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref isOnlineDictionaryActive, value);
         }
 
+        bool isReadingMode;
+        public bool IsReadingMode
+        {
+            get => isReadingMode;
+            set => SetProperty(ref isReadingMode, value);
+        }
+
+        WordCardPage LastOpenedWordCard { get; set; }
+        WebView LastWebSearchRequest { get; set; }
+
 
         public ObservableRangeCollection<Grouping<string, Word>> WordsGroups { get; set; }
         public ObservableRangeCollection<Grouping<string, UnknownWord>> UnknownWordsGroups { get; set; }
@@ -87,30 +101,37 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> UnknownWordTextChangedCommand { get; }
         public AsyncCommand<object> UnknownWordLanguageSelectedCommand { get; }
 
+        public AsyncCommand ChangeModeCommand { get; }
         public AsyncCommand SearchOnlineCommand { get; }
         public AsyncCommand CardBackButtonPressedCommand { get; }
         public AsyncCommand CardForwardButtonPressedCommand { get; }
         public AsyncCommand SaveUnknownWordCommand { get; }
 
 
-
         public DictionaryPageViewModel()
         {
             WordsGroups = new ObservableRangeCollection<Grouping<string, Word>>();
             UnknownWordsGroups = new ObservableRangeCollection<Grouping<string, UnknownWord>>();
-            Languages = new ObservableRangeCollection<string>() { "All" };
-
-            foreach (string language in DictionaryService.ReadLanguages())
-                Languages.Add(language);
             
+            LastOpenedWordCard = new WordCardPage();
+            LastWebSearchRequest = new WebView();
+
             AutoSuggestBoxText = "";
             AutoSuggestBoxTextUnknownWord = "";
 
             comboBoxSelectedIndex = 0;
             comboBoxSelectedIndexUnknownWord = 0;
 
+            IsReadingMode = true;
             IsOnlineDictionaryActive = false;
 
+            ChangeMode();
+
+            Languages = new ObservableRangeCollection<string>() { "All" };
+
+            foreach (string language in DictionaryService.ReadLanguages())
+                Languages.Add(language);
+            
             LoadWordsGroups();
             LoadUnknownWordsGroups();
 
@@ -123,6 +144,7 @@ namespace UWP_PROJECT_06.ViewModels
             WordSelectedCommand = new AsyncCommand<object>(WordSelected);
             UnknownWordSelectedCommand = new AsyncCommand<object>(UnknownWordSelected);
 
+            ChangeModeCommand = new AsyncCommand(ChangeMode);
             SearchOnlineCommand = new AsyncCommand(SearchOnline);
             CardBackButtonPressedCommand = new AsyncCommand(CardBackButtonPressed);
             CardForwardButtonPressedCommand = new AsyncCommand(CardForwardButtonPressed);
@@ -130,17 +152,7 @@ namespace UWP_PROJECT_06.ViewModels
 
         }
 
-        string Input(string str)
-        {
-            str = str.ToLower();
-
-            if (str.Contains("ß")) { str = str.Replace("ß", "ss"); }
-            if (str.Contains("ä") || str.Contains("Ä")) { str = str.Replace("ä", "a"); str = str.Replace("Ä", "a"); }
-            if (str.Contains("ö") || str.Contains("Ö")) { str = str.Replace("ö", "o"); str = str.Replace("Ö", "o"); }
-            if (str.Contains("ü") || str.Contains("Ü")) { str = str.Replace("ü", "u"); str = str.Replace("Ü", "u"); }
-
-            return str;
-        }
+        
         void LoadWordsGroups()
         {
             List<Word> words = new List<Word>();
@@ -150,7 +162,7 @@ namespace UWP_PROJECT_06.ViewModels
 
             foreach (Word word in received_words)
             {
-                if (!Input(word.Word1).StartsWith(Input(AutoSuggestBoxText))) continue;
+                if (!MarkdownService.CheckText(word.Word1).StartsWith(MarkdownService.CheckText(AutoSuggestBoxText))) continue;
                 if (comboBoxSelectedIndex != 0 && word.Language != comboBoxSelectedIndex) continue;
 
                 words.Add(word);
@@ -170,8 +182,8 @@ namespace UWP_PROJECT_06.ViewModels
                     words.Where(e => e.Language == languageId)));
             }
 
-            if (WordsGroups.Count == 0)
-                SearchOnline();
+            //if (WordsGroups.Count == 0)
+            //    SearchOnline();
         }
         void LoadUnknownWordsGroups()
         {
@@ -182,7 +194,7 @@ namespace UWP_PROJECT_06.ViewModels
 
             foreach (UnknownWord word in received_words)
             {
-                if (!Input(word.Word).StartsWith(Input(AutoSuggestBoxTextUnknownWord))) continue;
+                if (!MarkdownService.CheckText(word.Word).StartsWith(MarkdownService.CheckText(AutoSuggestBoxTextUnknownWord))) continue;
                 if (comboBoxSelectedIndexUnknownWord != 0 && word.Language != comboBoxSelectedIndexUnknownWord) continue;
 
                 words.Add(word);
@@ -216,42 +228,124 @@ namespace UWP_PROJECT_06.ViewModels
             ComboBox comboBox = arg as ComboBox;
 
             if (comboBox != null)
+            { 
                 LoadWordsGroups();
+                if (IsOnlineDictionaryActive)
+                {
+                    IsOnlineDictionaryActive = false;
+                    SearchOnline();
+                }
+
+            }
         }
         async Task WordSelected(object arg)
         {
             ListView wordsList = arg as ListView;
 
-            if (wordsList != null)
+            if (wordsList.SelectedItem != null)
             {
-                //Load();
+                var viewModel = new WordCardPageViewModel(SelectedWord.Id);
+                LastOpenedWordCard.DataContext = viewModel;
+
+                SelectedWord = null;
+
+                FrameContent = LastOpenedWordCard;
+
+                IsReadingMode = true;
+                IsOnlineDictionaryActive = false;
             }
         }
 
-        async Task SearchOnline()
+        
+        async Task ChangeMode()
         {
-            if (!IsOnlineDictionaryActive)
+            if (!IsReadingMode)
             {
-                IsOnlineDictionaryActive = true;
+                if (SelectedWord != null)
+                {
+                    var viewModel = new WordCardPageViewModel(SelectedWord.Id);
+                    LastOpenedWordCard.DataContext = viewModel;
 
-                List<string> Uris = new List<string>() {
-                    @"https://dictionary.cambridge.org/dictionary/german-english/" + Input(AutoSuggestBoxText),
-                    @"https://www.google.com/search?q=" + AutoSuggestBoxText + "+это",
-                    @"https://dictionary.cambridge.org/dictionary/german-english/" + Input(AutoSuggestBoxText),
-                    @"https://dictionary.cambridge.org/dictionary/english/" + Input(AutoSuggestBoxText)
-                };
+                    SelectedWord = null;
+                }
 
-                var webBrowser = new WebView();
-                webBrowser.Source = new Uri(Uris[comboBoxSelectedIndex]);
+                FrameContent = LastOpenedWordCard;
 
-                FrameContent = webBrowser;
+                IsReadingMode = true;
             }
             else
             {
-                IsOnlineDictionaryActive = false;
-                FrameContent = new Frame();
+                MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+                FrameContent = markdownTextBlock;
+
+                markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
+                markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+                markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+                markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+                markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+                markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                IsReadingMode = false;
             }
+
+            if (IsReadingMode)
+                IsOnlineDictionaryActive = false;
         }
+        async Task SearchOnline()
+        {
+            if (AutoSuggestBoxText == String.Empty)
+            {
+                MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+                FrameContent = markdownTextBlock;
+
+                markdownTextBlock.Text = await MarkdownService.ReadWebEmptyWord();
+
+                markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+                markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+                markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+                markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+                markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                IsOnlineDictionaryActive = false;
+
+                return;
+            }
+
+            if (!IsOnlineDictionaryActive)
+            {
+                List<string> Uris = new List<string>() {
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
+                        @"https://www.google.com/search?q=" + AutoSuggestBoxText + "+это",
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
+                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(AutoSuggestBoxText)
+                    };
+
+                LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
+
+                FrameContent = LastWebSearchRequest;
+
+                IsOnlineDictionaryActive = true;
+            }
+            else
+            {
+                MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+                FrameContent = markdownTextBlock;
+
+                markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
+                markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+                markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+                markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+                markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+                markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                IsOnlineDictionaryActive = false;
+            }
+
+            if (IsOnlineDictionaryActive)
+                IsReadingMode = false;
+
+        }
+        
+
         async Task CardBackButtonPressed()
         {
             WebView frameContent = FrameContent as WebView;
@@ -281,7 +375,7 @@ namespace UWP_PROJECT_06.ViewModels
         {
             UnknownWord word = new UnknownWord();
 
-            word.Word = Input(AutoSuggestBoxText);
+            word.Word = MarkdownService.CheckText(AutoSuggestBoxText);
             word.Language = comboBoxSelectedIndex == 0 ? 2 : comboBoxSelectedIndex;
             word.LastModifiedOn = DateTime.Now;
 
@@ -306,9 +400,22 @@ namespace UWP_PROJECT_06.ViewModels
         {
             ListView wordsList = arg as ListView;
 
-            if (wordsList != null)
+            if (wordsList.SelectedItem != null)
             {
-                //Load();
+                List<string> Uris = new List<string>() {
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word),
+                        @"https://www.google.com/search?q=" + SelectedWordUnknownWord.Word + "+это",
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word),
+                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word)
+                    };
+
+                LastWebSearchRequest.Source = new Uri(Uris[SelectedWordUnknownWord.Language]);
+
+                FrameContent = LastWebSearchRequest;
+                SelectedWordUnknownWord = null;
+
+                IsReadingMode = false;
+                IsOnlineDictionaryActive = true;
             }
         }
 

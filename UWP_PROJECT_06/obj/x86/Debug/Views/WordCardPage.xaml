@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="UWP_PROJECT_06.Views.WordCardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    Background="{StaticResource colorWhite}">
+
+    <Page.Resources>
+        <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
+    </Page.Resources>
+
+    <Page.DataContext>
+        <viewmodels:WordCardPageViewModel />
+    </Page.DataContext>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="20,10,10,10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Слово:" FontWeight="Bold" FontSize="25" VerticalAlignment="Center" Foreground="{StaticResource colorDarkerGrey}"/>
+            <Frame Grid.Column="1" Padding="3,1" Margin="10,0,0,0"  VerticalAlignment="Center" CornerRadius="5"
+                   Background="{Binding CurrentWord.PartOfSpeech, Converter={StaticResource WordColorLightConverter}}">
+                <TextBlock  Text="{Binding CurrentWord.Word1}" FontSize="20" Foreground="{StaticResource colorDarkerGrey}"/>
+            </Frame>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+            <controls:MarkdownTextBlock Padding="20,0,20,0" Text="{Binding MarkdownText}" Background="{StaticResource colorWhite}"/>
+        </ScrollViewer>
+    </Grid>
+</Page>
+

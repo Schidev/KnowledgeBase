@@ -18,26 +18,33 @@ namespace UWP_PROJECT_06.Services
 {
     public static class MarkdownService
     {
-        public async static Task<string> ReadWord(string word)
+        public async static Task<string> ReadWord(Word word)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             string folderName = await SettingsService.ReadPath("dictionary");
-            
-            await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            if (word.Language == 1) folderName += @"\Rus\WORDS";
+            if (word.Language == 2) folderName += @"\Deu\WORDS";
+            if (word.Language == 3) folderName += @"\Eng\WORDS";
+            if (word.Language == 4) folderName += @"\Fra\WORDS";
+            if (word.Language == 5) folderName += @"\Ita\WORDS";
+            if (word.Language == 6) folderName += @"\Spa\WORDS";
+
             StorageFolder folder = await localFolder.GetFolderAsync(folderName);
-
-            if (File.Exists(Path.Combine(folder.Path, word + ".md")))
-                return await folder.ReadTextFromFileAsync(Path.Combine(folder.Path, word + ".md"));
-
+            
+            if (await folder.FileExistsAsync(word.Word1 + ".md"))
+                return await Windows.Storage.FileIO.ReadTextAsync(await folder.GetFileAsync(word.Word1 + ".md"));
+            
             StorageFile file = await localFolder.CreateFileAsync("WORD_NOT_FOUND.md", CreationCollisionOption.ReplaceExisting);
             
-            await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {word}.md does not exist or path is wrong\n{folder.Path}\\{word}.md");
+            await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {word.Word1}.md does not exist or path is wrong\n{folder.Path}\\{word.Word1}.md");
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
 
         public async static Task WriteWord(Word word, IEnumerable<WordExtra> wordExtras)
         {
             string folderName = await SettingsService.ReadPath("dictionary");
+            
             if (word.Language == 1) folderName += @"\Rus\WORDS";
             if (word.Language == 2) folderName += @"\Deu\WORDS";
             if (word.Language == 3) folderName += @"\Eng\WORDS";
@@ -186,6 +193,40 @@ namespace UWP_PROJECT_06.Services
 
             #endregion
 
+        }
+
+        public async static Task<string> ReadNoCardsOpen()
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile file = await localFolder.CreateFileAsync("NO_CARDS_OPEN.md", CreationCollisionOption.OpenIfExists);
+
+            await Windows.Storage.FileIO.WriteTextAsync(file, $"# NO CARDS OPEN\r\nStart typing to find the word that you are looking for.", Windows.Storage.Streams.UnicodeEncoding.Utf8);
+            
+            return await Windows.Storage.FileIO.ReadTextAsync(file);
+        }
+
+        public async static Task<string> ReadWebEmptyWord()
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile file = await localFolder.CreateFileAsync("EMPTY_WORD.md", CreationCollisionOption.OpenIfExists);
+
+            await Windows.Storage.FileIO.WriteTextAsync(file, $"# EMPTY WORD\r\nWord must contain at least one character.", Windows.Storage.Streams.UnicodeEncoding.Utf8);
+
+            return await Windows.Storage.FileIO.ReadTextAsync(file);
+        }
+
+        public static string CheckText(string str)
+        {
+            str = str.ToLower();
+
+            if (str.Contains("ß")) { str = str.Replace("ß", "ss"); }
+            if (str.Contains("ä") || str.Contains("Ä")) { str = str.Replace("ä", "a"); str = str.Replace("Ä", "a"); }
+            if (str.Contains("ö") || str.Contains("Ö")) { str = str.Replace("ö", "o"); str = str.Replace("Ö", "o"); }
+            if (str.Contains("ü") || str.Contains("Ü")) { str = str.Replace("ü", "u"); str = str.Replace("Ü", "u"); }
+            if (str.Contains("ё") || str.Contains("Ё")) { str = str.Replace("ё", "е"); str = str.Replace("Ё", "е"); }
+            if (str.Contains("ъ") || str.Contains("Ъ")) { str = str.Replace("ъ", "ь"); str = str.Replace("Ъ", "ь"); }
+
+            return str;
         }
 
     }

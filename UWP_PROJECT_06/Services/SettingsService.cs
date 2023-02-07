@@ -7,6 +7,7 @@ using System.Xml;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.IO;
+using UWP_PROJECT_06.Models.Dictionary;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -38,6 +39,13 @@ namespace UWP_PROJECT_06.Services
             folderName = @"\Spa\WORDS";
             await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
+            RecreateDictionaryVoult();
+        }
+
+        public async static Task RecreateDictionaryVoult()
+        {
+            foreach (Word word in DictionaryService.ReadWords())
+                await MarkdownService.WriteWord(word, DictionaryService.ReadWordExtras(word.Id));
         }
 
         public async static Task<string> ReadPath(string localName)
