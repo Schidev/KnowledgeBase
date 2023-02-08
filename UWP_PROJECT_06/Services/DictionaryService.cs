@@ -584,5 +584,55 @@ namespace UWP_PROJECT_06.Services
 
         #endregion
 
+        #region Link Types
+
+        public static string ReadLinkTypes(int id)
+        {
+            string linkType = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT LinkType FROM LinkTypes WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    linkType = query.GetString(0);
+
+                conn.Close();
+            }
+
+            return linkType;
+        }
+
+        public static List<string> ReadLinkTypes()
+        {
+            List<string> linkTypes = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT LinkType FROM LinkTypes;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    linkTypes.Add(query.GetString(0).Replace("_", " "));
+
+                conn.Close();
+            }
+
+            return linkTypes;
+        }
+
+        #endregion
+
     }
 }

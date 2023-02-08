@@ -27,7 +27,7 @@
             
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Слово: " FontWeight="Bold" FontSize="25" VerticalAlignment="Center"/>
-                <TextBox PlaceholderText="Tap to start..." Margin="10,0,0,0" Padding="5,5,5,5" FontSize="20" 
+                <TextBox PlaceholderText="Tap to start..." Text="{Binding CurrentWord, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="20" 
                          VerticalAlignment="Center" HorizontalAlignment="Center"
                          Background="{Binding PartOfSpeechSelectionComboBoxSelectedIndex, Converter={StaticResource WordColorLightConverter}}"
                          BorderThickness="0" CornerRadius="5" BorderBrush="{StaticResource colorDarkerGrey}">
@@ -52,11 +52,11 @@
                       Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                       ItemsSource="{Binding Languages}" SelectedIndex="{Binding LanguageSelectionComboBoxSelectedIndex, Mode=TwoWay}">
 
-                    <!--<i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="SelectionChanged">
-                        <core:InvokeCommandAction Command="{Binding UnknownWordLanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBoxUnknownWords}"/>
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>-->
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}"/>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
 
                 </ComboBox>
 
@@ -92,7 +92,6 @@
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>-->
 
-
                 </DatePicker>
 
             </StackPanel>
@@ -114,6 +113,27 @@
 
             </StackPanel>
 
+            <!-- Meaning string -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,10,0">
+                <TextBlock Text="Rem строка: " FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBox PlaceholderText="Tap to start..." Text="{Binding MeaningString.ExtraText}" Margin="10,0,0,0" Padding="5,5,5,5"
+                         VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="330"
+                         BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}" CornerRadius="5" IsSpellCheckEnabled="False" ScrollViewer.HorizontalScrollMode="Auto">
+
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#E9E9E9"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+                    </TextBox.Resources>
+
+                </TextBox>
+            </StackPanel>
+
             <!-- Plurals -->
             <Grid  Margin="0,10,0,0">
 
@@ -128,7 +148,7 @@
 
                 <TextBlock Grid.Row="1" Text="Множественное число:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='24' Grid.Row="2" x:Name="pluralsListView" ItemsSource="{Binding Plurals, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='24' Grid.Row="2" x:Name="pluralsListView" ItemsSource="{Binding Extras[1], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
                    
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -153,7 +173,7 @@
 
                 <TextBlock Grid.Row="1" Text="Синонимы:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='22' Grid.Row="2" x:Name="synonymsListView" ItemsSource="{Binding Synonyms, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='22' Grid.Row="2" x:Name="synonymsListView" ItemsSource="{Binding Extras[2], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -178,7 +198,7 @@
 
                 <TextBlock Grid.Row="1" Text="Антонимы:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='20' Grid.Row="2" x:Name="antonymsListView" ItemsSource="{Binding Antonyms, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='20' Grid.Row="2" x:Name="antonymsListView" ItemsSource="{Binding Extras[3], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -203,7 +223,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переносные значения:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='18' Grid.Row="2" x:Name="figurativeMeaningsListView" ItemsSource="{Binding FigurativeMeanings, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='18' Grid.Row="2" x:Name="figurativeMeaningsListView" ItemsSource="{Binding Extras[4], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -229,7 +249,7 @@
 
                 <TextBlock Grid.Row="1" Text="Определения:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='16' Grid.Row="2" x:Name="meaningsListView" ItemsSource="{Binding Meanings, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='16' Grid.Row="2" x:Name="meaningsListView" ItemsSource="{Binding Extras[6], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -254,7 +274,7 @@
 
                 <TextBlock Grid.Row="1" Text="Примеры:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='14' Grid.Row="2" x:Name="examplesListView" ItemsSource="{Binding Examples, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='14' Grid.Row="2" x:Name="examplesListView" ItemsSource="{Binding Extras[7], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -266,7 +286,7 @@
             </Grid>
 
             <!-- Translations into russian -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsRussian, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -279,7 +299,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на русский:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='12' Grid.Row="2" x:Name="translationsIntoRussianListView" ItemsSource="{Binding TranslationsIntoRussian, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='12' Grid.Row="2" x:Name="translationsIntoRussianListView" ItemsSource="{Binding Extras[8], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -291,7 +311,7 @@
             </Grid>
 
             <!-- Translations into german -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsGerman, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -304,7 +324,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на немецкий:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='10' Grid.Row="2" x:Name="translationsIntoGermanListView" ItemsSource="{Binding TranslationsIntoGerman, Mode=TwoWay}" Margin="40,0,40,0"  Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='10' Grid.Row="2" x:Name="translationsIntoGermanListView" ItemsSource="{Binding Extras[9], Mode=TwoWay}" Margin="40,0,40,0"  Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -315,7 +335,7 @@
             </Grid>
 
             <!-- Translations into english -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsEnglish, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -328,7 +348,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на английский:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='8' Grid.Row="2" x:Name="translationsIntoEnglishListView" ItemsSource="{Binding TranslationsIntoEnglish, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='8' Grid.Row="2" x:Name="translationsIntoEnglishListView" ItemsSource="{Binding Extras[10], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -340,7 +360,7 @@
             </Grid>
 
             <!-- Translations into spanish -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsSpanish, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -353,7 +373,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на испанский:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='6' Grid.Row="2" x:Name="translationsIntoSpanishListView" ItemsSource="{Binding TranslationsIntoSpanish, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='6' Grid.Row="2" x:Name="translationsIntoSpanishListView" ItemsSource="{Binding Extras[11], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -365,7 +385,7 @@
             </Grid>
 
             <!-- Translations into italian -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsItalian, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -378,7 +398,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на итальянский:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='4' Grid.Row="2" x:Name="translationsIntoItalianListView" ItemsSource="{Binding TranslationsIntoItalian, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='4' Grid.Row="2" x:Name="translationsIntoItalianListView" ItemsSource="{Binding Extras[12], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
@@ -390,7 +410,7 @@
             </Grid>
 
             <!-- Translations into french -->
-            <Grid  Margin="0,10,0,0">
+            <Grid  Margin="0,10,0,0"  Visibility="{Binding IsFrench, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5"/>
@@ -403,7 +423,7 @@
 
                 <TextBlock Grid.Row="1" Text="Переводы на французский:" Margin="0,10,0,0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <ListView x:ConnectionId='2' Grid.Row="2" x:Name="translationsIntoFrenchListView" ItemsSource="{Binding TranslationsIntoFrench, Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
+                <ListView x:ConnectionId='2' Grid.Row="2" x:Name="translationsIntoFrenchListView" ItemsSource="{Binding Extras[13], Mode=TwoWay}" Margin="40,0,40,0" Style="{StaticResource ExtrasListViewStyle}">
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">

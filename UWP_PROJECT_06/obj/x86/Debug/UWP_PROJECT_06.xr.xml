@@ -47,19 +47,15 @@
     <RootPropertyPathName Name="TextChangedCommand" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentWord" />
-    <RootPropertyPathName Name="TranslationsIntoFrench" />
+    <RootPropertyPathName Name="IsFrench" />
+    <RootPropertyPathName Name="Extras" />
     <RootPropertyPathName Name="LostFocusCommand" />
-    <RootPropertyPathName Name="TranslationsIntoItalian" />
-    <RootPropertyPathName Name="TranslationsIntoSpanish" />
-    <RootPropertyPathName Name="TranslationsIntoEnglish" />
-    <RootPropertyPathName Name="TranslationsIntoGerman" />
-    <RootPropertyPathName Name="TranslationsIntoRussian" />
-    <RootPropertyPathName Name="Examples" />
-    <RootPropertyPathName Name="Meanings" />
-    <RootPropertyPathName Name="FigurativeMeanings" />
-    <RootPropertyPathName Name="Antonyms" />
-    <RootPropertyPathName Name="Synonyms" />
-    <RootPropertyPathName Name="Plurals" />
+    <RootPropertyPathName Name="IsItalian" />
+    <RootPropertyPathName Name="IsSpanish" />
+    <RootPropertyPathName Name="IsEnglish" />
+    <RootPropertyPathName Name="IsGerman" />
+    <RootPropertyPathName Name="IsRussian" />
+    <RootPropertyPathName Name="MeaningString" />
     <RootPropertyPathName Name="PartsOfSpeech" />
     <RootPropertyPathName Name="PartOfSpeechSelectionComboBoxSelectedIndex" />
     <RootPropertyPathName Name="SelectedDate" />
@@ -188,11 +184,13 @@
       <RootProperty Name="Foreground" />
       <RootProperty Name="Resources" />
       <RootProperty Name="PlaceholderText" />
-      <RootProperty Name="FontSize" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="Background" />
+      <RootProperty Name="MaxWidth" />
       <RootProperty Name="CornerRadius" />
+      <RootProperty Name="IsSpellCheckEnabled" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="Background" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
@@ -402,6 +400,8 @@
       <RootProperty Name="Padding" />
       <RootMethod Name="GetVerticalScrollBarVisibility" />
       <RootMethod Name="SetVerticalScrollBarVisibility" />
+      <RootMethod Name="GetHorizontalScrollMode" />
+      <RootMethod Name="SetHorizontalScrollMode" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
       <RootProperty Name="EventName" />

@@ -18,6 +18,13 @@ namespace UWP_PROJECT_06.ViewModels
 {
     public class WordEditPageViewModel : ViewModelBase
     {
+        string currentWord;
+        public string CurrentWord
+        {
+            get => currentWord;
+            set => SetProperty(ref currentWord, value);
+        }
+
         int languageSelectionComboBoxSelectedIndex;
         public int LanguageSelectionComboBoxSelectedIndex
         {
@@ -46,100 +53,174 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref selectedDate, value);
         }
 
+        WordExtra meaningString;
+        public WordExtra MeaningString
+        {
+            get => meaningString;
+            set => SetProperty(ref meaningString, value);
+        }
+
+        Visibility isRussian; public Visibility IsRussian { get => isRussian; set => SetProperty(ref isRussian, value); }
+        Visibility isGerman; public Visibility IsGerman { get => isGerman; set => SetProperty(ref isGerman, value); }
+        Visibility isEnglish; public Visibility IsEnglish { get => isEnglish; set => SetProperty(ref isEnglish, value); }
+        Visibility isSpanish; public Visibility IsSpanish { get => isSpanish; set => SetProperty(ref isSpanish, value); }
+        Visibility isItalian; public Visibility IsItalian { get => isItalian; set => SetProperty(ref isItalian, value); }
+        Visibility isFrench; public Visibility IsFrench { get => isFrench; set => SetProperty(ref isFrench, value); }
+
         public ObservableRangeCollection<string> Languages { get; set; }
         public ObservableRangeCollection<string> Statuses { get; set; }
         public ObservableRangeCollection<string> PartsOfSpeech { get; set; }
 
-        public ObservableRangeCollection<WordExtra> Plurals { get; set; }
-        public ObservableRangeCollection<WordExtra> Synonyms { get; set; }
-        public ObservableRangeCollection<WordExtra> Antonyms { get; set; }
-        public ObservableRangeCollection<WordExtra> FigurativeMeanings { get; set; }
-        public ObservableRangeCollection<WordExtra> Meanings { get; set; }
-        public ObservableRangeCollection<WordExtra> Examples { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoRussian { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoGerman { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoEnglish { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoItalian { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoSpanish { get; set; }
-        public ObservableRangeCollection<WordExtra> TranslationsIntoFrench { get; set; }
+        public List<ObservableRangeCollection<WordExtra>> extras;
+        public List<ObservableRangeCollection<WordExtra>> Extras
+        {
+            get => extras;
+            set => SetProperty(ref extras, value);
+        }
 
-        public AsyncCommand<object> KeyDownCommand { get; }
+        public AsyncCommand LanguageSelectedCommand { get; }
         public AsyncCommand<object> DeleteCommand { get; }
         public AsyncCommand<object> LostFocusCommand { get; }
 
-        public WordEditPageViewModel()
+        public WordEditPageViewModel() : this(0) {}
+
+        public WordEditPageViewModel(int id)
         {
             Languages = new ObservableRangeCollection<string>() { "Select language" };
-
-            foreach (string language in DictionaryService.ReadLanguages())
-                Languages.Add(language);
-
             Statuses = new ObservableRangeCollection<string>() { "Select status" };
-
-            foreach (string status in DictionaryService.ReadStatuses())
-                Statuses.Add(status);
-
             PartsOfSpeech = new ObservableRangeCollection<string>() { "Select part of speech" };
 
-            foreach (string partOfSpeech in DictionaryService.ReadPartsOfSpeech())
-                PartsOfSpeech.Add(partOfSpeech);
+            MeaningString = new WordExtra() { LinkType = 5, ExtraText = "" };
+            extras = new List<ObservableRangeCollection<WordExtra>>();
 
-            Plurals = new ObservableRangeCollection<WordExtra>() { new WordExtra(){ ExtraText = "", LinkType = 1 }};
-            Synonyms = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 2 } };
-            Antonyms = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 3 } };
-            FigurativeMeanings = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 4 } };
-            Meanings = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 6 } };
-            Examples = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 7 } };
-            TranslationsIntoRussian = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 8 } };
-            TranslationsIntoGerman = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 9 } };
-            TranslationsIntoEnglish = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 10 } };
-            TranslationsIntoItalian = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 11 } };
-            TranslationsIntoSpanish = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 12 } };
-            TranslationsIntoFrench = new ObservableRangeCollection<WordExtra>() { new WordExtra() { ExtraText = "", LinkType = 13 } };
+            Load(id);
 
+            LanguageSelectedCommand = new AsyncCommand(LanguageSelected);
             DeleteCommand = new AsyncCommand<object>(Delete);
             LostFocusCommand = new AsyncCommand<object>(LostFocus);
         }
 
-        async Task LostFocus(object arg)
+        async Task Load(int id)
         {
-            ListView listView = arg as ListView;
+            #region Word
 
-            if (listView != null)
+            var word = DictionaryService.ReadWord(id);
+            
+            currentWord = word.Word1;
+            LanguageSelectionComboBoxSelectedIndex = word.Language;
+            StatusSelectionComboBoxSelectedIndex = word.Status;
+            PartOfSpeechSelectionComboBoxSelectedIndex = word.PartOfSpeech;
+            SelectedDate = word.LastRepeatedOn;
+
+            #endregion
+            #region Languages
+
+            foreach (string language in DictionaryService.ReadLanguages())
+                Languages.Add(language);
+
+            IsRussian = LanguageSelectionComboBoxSelectedIndex == 1 ? Visibility.Collapsed : Visibility.Visible;
+            IsGerman = LanguageSelectionComboBoxSelectedIndex == 2 ? Visibility.Collapsed : Visibility.Visible;
+            IsEnglish = LanguageSelectionComboBoxSelectedIndex == 3 ? Visibility.Collapsed : Visibility.Visible;
+            IsSpanish = LanguageSelectionComboBoxSelectedIndex == 4 ? Visibility.Collapsed : Visibility.Visible;
+            IsItalian = LanguageSelectionComboBoxSelectedIndex == 5 ? Visibility.Collapsed : Visibility.Visible;
+            IsFrench = LanguageSelectionComboBoxSelectedIndex == 6 ? Visibility.Collapsed : Visibility.Visible;
+
+            #endregion
+            #region Statuses
+
+            foreach (string status in DictionaryService.ReadStatuses())
+                Statuses.Add(status);
+
+            #endregion
+            #region Parts of speech
+
+            foreach (string partOfSpeech in DictionaryService.ReadPartsOfSpeech())
+                PartsOfSpeech.Add(partOfSpeech);
+
+            #endregion
+            #region Extras
+
+            for (int q = 0; q < DictionaryService.ReadLinkTypes().Count + 2; q++)
+                extras.Add(new ObservableRangeCollection<WordExtra>());
+
+            if (id != 0)
             {
-                ObservableRangeCollection<WordExtra> extras = listView.ItemsSource as ObservableRangeCollection<WordExtra>;
+                List<WordExtra> currentWordExtras = DictionaryService.ReadWordExtras(id);
 
-                if (extras != null)
+                for (int q = 0; q < currentWordExtras.Count; q++)
                 {
-                    int linkType = extras.FirstOrDefault().LinkType;
+                    int index = currentWordExtras[q].LinkType;
+                    int linkedWordId = currentWordExtras[q].LinkedWordId;
 
-                    Regex regex = new Regex(@"\s+");
-
-                    for (int q = extras.Count - 1; q >= 0; q--)
+                    if (linkedWordId != 0)
                     {
-                        extras[q].ExtraText = extras[q].ExtraText.Trim();
+                        string text = DictionaryService.ReadWord(linkedWordId).Word1;
 
-                        if (regex.IsMatch(extras[q].ExtraText) || extras[q].ExtraText == "")
-                            extras.RemoveAt(q);
+                        int underscoresAmount = text.Split("_").Length - 1;
+                        string[] splittedText = text.Split("_", underscoresAmount);
+
+                        foreach (string str in splittedText)
+                            if (str != splittedText.Last())
+                                currentWordExtras[q].ExtraText += str;
                     }
 
-                    extras.Add(new WordExtra() { LinkType = linkType, ExtraText = "" });
+                    extras[index].Add(currentWordExtras[q]);
                 }
+
+                MeaningString = extras[5].FirstOrDefault();
             }
 
+            for (int q = 0; q < DictionaryService.ReadLinkTypes().Count + 2; q++)
+                extras[q].Add(new WordExtra() { ExtraText = "", LinkType = q });
+
+            #endregion
+        }
+
+        async Task LanguageSelected()
+        {
+            IsRussian = LanguageSelectionComboBoxSelectedIndex == 1 ? Visibility.Collapsed : Visibility.Visible;
+            IsGerman = LanguageSelectionComboBoxSelectedIndex == 2 ? Visibility.Collapsed : Visibility.Visible;
+            IsEnglish = LanguageSelectionComboBoxSelectedIndex == 3 ? Visibility.Collapsed : Visibility.Visible;
+            IsSpanish = LanguageSelectionComboBoxSelectedIndex == 4 ? Visibility.Collapsed : Visibility.Visible;
+            IsItalian = LanguageSelectionComboBoxSelectedIndex == 5 ? Visibility.Collapsed : Visibility.Visible;
+            IsFrench = LanguageSelectionComboBoxSelectedIndex == 6 ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        async Task LostFocus(object arg)
+        {
+            var listView = arg as ListView;
+            if (listView == null) return;
+
+            var extras = listView.ItemsSource as ObservableRangeCollection<WordExtra>;
+            if (extras == null) return;
+
+            int linkType = extras.FirstOrDefault().LinkType;
+
+            for (int q = extras.Count - 1; q >= 0; q--)
+            {
+                extras[q].ExtraText = extras[q].ExtraText.Trim();
+
+                if (extras[q].ExtraText == "")
+                    extras.RemoveAt(q);
+            }
+
+            extras.Add(new WordExtra()
+            {
+                LinkType = linkType,
+                ExtraText = ""
+            });
         }
 
         async Task Delete(object arg)
         {
-            TextBox textBox = arg as TextBox; 
+            TextBox textBox = arg as TextBox;
 
-            if (textBox != null)
-            {
-                textBox.Text = "";
+            if (textBox == null) return;
 
-                Grid parent = textBox.Parent as Grid;
-                parent.Visibility = Visibility.Collapsed;
-            }
+            textBox.Text = "";
+
+            Grid parent = textBox.Parent as Grid;
+            parent.Visibility = Visibility.Collapsed;
         }
     }
 }

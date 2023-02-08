@@ -86,8 +86,16 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref isReadingMode, value);
         }
         
+        bool isEditingMode;
+        public bool IsEditingMode
+        {
+            get => isEditingMode;
+            set => SetProperty(ref isEditingMode, value);
+        }
 
 
+
+        WordEditPage LastOpenedWordEditCard { get; set; }
         WordCardPage LastOpenedWordCard { get; set; }
         WebView LastWebSearchRequest { get; set; }
 
@@ -115,7 +123,8 @@ namespace UWP_PROJECT_06.ViewModels
         {
             WordsGroups = new ObservableRangeCollection<Grouping<string, Word>>();
             UnknownWordsGroups = new ObservableRangeCollection<Grouping<string, UnknownWord>>();
-            
+
+            LastOpenedWordEditCard = new WordEditPage();
             LastOpenedWordCard = new WordCardPage();
             LastWebSearchRequest = new WebView();
 
@@ -127,6 +136,7 @@ namespace UWP_PROJECT_06.ViewModels
 
             IsReadingMode = true;
             IsOnlineDictionaryActive = false;
+            IsEditingMode = false;
 
             ChangeMode();
 
@@ -260,7 +270,7 @@ namespace UWP_PROJECT_06.ViewModels
             }
         }
 
-        
+
         async Task ChangeMode()
         {
             if (!IsReadingMode)
@@ -292,7 +302,10 @@ namespace UWP_PROJECT_06.ViewModels
             }
 
             if (IsReadingMode)
+            {
                 IsOnlineDictionaryActive = false;
+                IsEditingMode= false;
+            }
         }
         async Task SearchOnline()
         {
@@ -345,10 +358,59 @@ namespace UWP_PROJECT_06.ViewModels
             }
 
             if (IsOnlineDictionaryActive)
+            {
                 IsReadingMode = false;
+                IsEditingMode = false;
+            }
+        }
+        async Task AddWord()
+        {
+            if (!IsEditingMode)
+            {
+                if (LastOpenedWordCard.DataContext != null)
+                {
+                    var view = LastOpenedWordCard.DataContext as WordCardPageViewModel;
+                    var word = view.CurrentWord;
+                    
+                    if (word == null)
+                        LastOpenedWordEditCard.DataContext = new WordEditPageViewModel();
+                    else
+                        LastOpenedWordEditCard.DataContext = new WordEditPageViewModel(word.Id);
+                }
+                else 
+                {
+                    LastOpenedWordEditCard.DataContext = new WordEditPageViewModel();
+                }
+
+                FrameContent = LastOpenedWordEditCard;
+
+                IsEditingMode = true;
+                IsReadingMode = false;
+                IsOnlineDictionaryActive= false;
+            }
+            else
+            {
+                MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+                FrameContent = markdownTextBlock;
+
+                markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
+                markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+                markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+                markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+                markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+                markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                
+                IsEditingMode = false;
+            }
+
+            if (IsEditingMode)
+            { 
+                IsOnlineDictionaryActive = false;
+                IsReadingMode = false;
+            }
 
         }
-        
+
 
         async Task CardBackButtonPressed()
         {
@@ -374,19 +436,7 @@ namespace UWP_PROJECT_06.ViewModels
                 return;
             }
         }
-        async Task AddWord()
-        {
-            if (SelectedWord == null)
-            {
-                WordEditPage page = new WordEditPage();
-                FrameContent = page;
-            }
-            else 
-            {
-                WordEditPage page = new WordEditPage();
-                FrameContent = page;
-            }
-        }
+        
 
 
 
