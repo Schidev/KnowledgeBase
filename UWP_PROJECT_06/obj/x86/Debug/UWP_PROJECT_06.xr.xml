@@ -17,6 +17,7 @@
     <RootPropertyPathName Name="WordsGroups" />
     <RootPropertyPathName Name="SaveUnknownWordCommand" />
     <RootPropertyPathName Name="AddWordCommand" />
+    <RootPropertyPathName Name="IsEditingMode" />
     <RootPropertyPathName Name="SearchOnlineCommand" />
     <RootPropertyPathName Name="IsOnlineDictionaryActive" />
     <RootPropertyPathName Name="ChangeModeCommand" />

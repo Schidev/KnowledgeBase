@@ -286,6 +286,8 @@ namespace UWP_PROJECT_06.ViewModels
                 FrameContent = LastOpenedWordCard;
 
                 IsReadingMode = true;
+                IsOnlineDictionaryActive = false;
+                IsEditingMode = false;
             }
             else
             {
@@ -298,13 +300,10 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
                 markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                
                 IsReadingMode = false;
-            }
-
-            if (IsReadingMode)
-            {
                 IsOnlineDictionaryActive = false;
-                IsEditingMode= false;
+                IsEditingMode = false;
             }
         }
         async Task SearchOnline()
@@ -323,6 +322,8 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
 
                 IsOnlineDictionaryActive = false;
+                IsReadingMode = false;
+                IsEditingMode = false;
 
                 return;
             }
@@ -341,6 +342,8 @@ namespace UWP_PROJECT_06.ViewModels
                 FrameContent = LastWebSearchRequest;
 
                 IsOnlineDictionaryActive = true;
+                IsReadingMode = false;
+                IsEditingMode = false;
             }
             else
             {
@@ -355,10 +358,6 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
 
                 IsOnlineDictionaryActive = false;
-            }
-
-            if (IsOnlineDictionaryActive)
-            {
                 IsReadingMode = false;
                 IsEditingMode = false;
             }
@@ -385,8 +384,8 @@ namespace UWP_PROJECT_06.ViewModels
                 FrameContent = LastOpenedWordEditCard;
 
                 IsEditingMode = true;
+                IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
-                IsOnlineDictionaryActive= false;
             }
             else
             {
@@ -401,14 +400,9 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 
                 IsEditingMode = false;
-            }
-
-            if (IsEditingMode)
-            { 
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
             }
-
         }
 
 
