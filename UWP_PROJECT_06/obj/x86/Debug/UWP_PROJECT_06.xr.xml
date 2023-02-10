@@ -358,6 +358,7 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Command" />
       <RootProperty Name="CommandParameter" />
+      <RootProperty Name="KeyboardAccelerators" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutSeparator" />
     <RootType FullName="UWP_PROJECT_06.MainPage" />

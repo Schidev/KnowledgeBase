@@ -102,7 +102,7 @@
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
 
                         <AutoSuggestBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='31' Modifiers="Control" Key="W"                        />
+                            <KeyboardAccelerator x:ConnectionId='31' Modifiers="Menu" Key="W"                        />
                         </AutoSuggestBox.KeyboardAccelerators>
                         
                         <AutoSuggestBox.Resources>
@@ -130,7 +130,7 @@
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
                         <ComboBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='29' Modifiers="Control" Key="L"                           />
+                            <KeyboardAccelerator x:ConnectionId='29' Modifiers="Menu" Key="L"                           />
                         </ComboBox.KeyboardAccelerators>
                         
                         <i:Interaction.Behaviors>
@@ -476,7 +476,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="{Binding IsWritingMode, Converter={StaticResource ReadingModeIconConverter}}"  Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="R"/>
+                            <KeyboardAccelerator Modifiers="Menu" Key="R"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
@@ -487,7 +487,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE774;" Foreground="{Binding IsOnlineDictionaryActive, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="B"/>
+                            <KeyboardAccelerator Modifiers="Menu" Key="B"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
@@ -498,7 +498,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;" Foreground="{Binding IsAddingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="N"/>
+                            <KeyboardAccelerator Modifiers="Menu" Key="N"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
@@ -509,7 +509,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
                         
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                            <KeyboardAccelerator Modifiers="Menu" Key="S"/>
                         </Button.KeyboardAccelerators>
                         
                     </Button>

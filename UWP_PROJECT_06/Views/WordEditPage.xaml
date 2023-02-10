@@ -55,6 +55,11 @@
                 <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                                         Command="{Binding ClearCommand}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE74D;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="D"/>
+                    </Button.KeyboardAccelerators>
+                    
                 </Button>
             </Grid>
 
@@ -165,7 +170,7 @@
                    
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind pluralsListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[1]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 
@@ -190,7 +195,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind synonymsListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[2]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -215,7 +220,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind antonymsListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[3]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -240,7 +245,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind figurativeMeaningsListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[4]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -266,7 +271,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind meaningsListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[6]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -291,7 +296,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind examplesListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[7]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -316,7 +321,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoRussianListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[8]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -341,7 +346,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoGermanListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[9]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </ListView>
@@ -365,7 +370,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoEnglishListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[10]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -390,7 +395,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoSpanishListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[11]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     
@@ -415,7 +420,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoItalianListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[12]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 
@@ -440,7 +445,7 @@
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="LostFocus">
-                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{x:Bind translationsIntoFrenchListView}"/>
+                            <core:InvokeCommandAction Command="{Binding LostFocusCommand}" CommandParameter="{Binding Extras[13]}"/>
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
 

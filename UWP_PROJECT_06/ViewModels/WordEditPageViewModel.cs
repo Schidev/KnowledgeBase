@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
+using UWP_PROJECT_06.Models.Dictionary.OnlineDictionary;
 using UWP_PROJECT_06.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,6 +20,8 @@ namespace UWP_PROJECT_06.ViewModels
     public class WordEditPageViewModel : ViewModelBase
     {
         int id { get; set; }
+        Definition CurrentDefinition { get; set; }
+
 
         string currentWord;
         public string CurrentWord
@@ -86,7 +89,6 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> LostFocusCommand { get; }
 
         public WordEditPageViewModel() : this(0) {}
-
         public WordEditPageViewModel(int id)
         {
             this.id = id;
@@ -194,10 +196,7 @@ namespace UWP_PROJECT_06.ViewModels
 
         async Task LostFocus(object arg)
         {
-            var listView = arg as ListView;
-            if (listView == null) return;
-
-            var extras = listView.ItemsSource as ObservableRangeCollection<WordExtra>;
+            var extras = arg as ObservableRangeCollection<WordExtra>;
             if (extras == null) return;
 
             int linkType = extras.FirstOrDefault().LinkType;
@@ -249,6 +248,68 @@ namespace UWP_PROJECT_06.ViewModels
                 Extras[q].Add(new WordExtra() { ExtraText = "", LinkType = linkType });
             }
 
+        }
+
+        public async Task SetDefinition(string word)
+        { 
+            CurrentDefinition = OnlineDictionaryService.GetDefenition(word);
+            
+            #region Word
+            
+            CurrentWord = CurrentDefinition._word;
+
+            #endregion
+            #region Part of speech
+
+            PartOfSpeechSelectionComboBoxSelectedIndex = CurrentDefinition._part_of_speech;
+
+            #endregion
+            #region plural
+
+            if (CurrentDefinition._plural != String.Empty)
+                Extras[1].Add(new WordExtra() { LinkType = 1, ExtraText = CurrentDefinition._definitions._meaning });
+
+            #endregion
+            #region Meaning string
+            
+            MeaningString = MeaningString = new WordExtra() { LinkType = 5, ExtraText = CurrentDefinition._meaning_string };
+
+            #endregion
+            #region Meanings
+
+            if (CurrentDefinition._definitions._meaning != String.Empty)
+                Extras[6].Add(new WordExtra() { LinkType = 6, ExtraText = CurrentDefinition._definitions._meaning});
+
+            #endregion
+            #region Translations into english
+
+            foreach (string translation in CurrentDefinition._definitions._translation)
+                Extras[10].Add(new WordExtra() { LinkType = 6, ExtraText = translation });
+
+            #endregion
+            #region Examples
+
+            foreach (Example example in CurrentDefinition._examples)
+            {
+                if (example.first_line != String.Empty && example.second_line != String.Empty)
+                {
+                    Extras[7].Add(new WordExtra() { LinkType = 7, ExtraText = String.Format("{0} -- {1}", example.first_line, example.second_line) });
+                }
+                else if (example.first_line != String.Empty && example.second_line == String.Empty)
+                {
+                    Extras[7].Add(new WordExtra() { LinkType = 7, ExtraText = String.Format("{0}", example.first_line) });
+                }
+                else if (example.first_line == String.Empty && example.second_line != String.Empty)
+                {
+                    Extras[7].Add(new WordExtra() { LinkType = 7, ExtraText = String.Format("{0}", example.second_line) });
+                }
+            }
+
+            #endregion
+
+            foreach (ObservableRangeCollection<WordExtra> extrasCollection in Extras)
+                await LostFocus(extrasCollection);
+            
         }
     }
 }

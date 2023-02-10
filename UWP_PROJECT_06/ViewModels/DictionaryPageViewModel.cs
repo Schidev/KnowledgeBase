@@ -419,7 +419,11 @@ namespace UWP_PROJECT_06.ViewModels
             {
                 if (LastOpenedWordAddingCard.DataContext == null)
                 {
-                    LastOpenedWordAddingCard.DataContext = new WordEditPageViewModel(0);
+                    var viewModel = new WordEditPageViewModel();
+                    LastOpenedWordAddingCard.DataContext = viewModel;
+
+                    if (AutoSuggestBoxText != String.Empty)
+                        await viewModel.SetDefinition(AutoSuggestBoxText);
                 }
 
                 FrameContent = LastOpenedWordAddingCard;

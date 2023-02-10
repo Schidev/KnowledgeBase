@@ -126,6 +126,10 @@
     <Compile Include="Models\Bookmarks\DailyTask.cs" />
     <Compile Include="Models\Dictionary\Language.cs" />
     <Compile Include="Models\Dictionary\LinkType.cs" />
+    <Compile Include="Models\Dictionary\OnlineDictionary\Definition.cs" />
+    <Compile Include="Models\Dictionary\OnlineDictionary\Example.cs" />
+    <Compile Include="Models\Dictionary\OnlineDictionary\Meaning.cs" />
+    <Compile Include="Models\Dictionary\OnlineDictionary\Verb.cs" />
     <Compile Include="Models\Dictionary\PartOfSpeech.cs" />
     <Compile Include="Models\Dictionary\Status.cs" />
     <Compile Include="Models\Dictionary\Word.cs" />
@@ -152,6 +156,7 @@
     <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\MarkdownService.cs" />
     <Compile Include="Services\NotesService.cs" />
+    <Compile Include="Services\OnlineDictionaryService.cs" />
     <Compile Include="Services\ProblemsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\DictionaryPageViewModel.cs" />
@@ -266,6 +271,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.11.46</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
       <Version>7.0.2</Version>
     </PackageReference>

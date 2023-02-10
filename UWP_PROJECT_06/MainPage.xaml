@@ -40,26 +40,51 @@
                     </controls:MenuItem.Header>
 
                     <MenuFlyoutSubItem Text="New" Margin="0">
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+N" Text="Project"/>
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+N" Text="New tab" Command="{Binding AddTabCommand}" CommandParameter="{x:Bind tabView}"/>
+                        <MenuFlyoutItem Text="Project"/>
+                        <MenuFlyoutItem Text="New tab" Command="{Binding AddTabCommand}" CommandParameter="{x:Bind tabView}">
+                            
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu" Key="T"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        
+                        </MenuFlyoutItem>
                     </MenuFlyoutSubItem>
 
                     <MenuFlyoutSubItem Text="Open" Margin="0">
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+D" Text="Open dictionary" 
-                                        Command="{Binding OpenDictionaryPageCommand}" CommandParameter="{x:Bind tabView}"/>
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+V" Text="Open video list" 
-                                        Command="{Binding OpenVideosListPageCommand}" CommandParameter="{x:Bind tabView}"/>
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+Alt+R" Text="Open right pane"
-                                        Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind rightPane}"/>
-                        <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+Alt+L" Text="Open left pane"
-                                        Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind leftPane}"/>
+                        <MenuFlyoutItem Text="Open dictionary" Command="{Binding OpenDictionaryPageCommand}" CommandParameter="{x:Bind tabView}">
+                            
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu" Key="Number1"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="Open video list" Command="{Binding OpenVideosListPageCommand}" CommandParameter="{x:Bind tabView}">
+                            
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu" Key="Number2"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="Open right pane" Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind rightPane}">
+                            
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu,Shift" Key="R"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="Open left pane" Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind leftPane}">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu,Shift" Key="L"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+
+                        </MenuFlyoutItem>
                     </MenuFlyoutSubItem>
 
-                    <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+S" Icon="Save" Text="Save"/>
+                    <MenuFlyoutItem Icon="Save" Text="Save"/>
 
                     <MenuFlyoutSeparator/>
 
-                    <MenuFlyoutItem controls:Menu.InputGestureText="Ctrl+Shift+E" Text="Exit" Margin="0"/>
+                    <MenuFlyoutItem Text="Exit" Margin="0"/>
 
                 </controls:MenuItem>
             </controls:Menu>
