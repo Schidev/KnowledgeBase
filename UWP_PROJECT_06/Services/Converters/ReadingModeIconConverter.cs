@@ -7,12 +7,12 @@ using Windows.UI.Xaml.Data;
 
 namespace UWP_PROJECT_06.Services.Converters
 {
-    internal class ForegroundButtonConverter : IValueConverter
+    internal class ReadingModeIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool isButtonActive = (bool)value;
-            return isButtonActive ? "#8B6CEF" : "#434343";
+            bool isWritingMode = (bool)value;
+            return isWritingMode ? "\uE932" : "\uF19D";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

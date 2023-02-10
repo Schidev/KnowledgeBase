@@ -18,6 +18,8 @@ namespace UWP_PROJECT_06.ViewModels
 {
     public class WordEditPageViewModel : ViewModelBase
     {
+        int id { get; set; }
+
         string currentWord;
         public string CurrentWord
         {
@@ -45,9 +47,9 @@ namespace UWP_PROJECT_06.ViewModels
             get => partOfSpeechSelectionComboBoxSelectedIndex;
             set => SetProperty(ref partOfSpeechSelectionComboBoxSelectedIndex, value);
         }
-        
-        DateTime selectedDate;
-        public DateTime SelectedDate
+
+        DateTimeOffset selectedDate;
+        public DateTimeOffset SelectedDate
         {
             get => selectedDate;
             set => SetProperty(ref selectedDate, value);
@@ -79,6 +81,7 @@ namespace UWP_PROJECT_06.ViewModels
         }
 
         public AsyncCommand LanguageSelectedCommand { get; }
+        public AsyncCommand ClearCommand { get; }
         public AsyncCommand<object> DeleteCommand { get; }
         public AsyncCommand<object> LostFocusCommand { get; }
 
@@ -86,21 +89,24 @@ namespace UWP_PROJECT_06.ViewModels
 
         public WordEditPageViewModel(int id)
         {
+            this.id = id;
+
             Languages = new ObservableRangeCollection<string>() { "Select language" };
             Statuses = new ObservableRangeCollection<string>() { "Select status" };
             PartsOfSpeech = new ObservableRangeCollection<string>() { "Select part of speech" };
-
+            
             MeaningString = new WordExtra() { LinkType = 5, ExtraText = "" };
-            extras = new List<ObservableRangeCollection<WordExtra>>();
+            Extras = new List<ObservableRangeCollection<WordExtra>>();
 
-            Load(id);
+            Load();
 
             LanguageSelectedCommand = new AsyncCommand(LanguageSelected);
+            ClearCommand = new AsyncCommand(Clear);
             DeleteCommand = new AsyncCommand<object>(Delete);
             LostFocusCommand = new AsyncCommand<object>(LostFocus);
         }
 
-        async Task Load(int id)
+        async Task Load()
         {
             #region Word
 
@@ -110,7 +116,7 @@ namespace UWP_PROJECT_06.ViewModels
             LanguageSelectionComboBoxSelectedIndex = word.Language;
             StatusSelectionComboBoxSelectedIndex = word.Status;
             PartOfSpeechSelectionComboBoxSelectedIndex = word.PartOfSpeech;
-            SelectedDate = word.LastRepeatedOn;
+            SelectedDate = id == 0 ? DateTime.UtcNow : word.LastRepeatedOn;
 
             #endregion
             #region Languages
@@ -221,6 +227,28 @@ namespace UWP_PROJECT_06.ViewModels
 
             Grid parent = textBox.Parent as Grid;
             parent.Visibility = Visibility.Collapsed;
+        }
+
+        async Task Clear()
+        {
+            CurrentWord = "";
+
+            LanguageSelectionComboBoxSelectedIndex = 0;
+            StatusSelectionComboBoxSelectedIndex = 0;
+            PartOfSpeechSelectionComboBoxSelectedIndex = 0;
+            
+            SelectedDate = DateTime.Now;
+
+            MeaningString = new WordExtra() { LinkType = 5, ExtraText = "" };
+
+            for (int q = 0; q < Extras.Count; q++)
+            {
+                int linkType = Extras[q].FirstOrDefault().LinkType;
+
+                Extras[q].Clear();
+                Extras[q].Add(new WordExtra() { ExtraText = "", LinkType = linkType });
+            }
+
         }
     }
 }

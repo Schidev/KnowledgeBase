@@ -217,7 +217,9 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Text="{Binding ExtraText, Mode=TwoWay}" x:Name="WordTextBox" Grid.Column="0" Margin="0" Padding="10" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}" Foreground="{StaticResource colorDimGray}" >
+                                <TextBox Text="{Binding ExtraText, Mode=TwoWay}" x:Name="WordTextBox" Grid.Column="0" Margin="0" 
+                                         Padding="10" BorderThickness="0.5" IsSpellCheckEnabled="False"
+                                         BorderBrush="{StaticResource SplitterColor}" Foreground="{StaticResource colorDimGray}" >
 
                                     <TextBox.Resources>
                                         <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
@@ -234,7 +236,8 @@
                                 </TextBox>
 
                                 <!-- Delte ListViewItem -->
-                                <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                                <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center" Margin="5" 
+                                        Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                                         Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=WordTextBox}">
 
                                     <Button.DataContext>

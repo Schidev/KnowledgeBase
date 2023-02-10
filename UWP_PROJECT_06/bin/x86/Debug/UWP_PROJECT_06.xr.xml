@@ -15,13 +15,15 @@
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
     <RootPropertyPathName Name="UnknownWordsGroups" />
     <RootPropertyPathName Name="WordsGroups" />
-    <RootPropertyPathName Name="SaveUnknownWordCommand" />
+    <RootPropertyPathName Name="SaveCommand" />
     <RootPropertyPathName Name="AddWordCommand" />
-    <RootPropertyPathName Name="IsEditingMode" />
+    <RootPropertyPathName Name="IsAddingMode" />
     <RootPropertyPathName Name="SearchOnlineCommand" />
     <RootPropertyPathName Name="IsOnlineDictionaryActive" />
     <RootPropertyPathName Name="ChangeModeCommand" />
+    <RootPropertyPathName Name="IsWritingMode" />
     <RootPropertyPathName Name="IsReadingMode" />
+    <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
     <RootPropertyPathName Name="FrameContent" />
@@ -63,6 +65,7 @@
     <RootPropertyPathName Name="Statuses" />
     <RootPropertyPathName Name="StatusSelectionComboBoxSelectedIndex" />
     <RootPropertyPathName Name="LanguageSelectionComboBoxSelectedIndex" />
+    <RootPropertyPathName Name="ClearCommand" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -120,9 +123,12 @@
       <RootProperty Name="CommandParameter" />
       <RootProperty Name="DataContext" />
       <RootProperty Name="Content" />
+      <RootProperty Name="KeyboardAccelerators" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="Foreground" />
+      <RootProperty Name="Visibility" />
+      <RootProperty Name="AccessKey" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Margin" />
@@ -181,6 +187,7 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Padding" />
       <RootProperty Name="BorderThickness" />
+      <RootProperty Name="IsSpellCheckEnabled" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="Foreground" />
       <RootProperty Name="Resources" />
@@ -189,7 +196,6 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="MaxWidth" />
       <RootProperty Name="CornerRadius" />
-      <RootProperty Name="IsSpellCheckEnabled" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="Background" />
     </RootType>
@@ -300,6 +306,11 @@
       <RootProperty Name="Height" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension" />
+    <RootType FullName="Windows.UI.Xaml.Input.KeyboardAccelerator">
+      <RootProperty Name="Modifiers" />
+      <RootProperty Name="Key" />
+      <RootEvent Name="Invoked" />
+    </RootType>
     <RootType FullName="Microsoft.UI.Xaml.Controls.TabView">
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="AddTabButtonCommand" />
@@ -361,6 +372,7 @@
     <RootType FullName="UWP_PROJECT_06.Services.Converters.WordColorAccentConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.WordColorLightConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.ForegroundButtonConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.ReadingModeIconConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.Frame">
       <RootProperty Name="CornerRadius" />
       <RootProperty Name="Content" />
@@ -380,6 +392,8 @@
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="Foreground" />
       <RootProperty Name="Resources" />
+      <RootProperty Name="KeyboardAccelerators" />
+      <RootEvent Name="KeyUp" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
       <RootMethod Name="GetBehaviors" />
@@ -394,6 +408,7 @@
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="ItemsSource" />
       <RootProperty Name="SelectedIndex" />
+      <RootProperty Name="KeyboardAccelerators" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
       <RootProperty Name="VerticalScrollBarVisibility" />

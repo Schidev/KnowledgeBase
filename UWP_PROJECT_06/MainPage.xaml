@@ -92,6 +92,11 @@
                 <Button  Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
                              Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind leftPane}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEA4B;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control,Shift,Menu" Key="L"/>
+                    </Button.KeyboardAccelerators>
+
                 </Button>
             </Border>
 
@@ -138,18 +143,33 @@
                 <Button Grid.Row="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
                         Command="{Binding OpenDictionaryPageCommand}" CommandParameter="{x:Bind tabView}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8C1;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="Number1"/>
+                    </Button.KeyboardAccelerators>
+
                 </Button>
 
                 <!-- Video List Button -->
                 <Button Grid.Row="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
                         Command="{Binding OpenVideosListPageCommand}" CommandParameter="{x:Bind tabView}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF71E;" />
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="Number2"/>
+                    </Button.KeyboardAccelerators>
+
                 </Button>
 
                 <!-- Films List Button -->
                 <Button Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
                         Command="{Binding OpenWordPageCommand}" CommandParameter="{x:Bind tabView}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE786;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="Number3"/>
+                    </Button.KeyboardAccelerators>
+
                 </Button>
 
                 <!-- Bookmarks Button -->
@@ -180,6 +200,11 @@
                 <Button Grid.Row="8" Margin="5,5,5,10" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" CornerRadius="5"  Background="{StaticResource SideMenuBackground}"
                         VerticalAlignment="Bottom">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE713;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Menu" Key="Number0"/>
+                    </Button.KeyboardAccelerators>
+
                 </Button>
 
             </Grid>
@@ -303,6 +328,11 @@
                     <Button Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
                             Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind rightPane}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEA4C;" />
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control,Shift,Menu" Key="R"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
                 </Border>
 

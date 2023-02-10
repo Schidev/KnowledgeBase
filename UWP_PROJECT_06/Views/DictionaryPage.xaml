@@ -31,6 +31,7 @@
         <converters:WordColorAccentConverter x:Key="WordColorAccentConverter" />
         <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
         <converters:ForegroundButtonConverter x:Key="ForegroundButtonConverter" />
+        <converters:ReadingModeIconConverter x:Key="ReadingModeIconConverter" />
     
     </Page.Resources>
     
@@ -95,9 +96,15 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
+
                     <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" KeyUp="Autosuggest_KeyDown"
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+
+                        <AutoSuggestBox.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="W" Invoked="FocusOnSearch"/>
+                        </AutoSuggestBox.KeyboardAccelerators>
+                        
                         <AutoSuggestBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -122,6 +129,10 @@
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
+                        <ComboBox.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="L" Invoked="FocusOnLanguages"/>
+                        </ComboBox.KeyboardAccelerators>
+                        
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
                                 <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBox}"/>
@@ -416,7 +427,7 @@
 
             </Grid>
 
-            <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30,0,40,30" Padding="0,0,0,0.5" CornerRadius="10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5">
+            <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30,0,40,30" Padding="0.5" CornerRadius="10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -432,6 +443,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
@@ -440,39 +452,66 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardBackButtonPressedCommand}">
+                            Command="{Binding CardBackButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}"  AccessKey="Down">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
+
                     </Button>
 
                     <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardForwardButtonPressedCommand}">
+                            Command="{Binding CardForwardButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
                     </Button>
+                    
+                    <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding CardRefreshButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;"/>
+                    </Button>
 
-                    <TextBlock Grid.Column="2" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="3" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
 
                     <!-- Btn Open Reading/Writing Mode-->
-                    <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ChangeModeCommand}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xF19D;" Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
+                    <Button Grid.Column="4" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding ChangeModeCommand}" AccessKey="R">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="{Binding IsWritingMode, Converter={StaticResource ReadingModeIconConverter}}"  Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="R"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <!-- Open in browser-->
-                    <Button Grid.Column="4" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding SearchOnlineCommand}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE774;" Foreground="{Binding IsOnlineDictionaryActive, Converter={StaticResource ForegroundButtonConverter}}"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="B"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <!-- Add new word -->
-                    <Button Grid.Column="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding AddWordCommand}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;" Foreground="{Binding IsEditingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
+                    <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding AddWordCommand}" AccessKey="N">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;" Foreground="{Binding IsAddingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="N"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <!-- Save in unknown words-->
-                    <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding SaveUnknownWordCommand}">
+                    <Button Grid.Column="7" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding SaveCommand}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
+                        
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                        </Button.KeyboardAccelerators>
+                        
                     </Button>
 
                 </Grid>

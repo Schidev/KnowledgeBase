@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
@@ -14,6 +15,7 @@ using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Services.Converters;
 using UWP_PROJECT_06.Views;
 using Windows.Globalization;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -86,16 +88,22 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref isReadingMode, value);
         }
         
-        bool isEditingMode;
-        public bool IsEditingMode
+        bool isWritingMode;
+        public bool IsWritingMode
+        { 
+            get => isWritingMode;
+            set => SetProperty(ref isWritingMode, value);
+        }
+        
+        bool isAddingMode;
+        public bool IsAddingMode
         {
-            get => isEditingMode;
-            set => SetProperty(ref isEditingMode, value);
+            get => isAddingMode;
+            set => SetProperty(ref isAddingMode, value);
         }
 
-
-
         WordEditPage LastOpenedWordEditCard { get; set; }
+        WordEditPage LastOpenedWordAddingCard { get; set; }
         WordCardPage LastOpenedWordCard { get; set; }
         WebView LastWebSearchRequest { get; set; }
 
@@ -111,21 +119,25 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> UnknownWordTextChangedCommand { get; }
         public AsyncCommand<object> UnknownWordLanguageSelectedCommand { get; }
 
-        public AsyncCommand CardBackButtonPressedCommand { get; }
-        public AsyncCommand CardForwardButtonPressedCommand { get; }
+        public AsyncCommand BackCommand { get; }
+        public AsyncCommand ForwardCommand { get; }
+        public AsyncCommand RefreshCommand { get; }
+        public AsyncCommand SaveCommand { get; }
+
+
         public AsyncCommand ChangeModeCommand { get; }
         public AsyncCommand SearchOnlineCommand { get; }
         public AsyncCommand AddWordCommand { get; }
-        public AsyncCommand SaveUnknownWordCommand { get; }
-
+        
 
         public DictionaryPageViewModel()
         {
             WordsGroups = new ObservableRangeCollection<Grouping<string, Word>>();
             UnknownWordsGroups = new ObservableRangeCollection<Grouping<string, UnknownWord>>();
 
-            LastOpenedWordEditCard = new WordEditPage();
-            LastOpenedWordCard = new WordCardPage();
+            LastOpenedWordEditCard = new WordEditPage() { DataContext = null };
+            LastOpenedWordAddingCard = new WordEditPage() { DataContext = null };
+            LastOpenedWordCard = new WordCardPage() { DataContext = null };
             LastWebSearchRequest = new WebView();
 
             AutoSuggestBoxText = "";
@@ -134,9 +146,12 @@ namespace UWP_PROJECT_06.ViewModels
             comboBoxSelectedIndex = 0;
             comboBoxSelectedIndexUnknownWord = 0;
 
-            IsReadingMode = true;
+            IsReadingMode = false;
+            IsWritingMode = false;
             IsOnlineDictionaryActive = false;
-            IsEditingMode = false;
+            IsAddingMode = false;
+
+            SelectedWord = null;
 
             ChangeMode();
 
@@ -157,15 +172,16 @@ namespace UWP_PROJECT_06.ViewModels
             WordSelectedCommand = new AsyncCommand<object>(WordSelected);
             UnknownWordSelectedCommand = new AsyncCommand<object>(UnknownWordSelected);
 
-            CardBackButtonPressedCommand = new AsyncCommand(CardBackButtonPressed);
-            CardForwardButtonPressedCommand = new AsyncCommand(CardForwardButtonPressed);
+            BackCommand = new AsyncCommand(Back);
+            ForwardCommand = new AsyncCommand(Forward);
+            RefreshCommand = new AsyncCommand(Refresh);
+            SaveCommand = new AsyncCommand(Save);
+
             ChangeModeCommand = new AsyncCommand(ChangeMode);
             SearchOnlineCommand = new AsyncCommand(SearchOnline);
             AddWordCommand = new AsyncCommand(AddWord);
-            SaveUnknownWordCommand = new AsyncCommand(SaveUnknownWord);
 
         }
-
 
         void LoadWordsGroups()
         {
@@ -258,57 +274,86 @@ namespace UWP_PROJECT_06.ViewModels
 
             if (wordsList.SelectedItem != null)
             {
-                var viewModel = new WordCardPageViewModel(SelectedWord.Id);
-                LastOpenedWordCard.DataContext = viewModel;
-
+                LastOpenedWordCard.DataContext = new WordCardPageViewModel(SelectedWord.Id); ;
+                LastOpenedWordEditCard.DataContext = new WordEditPageViewModel(SelectedWord.Id); ;
+                
                 SelectedWord = null;
 
                 FrameContent = LastOpenedWordCard;
 
                 IsReadingMode = true;
+                IsWritingMode = false;  
                 IsOnlineDictionaryActive = false;
+                IsAddingMode = false;
             }
         }
-
 
         async Task ChangeMode()
         {
-            if (!IsReadingMode)
+            MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+
+            if (IsReadingMode)
             {
-                if (SelectedWord != null)
+                if (LastOpenedWordCard.DataContext != null)
                 {
-                    var viewModel = new WordCardPageViewModel(SelectedWord.Id);
-                    LastOpenedWordCard.DataContext = viewModel;
+                    var view = LastOpenedWordCard.DataContext as WordCardPageViewModel;
+                    var word = view.CurrentWord;
 
-                    SelectedWord = null;
+                    if (word != null)
+                    {
+                        if (IsWritingMode)
+                        {
+                            FrameContent = LastOpenedWordCard;
+                            IsWritingMode = false;
+                        }
+                        else
+                        {
+                            FrameContent = LastOpenedWordEditCard;
+                            IsWritingMode = true;
+                        }
+
+                        IsReadingMode = true;
+                    }
                 }
-
-                FrameContent = LastOpenedWordCard;
-
-                IsReadingMode = true;
-                IsOnlineDictionaryActive = false;
-                IsEditingMode = false;
             }
             else
             {
-                MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
-                FrameContent = markdownTextBlock;
+                if (IsWritingMode)
+                {
+                    if (LastOpenedWordEditCard.DataContext != null)
+                        FrameContent = LastOpenedWordEditCard;
 
-                markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
-                markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
-                markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
-                markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
-                markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
-                markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                
-                IsReadingMode = false;
-                IsOnlineDictionaryActive = false;
-                IsEditingMode = false;
+                    IsReadingMode = true;
+                }
+                else 
+                {
+                    if (LastOpenedWordCard.DataContext == null)
+                    {
+                        FrameContent = markdownTextBlock;
+                        IsReadingMode = false;
+                        IsWritingMode = false;
+                    }
+                    else
+                    {
+                        FrameContent = LastOpenedWordCard;
+                        IsReadingMode = true;
+                    }
+                }
             }
+
+            markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
+            markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+            markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+            markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+            markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+            markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+            IsOnlineDictionaryActive = false;
+            IsAddingMode = false;
         }
         async Task SearchOnline()
         {
-            if (AutoSuggestBoxText == String.Empty)
+            if (AutoSuggestBoxText == String.Empty && LastWebSearchRequest.Source == null)
             {
                 MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
                 FrameContent = markdownTextBlock;
@@ -323,33 +368,39 @@ namespace UWP_PROJECT_06.ViewModels
 
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
-                IsEditingMode = false;
+                IsAddingMode = false;
 
                 return;
             }
 
-            if (!IsOnlineDictionaryActive)
+            if (!IsOnlineDictionaryActive || AutoSuggestBoxText != String.Empty)
             {
                 List<string> Uris = new List<string>() {
                         @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
                         @"https://www.google.com/search?q=" + AutoSuggestBoxText + "+это",
                         @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
-                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(AutoSuggestBoxText)
+                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(AutoSuggestBoxText),
+                        @"https://dictionary.cambridge.org/dictionary/french-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
+                        @"https://dictionary.cambridge.org/dictionary/italian-english/" + MarkdownService.CheckText(AutoSuggestBoxText),
+                        @"https://dictionary.cambridge.org/dictionary/spanish-english/" + MarkdownService.CheckText(AutoSuggestBoxText)
                     };
 
-                LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
-
+                if (AutoSuggestBoxText != String.Empty)
+                {
+                    LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
+                    AutoSuggestBoxText = "";
+                }
                 FrameContent = LastWebSearchRequest;
 
                 IsOnlineDictionaryActive = true;
                 IsReadingMode = false;
-                IsEditingMode = false;
+                IsAddingMode = false;
             }
             else
             {
                 MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
                 FrameContent = markdownTextBlock;
-
+                
                 markdownTextBlock.Text = await MarkdownService.ReadNoCardsOpen();
                 markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
                 markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
@@ -359,31 +410,21 @@ namespace UWP_PROJECT_06.ViewModels
 
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
-                IsEditingMode = false;
+                IsAddingMode = false;
             }
         }
         async Task AddWord()
         {
-            if (!IsEditingMode)
+            if (!IsAddingMode)
             {
-                if (LastOpenedWordCard.DataContext != null)
+                if (LastOpenedWordAddingCard.DataContext == null)
                 {
-                    var view = LastOpenedWordCard.DataContext as WordCardPageViewModel;
-                    var word = view.CurrentWord;
-                    
-                    if (word == null)
-                        LastOpenedWordEditCard.DataContext = new WordEditPageViewModel();
-                    else
-                        LastOpenedWordEditCard.DataContext = new WordEditPageViewModel(word.Id);
-                }
-                else 
-                {
-                    LastOpenedWordEditCard.DataContext = new WordEditPageViewModel();
+                    LastOpenedWordAddingCard.DataContext = new WordEditPageViewModel(0);
                 }
 
-                FrameContent = LastOpenedWordEditCard;
+                FrameContent = LastOpenedWordAddingCard;
 
-                IsEditingMode = true;
+                IsAddingMode = true;
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
             }
@@ -398,15 +439,15 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
                 markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                
-                IsEditingMode = false;
+
+                IsAddingMode = false;
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
             }
         }
 
 
-        async Task CardBackButtonPressed()
+        async Task Back()
         {
             WebView frameContent = FrameContent as WebView;
 
@@ -418,7 +459,7 @@ namespace UWP_PROJECT_06.ViewModels
                 return;
             }
         }
-        async Task CardForwardButtonPressed()
+        async Task Forward()
         {
             WebView frameContent = FrameContent as WebView;
 
@@ -430,21 +471,58 @@ namespace UWP_PROJECT_06.ViewModels
                 return;
             }
         }
-        
-
-
-
-        async Task SaveUnknownWord()
+        async Task Refresh()
         {
-            UnknownWord word = new UnknownWord();
+            WebView frameContent = FrameContent as WebView;
 
-            word.Word = MarkdownService.CheckText(AutoSuggestBoxText);
-            word.Language = comboBoxSelectedIndex == 0 ? 2 : comboBoxSelectedIndex;
-            word.LastModifiedOn = DateTime.Now;
+            if (frameContent != null)
+                frameContent.Refresh();
 
-            HistoryService.CreateUnknownWord(word);
-            LoadUnknownWordsGroups();
+            return;
         }
+        async Task Save()
+        {
+            if (IsReadingMode)
+            {
+                MessageDialog message = new MessageDialog("There are no actions connected to this page.", "Woops...");
+                await message.ShowAsync();
+            }
+            else if (IsAddingMode)
+            {
+                MessageDialog message = new MessageDialog("There are no actions connected to this page.", "Woops...");
+                await message.ShowAsync();
+            }
+            else if (IsOnlineDictionaryActive)
+            {
+                MessageDialog message = new MessageDialog("Would you like to save this unknown word?");
+                
+                message.Commands.Add(new UICommand { Label = "Yes, I would", Id = 0});
+                message.Commands.Add(new UICommand { Label = "No, I wouldn't", Id = 1});
+
+                var result = await message.ShowAsync();
+
+                if ((int)result.Id == 0)
+                {
+                    UnknownWord word = new UnknownWord();
+
+                    word.Word = MarkdownService.CheckText(AutoSuggestBoxText);
+                    word.Language = comboBoxSelectedIndex == 0 ? 2 : comboBoxSelectedIndex;
+                    word.LastModifiedOn = DateTime.Now;
+
+                    HistoryService.CreateUnknownWord(word);
+                    LoadUnknownWordsGroups();
+
+                    message = new MessageDialog("Congratulations!", "Unknown word WAS correctly saved.");
+                    await message.ShowAsync();
+                }
+                else
+                {
+                    message = new MessageDialog("Woops...", "Unknown word WAS NOT saved.");
+                    await message.ShowAsync();
+                }
+            }
+        }
+
         async Task UnknownWordTextChanged(object arg)
         {
             var autoSuggestBox = arg as AutoSuggestBox;
