@@ -97,7 +97,7 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}" 
+                    <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}"
                                     VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" KeyUp="Autosuggest_KeyDown"
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
 
@@ -444,6 +444,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
@@ -451,27 +452,38 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
+
                     <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding ClearCommand}" Visibility="{Binding IsWritingMode}"  AccessKey="Down">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
+                        
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu,Shift" Key="D"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding CardBackButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}"  AccessKey="Down">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
 
                     </Button>
 
-                    <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding CardForwardButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
                     </Button>
                     
-                    <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding CardRefreshButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;"/>
                     </Button>
 
 
-                    <TextBlock Grid.Column="3" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="4" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
 
                     <!-- Btn Open Reading/Writing Mode-->
-                    <Button Grid.Column="4" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="5" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding ChangeModeCommand}" AccessKey="R">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="{Binding IsWritingMode, Converter={StaticResource ReadingModeIconConverter}}"  Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
@@ -482,7 +494,7 @@
                     </Button>
 
                     <!-- Open in browser-->
-                    <Button Grid.Column="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding SearchOnlineCommand}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE774;" Foreground="{Binding IsOnlineDictionaryActive, Converter={StaticResource ForegroundButtonConverter}}"/>
 
@@ -493,7 +505,7 @@
                     </Button>
 
                     <!-- Add new word -->
-                    <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="7" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding AddWordCommand}" AccessKey="N">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;" Foreground="{Binding IsAddingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
@@ -504,7 +516,7 @@
                     </Button>
 
                     <!-- Save in unknown words-->
-                    <Button Grid.Column="7" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    <Button Grid.Column="8" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding SaveCommand}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
                         

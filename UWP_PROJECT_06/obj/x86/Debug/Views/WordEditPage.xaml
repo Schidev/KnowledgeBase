@@ -30,7 +30,6 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Слово: " FontWeight="Bold" FontSize="25" VerticalAlignment="Center"/>
@@ -51,16 +50,6 @@
 
                     </TextBox.Resources>
                 </TextBox>
-
-                <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                                        Command="{Binding ClearCommand}">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="16" Glyph="&#xE74D;"/>
-
-                    <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Menu" Key="D"/>
-                    </Button.KeyboardAccelerators>
-                    
-                </Button>
             </Grid>
 
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">

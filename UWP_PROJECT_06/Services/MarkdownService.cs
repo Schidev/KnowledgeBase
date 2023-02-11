@@ -5,12 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Views;
+using Windows.Media.Ocr;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls.Primitives;
 
@@ -62,12 +66,7 @@ namespace UWP_PROJECT_06.Services
             for (int q = 0; q < extras.Length; q++)
                 extras[q] = "";
 
-            int underscoresAmountWord = word.Word1.Split("_").Length - 1;
-            string[] splittedTextWord = word.Word1.Split("_", underscoresAmountWord);
-
-            foreach (string str in splittedTextWord)
-                if (str != splittedTextWord.Last())
-                    extras[0] += str;
+            extras[0] = CheckWord(word.Word1); 
 
             List<Grouping<int, WordExtra>> extrasGroups = new List<Grouping<int, WordExtra>>();
             List<int> linkTypes = new List<int>();
@@ -111,21 +110,19 @@ namespace UWP_PROJECT_06.Services
                                                         ? (extra.ExtraText == "" || extra.ExtraText == null ? "" : extra.ExtraText)
                                                         : DictionaryService.ReadWord(extra.LinkedWordId).Word1;
 
-                        int underscoresAmount = extraTextWithUnderscores.Split("_").Length - 1;
-                        string[] splittedText = extraTextWithUnderscores.Split("_", underscoresAmount);
-                        string extraText = "";
-
-                        foreach (string str in splittedText)
-                            if (str != splittedText.Last())
-                                extraText += str;
+                        string extraText = CheckWord(extraTextWithUnderscores);
 
                         if (extra != group.Items.Last())
                         {
-                            extras[group.Key] += String.Format("[{0}]({1}.md), ", extraText, extraTextWithUnderscores);
+                            extras[group.Key] += extraText == "" 
+                                              ? String.Format("{0}, ", extraTextWithUnderscores)
+                                              : String.Format("[{0}]({1}.md), ", extraText, extraTextWithUnderscores);
                         }
                         else
                         {
-                            extras[group.Key] += String.Format("[{0}]({1}.md)", extraText, extraTextWithUnderscores);
+                            extras[group.Key] += extraText == "" 
+                                              ? String.Format("{0}", extraTextWithUnderscores)
+                                              : String.Format("[{0}]({1}.md)", extraText, extraTextWithUnderscores);
                         }
                     }
                 }
@@ -195,6 +192,94 @@ namespace UWP_PROJECT_06.Services
 
         }
 
+        public async static Task RenameFile(Word oldWord, Word newWord)
+        {
+            #region Read
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string folderName = await SettingsService.ReadPath("dictionary");
+            string fullPath = folderName;
+
+            if (oldWord.Language == 1) fullPath += @"\Rus\WORDS";
+            if (oldWord.Language == 2) fullPath += @"\Deu\WORDS";
+            if (oldWord.Language == 3) fullPath += @"\Eng\WORDS";
+            if (oldWord.Language == 4) fullPath += @"\Fra\WORDS";
+            if (oldWord.Language == 5) fullPath += @"\Ita\WORDS";
+            if (oldWord.Language == 6) fullPath += @"\Spa\WORDS";
+
+            StorageFolder folder = await localFolder.GetFolderAsync(fullPath);
+
+            string fileInnerText = "";
+            
+            if (await folder.FileExistsAsync(oldWord.Word1 + ".md"))
+            {
+                StorageFile oldFile = await folder.GetFileAsync(oldWord.Word1 + ".md");
+                fileInnerText = await Windows.Storage.FileIO.ReadTextAsync(oldFile);
+
+                #region Delete
+
+                await oldFile.DeleteAsync();
+
+                #endregion
+            }
+            else 
+            {
+                MessageDialog message = new MessageDialog(String.Format("File {0}\\{1}.md doesn't exist.", folder.Path, oldWord.Word1), "Error in file path");
+                await message.ShowAsync();
+
+                return;
+            }
+
+            #endregion
+            #region Write
+
+            if (oldWord.Language != newWord.Language)
+            {
+                fullPath = folderName;
+
+                if (newWord.Language == 1) fullPath += @"\Rus\WORDS";
+                if (newWord.Language == 2) fullPath += @"\Deu\WORDS";
+                if (newWord.Language == 3) fullPath += @"\Eng\WORDS";
+                if (newWord.Language == 4) fullPath += @"\Fra\WORDS";
+                if (newWord.Language == 5) fullPath += @"\Ita\WORDS";
+                if (newWord.Language == 6) fullPath += @"\Spa\WORDS";
+
+                folder = await localFolder.GetFolderAsync(fullPath);
+            }
+
+            
+            StorageFile newFile = await folder.CreateFileAsync(newWord.Word1 + ".md", CreationCollisionOption.OpenIfExists);
+            
+            await Windows.Storage.FileIO.WriteTextAsync(newFile, fileInnerText);
+            
+            #endregion
+        }
+        public async static Task DeleteFile(Word word)
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string folderName = await SettingsService.ReadPath("dictionary");
+
+            if (word.Language == 1) folderName += @"\Rus\WORDS";
+            if (word.Language == 2) folderName += @"\Deu\WORDS";
+            if (word.Language == 3) folderName += @"\Eng\WORDS";
+            if (word.Language == 4) folderName += @"\Fra\WORDS";
+            if (word.Language == 5) folderName += @"\Ita\WORDS";
+            if (word.Language == 6) folderName += @"\Spa\WORDS";
+
+            StorageFolder folder = await localFolder.GetFolderAsync(folderName);
+
+            if (await folder.FileExistsAsync(word.Word1 + ".md"))
+            {
+                StorageFile file = await folder.GetFileAsync(word.Word1 + ".md");
+                await file.DeleteAsync();
+            }
+            else
+            {
+                MessageDialog message = new MessageDialog(String.Format("File {0}\\{1}.md doesn't exist.", folder.Path, word.Word1), "Error in file path");
+                await message.ShowAsync();
+
+                return;
+            } 
+        }
         public async static Task<string> ReadNoCardsOpen()
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -204,7 +289,6 @@ namespace UWP_PROJECT_06.Services
             
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
-
         public async static Task<string> ReadWebEmptyWord()
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -214,7 +298,6 @@ namespace UWP_PROJECT_06.Services
 
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
-
         public static string CheckText(string str)
         {
             str = str.ToLower();
@@ -227,6 +310,19 @@ namespace UWP_PROJECT_06.Services
             if (str.Contains("ъ") || str.Contains("Ъ")) { str = str.Replace("ъ", "ь"); str = str.Replace("Ъ", "ь"); }
 
             return str;
+        }
+        public static string CheckWord(string wordWithUnderscores)
+        {
+            string result = "";
+
+            int underscoresAmount = wordWithUnderscores.Split("_").Length - 1;
+            string[] splittedWord = wordWithUnderscores.Split("_", underscoresAmount);
+
+            foreach (string str in splittedWord)
+                if (str != splittedWord.Last())
+                    result += str;
+            // Только добавил. Осталось изменять
+            return result;
         }
 
     }

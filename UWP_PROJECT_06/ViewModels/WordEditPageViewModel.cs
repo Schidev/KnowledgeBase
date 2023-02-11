@@ -6,20 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.Dictionary.OnlineDictionary;
 using UWP_PROJECT_06.Services;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace UWP_PROJECT_06.ViewModels
 {
     public class WordEditPageViewModel : ViewModelBase
     {
-        int id { get; set; }
+        public int id { get; set; }
         Definition CurrentDefinition { get; set; }
 
 
@@ -84,7 +87,6 @@ namespace UWP_PROJECT_06.ViewModels
         }
 
         public AsyncCommand LanguageSelectedCommand { get; }
-        public AsyncCommand ClearCommand { get; }
         public AsyncCommand<object> DeleteCommand { get; }
         public AsyncCommand<object> LostFocusCommand { get; }
 
@@ -97,13 +99,12 @@ namespace UWP_PROJECT_06.ViewModels
             Statuses = new ObservableRangeCollection<string>() { "Select status" };
             PartsOfSpeech = new ObservableRangeCollection<string>() { "Select part of speech" };
             
-            MeaningString = new WordExtra() { LinkType = 5, ExtraText = "" };
+            MeaningString = new WordExtra() { LinkType = 5, ExtraText = "", LinkedWordId = 0};
             Extras = new List<ObservableRangeCollection<WordExtra>>();
 
             Load();
 
             LanguageSelectedCommand = new AsyncCommand(LanguageSelected);
-            ClearCommand = new AsyncCommand(Clear);
             DeleteCommand = new AsyncCommand<object>(Delete);
             LostFocusCommand = new AsyncCommand<object>(LostFocus);
         }
@@ -206,7 +207,17 @@ namespace UWP_PROJECT_06.ViewModels
                 extras[q].ExtraText = extras[q].ExtraText.Trim();
 
                 if (extras[q].ExtraText == "")
+                {
+                    if (extras[q].RowID != 0)
+                    {
+                        DictionaryService.DeleteWordExtra(extras[q].RowID);
+                        
+                        await MarkdownService.WriteWord(DictionaryService.ReadWord(extras[q].WordId), 
+                            DictionaryService.ReadWordExtras(extras[q].WordId));
+                    }
                     extras.RemoveAt(q);
+
+                }
             }
 
             extras.Add(new WordExtra()
@@ -223,37 +234,23 @@ namespace UWP_PROJECT_06.ViewModels
             if (textBox == null) return;
 
             textBox.Text = "";
-
+            
             Grid parent = textBox.Parent as Grid;
             parent.Visibility = Visibility.Collapsed;
         }
 
-        async Task Clear()
+        public async Task SetDefinition(string word)
         {
-            CurrentWord = "";
+            CurrentDefinition = OnlineDictionaryService.GetGermanDefenition(word);
 
-            LanguageSelectionComboBoxSelectedIndex = 0;
-            StatusSelectionComboBoxSelectedIndex = 0;
-            PartOfSpeechSelectionComboBoxSelectedIndex = 0;
-            
-            SelectedDate = DateTime.Now;
-
-            MeaningString = new WordExtra() { LinkType = 5, ExtraText = "" };
-
-            for (int q = 0; q < Extras.Count; q++)
+            if (CurrentDefinition == null)
             {
-                int linkType = Extras[q].FirstOrDefault().LinkType;
+                MessageDialog message = new MessageDialog("Word was not found in online dictionary.", "Woops...");
+                await message.ShowAsync();
 
-                Extras[q].Clear();
-                Extras[q].Add(new WordExtra() { ExtraText = "", LinkType = linkType });
+                return;
             }
 
-        }
-
-        public async Task SetDefinition(string word)
-        { 
-            CurrentDefinition = OnlineDictionaryService.GetDefenition(word);
-            
             #region Word
             
             CurrentWord = CurrentDefinition._word;
@@ -284,7 +281,7 @@ namespace UWP_PROJECT_06.ViewModels
             #region Translations into english
 
             foreach (string translation in CurrentDefinition._definitions._translation)
-                Extras[10].Add(new WordExtra() { LinkType = 6, ExtraText = translation });
+                Extras[10].Add(new WordExtra() { LinkType = 10, ExtraText = translation });
 
             #endregion
             #region Examples

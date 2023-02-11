@@ -81,11 +81,10 @@ namespace UWP_PROJECT_06.ViewModels
 
                 currentTab.Content = frame;
 
-                tabControl.TabItems[index] = currentTab;
+                tabControl.TabItems.Add(currentTab);
                 tabControl.SelectedItem = currentTab;
             }
         }
-
         private async Task OpenVideosListPage(object arg)
         {
             var tabControl = arg as TabView;
@@ -104,12 +103,11 @@ namespace UWP_PROJECT_06.ViewModels
                 currentTab.Content = frame;
 
 
-                tabControl.TabItems[index] = currentTab;
+                tabControl.TabItems.Add(currentTab);
                 tabControl.SelectedItem = currentTab;
             }
 
         }
-
         private async Task OpenWordPage(object arg)
         {
             var tabControl = arg as TabView;
@@ -128,7 +126,7 @@ namespace UWP_PROJECT_06.ViewModels
                 currentTab.Content = frame;
 
 
-                tabControl.TabItems[index] = currentTab;
+                tabControl.TabItems.Add(currentTab);
                 tabControl.SelectedItem = currentTab;
             }
 

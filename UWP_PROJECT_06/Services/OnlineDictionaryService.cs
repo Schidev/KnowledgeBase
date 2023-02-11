@@ -109,7 +109,7 @@ namespace UWP_PROJECT_06.Services
             { "prefix", 17}
         };
 
-        public static Definition GetDefenition(String word)
+        public static Definition GetGermanDefenition(String word)
         {
             var def = new Definition();
 
@@ -302,7 +302,7 @@ namespace UWP_PROJECT_06.Services
             #region Parse verb
 
             if (part_of_speech == "verb")
-                def._verb = ParseVerb(def._word);
+                def._verb = ParseGermanVerb(def._word);
 
             #endregion
             #region Make meaning string
@@ -333,7 +333,7 @@ namespace UWP_PROJECT_06.Services
             
             return def;
         }
-        static Verb ParseVerb(String word)
+        static Verb ParseGermanVerb(String word)
         {
             var full_uri = String.Format(@"https://konjugator.reverso.net/konjugation-deutsch-verb-{0}.html", word);
             var parsed_html = _html_web.Load(full_uri);

@@ -26,6 +26,7 @@
     <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
+    <RootPropertyPathName Name="ClearCommand" />
     <RootPropertyPathName Name="FrameContent" />
     <RootPropertyPathName Name="SelectedWordUnknownWord" />
     <RootPropertyPathName Name="UnknownWordSelectedCommand" />
@@ -65,7 +66,6 @@
     <RootPropertyPathName Name="Statuses" />
     <RootPropertyPathName Name="StatusSelectionComboBoxSelectedIndex" />
     <RootPropertyPathName Name="LanguageSelectionComboBoxSelectedIndex" />
-    <RootPropertyPathName Name="ClearCommand" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
