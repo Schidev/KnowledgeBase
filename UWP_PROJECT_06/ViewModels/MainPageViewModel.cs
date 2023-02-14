@@ -31,15 +31,16 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
         public AsyncCommand<object> OpenVideosListPageCommand { get; }
         public AsyncCommand<object> OpenWordPageCommand { get; }
+        public AsyncCommand<object> OpenSettingsPageCommand { get; }
 
         public AsyncCommand<object> AddTabCommand { get; }
         public AsyncCommand<object> OpenCloseExtraPaneCommand { get; }
 
         public MainPageViewModel()
         {
-            rightExtendedPanelVisibility= Visibility.Collapsed;
-            leftExtendedPanelVisibility= Visibility.Visible;
-            
+            rightExtendedPanelVisibility = Visibility.Collapsed;
+            leftExtendedPanelVisibility = Visibility.Visible;
+
             InitializeServices();
 
             OpenCommand = new AsyncCommand<object>(OpenFile);
@@ -47,6 +48,7 @@ namespace UWP_PROJECT_06.ViewModels
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
             OpenVideosListPageCommand = new AsyncCommand<object>(OpenVideosListPage);
             OpenWordPageCommand = new AsyncCommand<object>(OpenWordPage);
+            OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
 
             AddTabCommand = new AsyncCommand<object>(AddTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
@@ -69,8 +71,6 @@ namespace UWP_PROJECT_06.ViewModels
 
             if (tabControl != null)
             {
-                var index = tabControl.SelectedIndex;
-
                 var currentTab = new TabViewItem();
 
                 currentTab.Header = "Dictionary";
@@ -131,7 +131,27 @@ namespace UWP_PROJECT_06.ViewModels
             }
 
         }
+        async Task OpenSettingsPage(object arg)
+        {
+            var tabControl = arg as TabView;
 
+            if (tabControl == null)
+                return;
+
+            var currentTab = new TabViewItem();
+
+            currentTab.Header = "Settings";
+            currentTab.Name = "settingsPage";
+
+            var frame = new Frame();
+            frame.Navigate(typeof(SettingsPage));
+
+            currentTab.Content = frame;
+
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
+
+        }
 
         private async Task OpenFile(object arg)
         {

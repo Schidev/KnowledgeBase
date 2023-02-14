@@ -134,6 +134,7 @@
     <Compile Include="Models\Dictionary\Status.cs" />
     <Compile Include="Models\Dictionary\Word.cs" />
     <Compile Include="Models\Dictionary\WordExtra.cs" />
+    <Compile Include="Models\History\Pair.cs" />
     <Compile Include="Models\History\UnknownWord.cs" />
     <Compile Include="Models\Notes\Note.cs" />
     <Compile Include="Models\Notes\Quote.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="Services\Converters\ForegroundButtonConverter.cs" />
     <Compile Include="Services\Converters\LanguageConverter.cs" />
     <Compile Include="Services\Converters\ReadingModeIconConverter.cs" />
+    <Compile Include="Services\Converters\SettingsBackgroundButtonConverter.cs" />
+    <Compile Include="Services\Converters\SettingsForegroundButtonConverter.cs" />
     <Compile Include="Services\Converters\StatusConverter.cs" />
     <Compile Include="Services\Converters\WordColorAccentConverter.cs" />
     <Compile Include="Services\Converters\WordColorLightConverter.cs" />
@@ -161,11 +164,38 @@
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\DictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\SettingsPageViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsDictionaryPageViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsFilesAndLinksPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WordCardPageViewModel.cs" />
     <Compile Include="ViewModels\WordEditPageViewModel.cs" />
     <Compile Include="Views\DictionaryPage.xaml.cs">
       <DependentUpon>DictionaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsAppearancePage.xaml.cs">
+      <DependentUpon>SettingsAppearancePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsBookmarksPage.xaml.cs">
+      <DependentUpon>SettingsBookmarksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsDictionaryPage.xaml.cs">
+      <DependentUpon>SettingsDictionaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsFilesAndLinksPage.xaml.cs">
+      <DependentUpon>SettingsFilesAndLinksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsHistoryPage.xaml.cs">
+      <DependentUpon>SettingsHistoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsHotkeysPage.xaml.cs">
+      <DependentUpon>SettingsHotkeysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsSourcesPage.xaml.cs">
+      <DependentUpon>SettingsSourcesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VideoListPage.xaml.cs">
       <DependentUpon>VideoListPage.xaml</DependentUpon>
@@ -250,6 +280,38 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DictionaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsAppearancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsBookmarksPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsDictionaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsFilesAndLinksPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsHistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsHotkeysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsSourcesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

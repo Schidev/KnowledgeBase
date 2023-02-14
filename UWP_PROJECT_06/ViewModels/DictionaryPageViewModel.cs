@@ -50,6 +50,18 @@ namespace UWP_PROJECT_06.ViewModels
         }
 
 
+        int selectedUnknownWordId;
+        public int SelectedUnknownWordId 
+        {
+            get => selectedUnknownWordId;
+            set => SetProperty(ref selectedUnknownWordId, value);
+        }
+        bool isUnknownWordSelected;
+        public bool IsUnknownWordSelected 
+        { 
+            get => isUnknownWordSelected;
+            set => SetProperty(ref isUnknownWordSelected, value);
+        }
         string autoSuggestBoxTextUnknownWord;
         public string AutoSuggestBoxTextUnknownWord
         {
@@ -70,6 +82,14 @@ namespace UWP_PROJECT_06.ViewModels
             get => selectedWordUnknownWord;
             set => SetProperty(ref selectedWordUnknownWord, value);
         }
+
+
+
+
+
+
+
+
 
         object frameContent;
         public object FrameContent
@@ -123,6 +143,7 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> UnknownWordTextChangedCommand { get; }
         public AsyncCommand<object> UnknownWordLanguageSelectedCommand { get; }
 
+        public AsyncCommand DeleteUnknownWordCommand { get; }
         public AsyncCommand ClearCommand { get; }
         public AsyncCommand BackCommand { get; }
         public AsyncCommand ForwardCommand { get; }
@@ -158,6 +179,8 @@ namespace UWP_PROJECT_06.ViewModels
             IsAddingMode = false;
 
             SelectedWord = null;
+            SelectedWordUnknownWord = null;
+            SelectedUnknownWordId = 0;
 
             ChangeMode();
 
@@ -178,6 +201,7 @@ namespace UWP_PROJECT_06.ViewModels
             WordSelectedCommand = new AsyncCommand<object>(WordSelected);
             UnknownWordSelectedCommand = new AsyncCommand<object>(UnknownWordSelected);
 
+            DeleteUnknownWordCommand = new AsyncCommand(DeleteUnknownWord);
             ClearCommand = new AsyncCommand(Clear);
             BackCommand = new AsyncCommand(Back);
             ForwardCommand = new AsyncCommand(Forward);
@@ -364,6 +388,7 @@ namespace UWP_PROJECT_06.ViewModels
 
             IsOnlineDictionaryActive = false;
             IsAddingMode = false;
+            IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
         }
         async Task SearchOnline()
         {
@@ -380,9 +405,12 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
 
+                SelectedUnknownWordId = 0;
+
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
                 IsAddingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
 
                 return;
             }
@@ -404,6 +432,7 @@ namespace UWP_PROJECT_06.ViewModels
                     LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
                     CurrentBrowserWord = AutoSuggestBoxText;
                     AutoSuggestBoxText = "";
+                    SelectedUnknownWordId = 0;
                 }
 
                 FrameContent = LastWebSearchRequest;
@@ -411,6 +440,7 @@ namespace UWP_PROJECT_06.ViewModels
                 IsOnlineDictionaryActive = true;
                 IsReadingMode = false;
                 IsAddingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
             else
             {
@@ -424,9 +454,12 @@ namespace UWP_PROJECT_06.ViewModels
                 markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
                 markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
 
+                SelectedUnknownWordId = 0;
+
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
                 IsAddingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
         }
         async Task AddWord()
@@ -463,6 +496,7 @@ namespace UWP_PROJECT_06.ViewModels
                 IsAddingMode = true;
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
             else
             {
@@ -479,6 +513,7 @@ namespace UWP_PROJECT_06.ViewModels
                 IsAddingMode = false;
                 IsOnlineDictionaryActive = false;
                 IsReadingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
         }
 
@@ -521,6 +556,7 @@ namespace UWP_PROJECT_06.ViewModels
                         IsWritingMode = false;
                         IsOnlineDictionaryActive = false;
                         IsAddingMode = false;
+                        IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
 
                         ChangeMode();
 
@@ -612,14 +648,47 @@ namespace UWP_PROJECT_06.ViewModels
 
             return;
         }
+
+        async Task DeleteUnknownWord()
+        {
+            MessageDialog message = new MessageDialog("Are you sure you want to delete this unknown word permanentely?", "Deleting");
+
+            message.Commands.Add(new UICommand { Label = "Yeah, delete it", Id = 0 });
+            message.Commands.Add(new UICommand { Label = "No, cancel", Id = 1 });
+
+            var result = await message.ShowAsync();
+
+            if ((int)result.Id == 1)
+                return;
+
+            HistoryService.DeleteUnknownWord(SelectedUnknownWordId);
+            SelectedUnknownWordId = 0;
+            IsOnlineDictionaryActive = false;
+            LastWebSearchRequest.DataContext = null;
+
+            IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
+            LoadUnknownWordsGroups();
+
+            MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+            FrameContent = markdownTextBlock;
+
+            markdownTextBlock.Text = await MarkdownService.ReadWebEmptyWord();
+
+            markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+            markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+            markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+            markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+            markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+        }
+
         async Task Save()
         {
             MessageDialog message;
 
-            if (!IsWritingMode || IsOnlineDictionaryActive)
+            if (!IsWritingMode && IsReadingMode)
                 return;
 
-            if (IsAddingMode || IsReadingMode)
+            if (IsAddingMode || (IsReadingMode && IsWritingMode))
             {
                 WordEditPageViewModel viewModel = new WordEditPageViewModel();
 
@@ -821,6 +890,7 @@ namespace UWP_PROJECT_06.ViewModels
                 IsWritingMode = false;
                 IsOnlineDictionaryActive = false;
                 IsAddingMode = false;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
 
                 message = new MessageDialog("Word was correctly saved.", "Congratulations!");
                 await message.ShowAsync();
@@ -864,6 +934,8 @@ namespace UWP_PROJECT_06.ViewModels
                     await message.ShowAsync();
                 }
             }
+
+            IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
         }
 
         async Task UnknownWordTextChanged(object arg)
@@ -886,20 +958,32 @@ namespace UWP_PROJECT_06.ViewModels
 
             if (wordsList.SelectedItem != null)
             {
+                var unknownWord = wordsList.SelectedItem as UnknownWord;
+
+                CurrentBrowserWord = unknownWord.Word;
+                ComboBoxSelectedIndex = unknownWord.Language;
+
                 List<string> Uris = new List<string>() {
-                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word),
-                        @"https://www.google.com/search?q=" + SelectedWordUnknownWord.Word + "+это",
-                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word),
-                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(SelectedWordUnknownWord.Word)
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(CurrentBrowserWord),
+                        @"https://www.google.com/search?q=" + CurrentBrowserWord + "+это",
+                        @"https://dictionary.cambridge.org/dictionary/german-english/" + MarkdownService.CheckText(CurrentBrowserWord),
+                        @"https://dictionary.cambridge.org/dictionary/english/" + MarkdownService.CheckText(CurrentBrowserWord),
+                        @"https://dictionary.cambridge.org/dictionary/french-english/" + MarkdownService.CheckText(CurrentBrowserWord),
+                        @"https://dictionary.cambridge.org/dictionary/italian-english/" + MarkdownService.CheckText(CurrentBrowserWord),
+                        @"https://dictionary.cambridge.org/dictionary/spanish-english/" + MarkdownService.CheckText(CurrentBrowserWord)
                     };
 
                 LastWebSearchRequest.Source = new Uri(Uris[SelectedWordUnknownWord.Language]);
 
                 FrameContent = LastWebSearchRequest;
+                SelectedUnknownWordId = SelectedWordUnknownWord.Id;
                 SelectedWordUnknownWord = null;
 
                 IsReadingMode = false;
+                IsAddingMode= false;
+                IsWritingMode = false;
                 IsOnlineDictionaryActive = true;
+                IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
         }
 

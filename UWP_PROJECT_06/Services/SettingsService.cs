@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using System.IO;
 using UWP_PROJECT_06.Models.Dictionary;
+using Windows.UI.Xaml.Shapes;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -53,7 +54,7 @@ namespace UWP_PROJECT_06.Services
             XmlDocument document = new XmlDocument();
 
             await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
-            string settingsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
 
             document.Load(settingsPath);
 
@@ -78,7 +79,7 @@ namespace UWP_PROJECT_06.Services
             XmlDocument document = new XmlDocument();
 
             await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
-            string settingsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
 
             document.Load(settingsPath);
 
@@ -103,7 +104,7 @@ namespace UWP_PROJECT_06.Services
             XmlDocument document = new XmlDocument();
 
             await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
-            string settingsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
 
             document.Load(settingsPath);
 
@@ -123,6 +124,33 @@ namespace UWP_PROJECT_06.Services
             }
 
             return null;
+        }
+
+        public async static Task WriteColor(string partOfSpeech, string color)
+        {
+            XmlDocument document = new XmlDocument();
+
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+
+            document.Load(settingsPath);
+
+            XmlNode root = document.DocumentElement;
+            XmlNode currentNode = root.ChildNodes.Count != 0 ? root.ChildNodes.Item(0) : null;
+
+            if (currentNode == null)
+                return;
+
+            while (currentNode.LocalName != "colors")
+                currentNode = currentNode.NextSibling;
+
+            foreach (XmlNode node in currentNode.ChildNodes)
+            {
+                if (node.Attributes["key"].Value == partOfSpeech)
+                    node.InnerText = color;
+            }
+
+            document.Save(settingsPath);
         }
 
 

@@ -5,11 +5,14 @@
   </Roots.Interfaces>
   <Roots.PropertyPathNames>
     <RootPropertyPathName Name="DeleteCommand" />
+    <RootPropertyPathName Name="Value" />
+    <RootPropertyPathName Name="Key" />
     <RootPropertyPathName Name="ExtraText" />
     <RootPropertyPathName Name="RightExtendedPanelVisibility" />
     <RootPropertyPathName Name="OpenCloseExtraPaneCommand" />
     <RootPropertyPathName Name="AddTabCommand" />
     <RootPropertyPathName Name="LeftExtendedPanelVisibility" />
+    <RootPropertyPathName Name="OpenSettingsPageCommand" />
     <RootPropertyPathName Name="OpenWordPageCommand" />
     <RootPropertyPathName Name="OpenVideosListPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
@@ -23,6 +26,8 @@
     <RootPropertyPathName Name="ChangeModeCommand" />
     <RootPropertyPathName Name="IsWritingMode" />
     <RootPropertyPathName Name="IsReadingMode" />
+    <RootPropertyPathName Name="DeleteUnknownWordCommand" />
+    <RootPropertyPathName Name="IsUnknownWordSelected" />
     <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
@@ -33,7 +38,6 @@
     <RootPropertyPathName Name="LastModifiedOn" />
     <RootPropertyPathName Name="Language" />
     <RootPropertyPathName Name="Word" />
-    <RootPropertyPathName Name="Key" />
     <RootPropertyPathName Name="Languages" />
     <RootPropertyPathName Name="ComboBoxSelectedIndexUnknownWord" />
     <RootPropertyPathName Name="UnknownWordLanguageSelectedCommand" />
@@ -49,11 +53,28 @@
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
     <RootPropertyPathName Name="TextChangedCommand" />
+    <RootPropertyPathName Name="Colors" />
+    <RootPropertyPathName Name="LostFocusCommand" />
+    <RootPropertyPathName Name="DocumentsPath" />
+    <RootPropertyPathName Name="ImagesPath" />
+    <RootPropertyPathName Name="SoundsPath" />
+    <RootPropertyPathName Name="VideosPath" />
+    <RootPropertyPathName Name="BookmarksPath" />
+    <RootPropertyPathName Name="DictionaryPath" />
+    <RootPropertyPathName Name="VaultPath" />
+    <RootPropertyPathName Name="CurrentContent" />
+    <RootPropertyPathName Name="IsSettingsBookmarksOpen" />
+    <RootPropertyPathName Name="SelectCommand" />
+    <RootPropertyPathName Name="IsSettingsSourcesOpen" />
+    <RootPropertyPathName Name="IsSettingsDictionaryOpen" />
+    <RootPropertyPathName Name="IsSettingsHistoryOpen" />
+    <RootPropertyPathName Name="IsSettingsHotkeysOpen" />
+    <RootPropertyPathName Name="IsSettingsFilesAndLinksOpen" />
+    <RootPropertyPathName Name="IsSettingsAppearanceOpen" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentWord" />
     <RootPropertyPathName Name="IsFrench" />
     <RootPropertyPathName Name="Extras" />
-    <RootPropertyPathName Name="LostFocusCommand" />
     <RootPropertyPathName Name="IsItalian" />
     <RootPropertyPathName Name="IsSpanish" />
     <RootPropertyPathName Name="IsEnglish" />
@@ -81,15 +102,15 @@
     <RootType FullName="Windows.UI.Xaml.Controls.TextBlock">
       <RootProperty Name="Foreground" />
       <RootProperty Name="HorizontalTextAlignment" />
-      <RootProperty Name="Text" />
-      <RootProperty Name="TextAlignment" />
-      <RootProperty Name="Margin" />
-      <RootProperty Name="FontSize" />
-      <RootProperty Name="FontWeight" />
-      <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="Padding" />
       <RootProperty Name="FontFamily" />
+      <RootProperty Name="Text" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="FontWeight" />
+      <RootProperty Name="TextAlignment" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Padding" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.FrameworkElement">
       <RootProperty Name="VerticalAlignment" />
@@ -129,6 +150,9 @@
       <RootProperty Name="Foreground" />
       <RootProperty Name="Visibility" />
       <RootProperty Name="AccessKey" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="HorizontalContentAlignment" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Margin" />
@@ -166,14 +190,14 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
-      <RootMethod Name="GetColumn" />
-      <RootMethod Name="SetColumn" />
       <RootMethod Name="GetRow" />
       <RootMethod Name="SetRow" />
-      <RootMethod Name="GetColumnSpan" />
-      <RootMethod Name="SetColumnSpan" />
       <RootMethod Name="GetRowSpan" />
       <RootMethod Name="SetRowSpan" />
+      <RootMethod Name="GetColumn" />
+      <RootMethod Name="SetColumn" />
+      <RootMethod Name="GetColumnSpan" />
+      <RootMethod Name="SetColumnSpan" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
       <RootProperty Name="Height" />
@@ -185,19 +209,29 @@
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="Text" />
       <RootProperty Name="Margin" />
-      <RootProperty Name="Padding" />
       <RootProperty Name="BorderThickness" />
-      <RootProperty Name="IsSpellCheckEnabled" />
       <RootProperty Name="BorderBrush" />
-      <RootProperty Name="Foreground" />
       <RootProperty Name="Resources" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="IsSpellCheckEnabled" />
+      <RootProperty Name="Foreground" />
       <RootProperty Name="PlaceholderText" />
       <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="MaxWidth" />
       <RootProperty Name="CornerRadius" />
-      <RootProperty Name="FontSize" />
       <RootProperty Name="Background" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Shapes.Rectangle">
+      <RootProperty Name="Height" />
+      <RootProperty Name="Stroke" />
+      <RootProperty Name="StrokeThickness" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Width" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Visibility" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
@@ -278,16 +312,6 @@
       <RootProperty Name="Resources" />
     </RootType>
     <RootType FullName="UWP_PROJECT_06.ViewModels.MainPageViewModel" />
-    <RootType FullName="Windows.UI.Xaml.Shapes.Rectangle">
-      <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="Width" />
-      <RootProperty Name="Margin" />
-      <RootProperty Name="Stroke" />
-      <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="StrokeThickness" />
-      <RootProperty Name="Height" />
-      <RootProperty Name="Visibility" />
-    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
       <RootProperty Name="Visibility" />
       <RootProperty Name="Orientation" />
@@ -412,9 +436,12 @@
       <RootProperty Name="KeyboardAccelerators" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
-      <RootProperty Name="VerticalScrollBarVisibility" />
-      <RootProperty Name="Content" />
       <RootProperty Name="Padding" />
+      <RootProperty Name="Content" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="VerticalScrollBarVisibility" />
       <RootMethod Name="GetVerticalScrollBarVisibility" />
       <RootMethod Name="SetVerticalScrollBarVisibility" />
       <RootMethod Name="GetHorizontalScrollMode" />
@@ -434,6 +461,19 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewHeaderItem" />
     <RootType FullName="UWP_PROJECT_06.Views.DictionaryPage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsAppearancePage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsBookmarksPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsDictionaryPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsDictionaryPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsFilesAndLinksPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsFilesAndLinksPage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsHistoryPage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsHotkeysPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.SettingsPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsBackgroundButtonConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsForegroundButtonConverter" />
+    <RootType FullName="UWP_PROJECT_06.Views.SettingsPage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsSourcesPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.WordCardPageViewModel" />
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock">

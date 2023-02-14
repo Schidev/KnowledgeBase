@@ -73,7 +73,6 @@
             <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
 
 
-
             <Style x:Key="NumberTextStyle" TargetType="TextBlock">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Foreground" Value="LightSlateGray"/>
@@ -253,6 +252,80 @@
                 </Setter>
             </Style>
             
+            <Style TargetType="ListView" x:Key="SettingsDictionaryColorListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" FontFamily="Segoe MDL2 Assets" Text="&#xF57E;" 
+                                           Foreground="{Binding Value}" VerticalAlignment="Center" FontSize="20"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Key}" Margin="10,5,5,5" FontWeight="SemiBold" FontSize="15"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" Margin="10,0,5,5" BorderThickness="0.5,0.5,0.5,0.5" BorderBrush="{StaticResource colorTransparent}">
+
+                                    <TextBox.Resources>
+                                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                    </TextBox.Resources>
+                                
+                                </TextBox>
+                                    
+                                <!-- Delte ListViewItem -->
+                                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center" Margin="5" 
+                                        Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                                        Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=WordTextBox}">
+
+                                    <Button.DataContext>
+                                        <viewmodels:WordEditPageViewModel/>
+                                    </Button.DataContext>
+
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
+                                </Button>
+
+                                <Rectangle Grid.Row="2" Height="0.5" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
     

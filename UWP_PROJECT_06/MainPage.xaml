@@ -223,7 +223,7 @@
 
                 <!-- Settings Button -->
                 <Button Grid.Row="8" Margin="5,5,5,10" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" CornerRadius="5"  Background="{StaticResource SideMenuBackground}"
-                        VerticalAlignment="Bottom">
+                        VerticalAlignment="Bottom" Command="{Binding OpenSettingsPageCommand}" CommandParameter="{x:Bind tabView}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE713;"/>
 
                     <Button.KeyboardAccelerators>

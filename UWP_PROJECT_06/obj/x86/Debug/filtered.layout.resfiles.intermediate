@@ -55,6 +55,14 @@ App.xbf
 MainPage.xbf
 UWP_PROJECT_06.xr.xml
 Views\DictionaryPage.xbf
+Views\Settings\SettingsAppearancePage.xbf
+Views\Settings\SettingsBookmarksPage.xbf
+Views\Settings\SettingsDictionaryPage.xbf
+Views\Settings\SettingsFilesAndLinksPage.xbf
+Views\Settings\SettingsHistoryPage.xbf
+Views\Settings\SettingsHotkeysPage.xbf
+Views\Settings\SettingsPage.xbf
+Views\Settings\SettingsSourcesPage.xbf
 Views\VideoListPage.xbf
 Views\WordCardPage.xbf
 Views\WordEditPage.xbf
