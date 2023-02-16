@@ -55,6 +55,12 @@
     <AppxPackagedFile Include="C:\Users\Q\.nuget\packages\microsoft.toolkit.uwp.ui\7.1.3\lib\uap10.0.17763\Microsoft.Toolkit.Uwp.UI.dll">
       <PackagePath>Microsoft.Toolkit.Uwp.UI.dll</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\.nuget\packages\microsoft.toolkit.uwp.ui.animations\7.1.3\lib\uap10.0.17763\Microsoft.Toolkit.Uwp.UI.Animations.dll">
+      <PackagePath>Microsoft.Toolkit.Uwp.UI.Animations.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\.nuget\packages\microsoft.toolkit.uwp.ui.behaviors\7.1.3\lib\uap10.0.17763\Microsoft.Toolkit.Uwp.UI.Behaviors.dll">
+      <PackagePath>Microsoft.Toolkit.Uwp.UI.Behaviors.dll</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\.nuget\packages\microsoft.toolkit.uwp.ui.controls.core\7.1.3\lib\uap10.0.17763\Microsoft.Toolkit.Uwp.UI.Controls.Core.dll">
       <PackagePath>Microsoft.Toolkit.Uwp.UI.Controls.Core.dll</PackagePath>
     </AppxPackagedFile>

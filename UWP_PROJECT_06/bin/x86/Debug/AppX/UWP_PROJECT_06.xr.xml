@@ -4,6 +4,10 @@
     <RootInterface FullName="Windows.UI.Xaml.Data.IValueConverter" />
   </Roots.Interfaces>
   <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="CopyPathCommand" />
+    <RootPropertyPathName Name="Date" />
+    <RootPropertyPathName Name="FullPath" />
+    <RootPropertyPathName Name="Action" />
     <RootPropertyPathName Name="DeleteCommand" />
     <RootPropertyPathName Name="Value" />
     <RootPropertyPathName Name="Key" />
@@ -16,6 +20,8 @@
     <RootPropertyPathName Name="OpenWordPageCommand" />
     <RootPropertyPathName Name="OpenVideosListPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
+    <RootPropertyPathName Name="OpenDictionaryModifiers" />
+    <RootPropertyPathName Name="OpenDictionaryKey" />
     <RootPropertyPathName Name="UnknownWordsGroups" />
     <RootPropertyPathName Name="WordsGroups" />
     <RootPropertyPathName Name="SaveCommand" />
@@ -62,6 +68,9 @@
     <RootPropertyPathName Name="BookmarksPath" />
     <RootPropertyPathName Name="DictionaryPath" />
     <RootPropertyPathName Name="VaultPath" />
+    <RootPropertyPathName Name="History" />
+    <RootPropertyPathName Name="SelectedItem" />
+    <RootPropertyPathName Name="ReloadCommand" />
     <RootPropertyPathName Name="CurrentContent" />
     <RootPropertyPathName Name="IsSettingsBookmarksOpen" />
     <RootPropertyPathName Name="SelectCommand" />
@@ -105,9 +114,10 @@
       <RootProperty Name="FontFamily" />
       <RootProperty Name="Text" />
       <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="FontSize" />
       <RootProperty Name="Margin" />
+      <RootProperty Name="FontSize" />
       <RootProperty Name="FontWeight" />
+      <RootProperty Name="Resources" />
       <RootProperty Name="TextAlignment" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Padding" />
@@ -136,14 +146,14 @@
     <RootType FullName="Windows.UI.Xaml.Controls.Button">
       <RootProperty Name="Style" />
       <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="Margin" />
       <RootProperty Name="Padding" />
       <RootProperty Name="CornerRadius" />
       <RootProperty Name="Background" />
       <RootProperty Name="Command" />
       <RootProperty Name="CommandParameter" />
-      <RootProperty Name="DataContext" />
       <RootProperty Name="Content" />
+      <RootProperty Name="DataContext" />
+      <RootProperty Name="Margin" />
       <RootProperty Name="KeyboardAccelerators" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="BorderBrush" />
@@ -179,6 +189,7 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="CornerRadius" />
       <RootProperty Name="Margin" />
+      <RootProperty Name="Resources" />
       <RootProperty Name="RowDefinitions" />
       <RootProperty Name="ColumnDefinitions" />
       <RootProperty Name="Children" />
@@ -190,15 +201,19 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
-      <RootMethod Name="GetRow" />
-      <RootMethod Name="SetRow" />
-      <RootMethod Name="GetRowSpan" />
-      <RootMethod Name="SetRowSpan" />
       <RootMethod Name="GetColumn" />
       <RootMethod Name="SetColumn" />
+      <RootMethod Name="GetRow" />
+      <RootMethod Name="SetRow" />
       <RootMethod Name="GetColumnSpan" />
       <RootMethod Name="SetColumnSpan" />
+      <RootMethod Name="GetRowSpan" />
+      <RootMethod Name="SetRowSpan" />
     </RootType>
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryActionIconConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryActionForegroundConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryFullPathConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryDateConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
       <RootProperty Name="Height" />
     </RootType>
@@ -206,22 +221,9 @@
       <RootProperty Name="Width" />
       <RootProperty Name="MinWidth" />
     </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
-      <RootProperty Name="Text" />
-      <RootProperty Name="Margin" />
-      <RootProperty Name="BorderThickness" />
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="Resources" />
-      <RootProperty Name="Padding" />
-      <RootProperty Name="IsSpellCheckEnabled" />
-      <RootProperty Name="Foreground" />
-      <RootProperty Name="PlaceholderText" />
-      <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="FontSize" />
-      <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="MaxWidth" />
-      <RootProperty Name="CornerRadius" />
-      <RootProperty Name="Background" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ToolTipService">
+      <RootMethod Name="GetToolTip" />
+      <RootMethod Name="SetToolTip" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Shapes.Rectangle">
       <RootProperty Name="Height" />
@@ -236,16 +238,28 @@
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="ElementName" />
-      <RootProperty Name="Mode" />
       <RootProperty Name="Converter" />
+      <RootProperty Name="Mode" />
       <RootProperty Name="Source" />
     </RootType>
-    <RootType FullName="UWP_PROJECT_06.ViewModels.WordEditPageViewModel" />
     <RootType FullName="Windows.UI.Xaml.Controls.FontIcon">
       <RootProperty Name="FontFamily" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="Glyph" />
       <RootProperty Name="Foreground" />
+    </RootType>
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsHistoryPageViewModel" />
+    <RootType FullName="Windows.UI.Xaml.Media.Animation.Storyboard">
+      <RootProperty Name="Children" />
+      <RootMethod Name="GetTargetName" />
+      <RootMethod Name="SetTargetName" />
+      <RootMethod Name="GetTargetProperty" />
+      <RootMethod Name="SetTargetProperty" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Media.Animation.ColorAnimation">
+      <RootProperty Name="From" />
+      <RootProperty Name="To" />
+      <RootProperty Name="Duration" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewItem" />
     <RootType FullName="Windows.UI.Xaml.Controls.ControlTemplate">
@@ -273,6 +287,24 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Background" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
+      <RootProperty Name="Text" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Resources" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="IsSpellCheckEnabled" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="PlaceholderText" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="CornerRadius" />
+      <RootProperty Name="Background" />
+    </RootType>
+    <RootType FullName="UWP_PROJECT_06.ViewModels.WordEditPageViewModel" />
     <RootType FullName="Windows.UI.Xaml.VisualStateManager">
       <RootMethod Name="GetVisualStateGroups" />
     </RootType>
@@ -282,13 +314,6 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.VisualState">
       <RootProperty Name="Storyboard" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Media.Animation.Storyboard">
-      <RootProperty Name="Children" />
-      <RootMethod Name="GetTargetName" />
-      <RootMethod Name="SetTargetName" />
-      <RootMethod Name="GetTargetProperty" />
-      <RootMethod Name="SetTargetProperty" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Media.Animation.ObjectAnimationUsingKeyFrames">
       <RootProperty Name="KeyFrames" />

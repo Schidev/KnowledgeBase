@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvvmHelpers.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,12 @@ namespace UWP_PROJECT_06.ViewModels.Settings
         string documentsPath; public string DocumentsPath { get => documentsPath; set => SetProperty(ref documentsPath, value); }
 
 
+        public AsyncCommand LostFocusCommand { get; }
+
         public SettingsFilesAndLinksPageViewModel()
         {
             Load();
+            LostFocusCommand = new AsyncCommand(LostFocus);
         }
 
         async Task Load()
@@ -32,6 +36,17 @@ namespace UWP_PROJECT_06.ViewModels.Settings
             SoundsPath = await SettingsService.ReadPath("sounds");
             ImagesPath = await SettingsService.ReadPath("images");
             DocumentsPath = await SettingsService.ReadPath("documents");
+        }
+
+        async Task LostFocus()
+        {
+            await SettingsService.WritePath("vault", VaultPath);
+            await SettingsService.WritePath("dictionary", DictionaryPath);
+            await SettingsService.WritePath("bookmarks", BookmarksPath);
+            await SettingsService.WritePath("videos", VideosPath);
+            await SettingsService.WritePath("sounds", SoundsPath);
+            await SettingsService.WritePath("images", ImagesPath);
+            await SettingsService.WritePath("documents", DocumentsPath);
         }
 
     }

@@ -26,6 +26,9 @@ namespace UWP_PROJECT_06.ViewModels
             set => SetProperty(ref rightExtendedPanelVisibility, value);
         }
 
+        public String OpenDictionaryModifiers { get => "Menu"; }
+        public String OpenDictionaryKey { get => "Number1"; }
+
         public AsyncCommand<object> OpenCommand { get; }
 
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
@@ -170,7 +173,7 @@ namespace UWP_PROJECT_06.ViewModels
                 // New tab
                 var newTab = new TabViewItem();
                 // Name the header "Settings"
-                newTab.Header = "New tab";
+                newTab.Header = "Dictionary Page";
                 // name the tab
                 newTab.Name = "newTab";
 

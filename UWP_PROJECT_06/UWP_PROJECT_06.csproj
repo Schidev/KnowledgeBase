@@ -134,6 +134,7 @@
     <Compile Include="Models\Dictionary\Status.cs" />
     <Compile Include="Models\Dictionary\Word.cs" />
     <Compile Include="Models\Dictionary\WordExtra.cs" />
+    <Compile Include="Models\History\HistoryItem.cs" />
     <Compile Include="Models\History\Pair.cs" />
     <Compile Include="Models\History\UnknownWord.cs" />
     <Compile Include="Models\Notes\Note.cs" />
@@ -152,6 +153,10 @@
     <Compile Include="Services\Converters\ReadingModeIconConverter.cs" />
     <Compile Include="Services\Converters\SettingsBackgroundButtonConverter.cs" />
     <Compile Include="Services\Converters\SettingsForegroundButtonConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHistoryActionForegroundConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHistoryActionIconConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHistoryDateConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHistoryFullPathConverter.cs" />
     <Compile Include="Services\Converters\StatusConverter.cs" />
     <Compile Include="Services\Converters\WordColorAccentConverter.cs" />
     <Compile Include="Services\Converters\WordColorLightConverter.cs" />
@@ -167,6 +172,7 @@
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsDictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsFilesAndLinksPageViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsHistoryPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WordCardPageViewModel.cs" />
     <Compile Include="ViewModels\WordEditPageViewModel.cs" />
@@ -346,6 +352,12 @@
       <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>7.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
+      <Version>7.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Behaviors">
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">

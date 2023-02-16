@@ -16,11 +16,6 @@ namespace UWP_PROJECT_06.ViewModels.Settings
 {
     public class SettingsDictionaryPageViewModel : ViewModelBase
     {
-        string selectedColor; public string SelectedColor { get => selectedColor; set => SetProperty(ref selectedColor, value); }
-
-
-        //Dictionary<string, string> colors;
-        //public Dictionary<string, string> Colors { get => colors; set => SetProperty(ref colors, value); }
         public ObservableRangeCollection<Pair> Colors { get; set; }
 
         public AsyncCommand<object> LostFocusCommand { get; set; }

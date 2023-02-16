@@ -4,7 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:UWP_PROJECT_06"
     xmlns:models="using:UWP_PROJECT_06.Models.Dictionary"
-    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels">
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:ani="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Behaviors"
+    xmlns:viewmodelsSettings="using:UWP_PROJECT_06.ViewModels.Settings">
+
 
     <Application.Resources>
         <ResourceDictionary>
@@ -57,8 +64,15 @@
             <SolidColorBrush x:Key="colorSilver" Color="Silver"/>
             <SolidColorBrush x:Key="colorLightGrayXAMARIN" Color="#e0e0e0"/>
             <SolidColorBrush x:Key="colorDarkGrayXAMARIN" Color="#424242"/>
-            <SolidColorBrush x:Key="GreenControlColor" Color="#216E6A"/>
-            <SolidColorBrush x:Key="RedControlColor" Color="#870000"/>
+
+
+            <SolidColorBrush x:Key="DimGreyControlColor" Color="#434343"/>
+            <SolidColorBrush x:Key="VioletControlColor" Color="#8B6CEF"/>
+            <SolidColorBrush x:Key="PinkControlColor" Color="#F48FB1"/>
+            <SolidColorBrush x:Key="GreenControlColor" Color="#81C784"/>
+            <SolidColorBrush x:Key="RedControlColor" Color="#EF5350"/>
+            <SolidColorBrush x:Key="OrangeControlColor" Color="#FF8F00"/>
+            <SolidColorBrush x:Key="BlueControlColor" Color="#1976d2"/>
 
             <!-- Dictionary colors-->
             <SolidColorBrush x:Key="colorOrangeDictionary" Color="#ffd180"/>
@@ -319,6 +333,92 @@
                                 </Button>
 
                                 <Rectangle Grid.Row="2" Height="0.5" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+           
+
+            <Style TargetType="ListView" x:Key="SettingsHistoryListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
+
+                                <Grid.Resources>
+                                    <converters:SettingsHistoryActionIconConverter x:Key="ActionIconConverter"/>
+                                    <converters:SettingsHistoryActionForegroundConverter x:Key="ActionForegroundConverter"/>
+                                    <converters:SettingsHistoryFullPathConverter x:Key="FullPathConverter"/>
+                                    <converters:SettingsHistoryDateConverter x:Key="DateConverter"/>
+                                </Grid.Resources>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <TextBlock Grid.Column="1" FontFamily="Segoe MDL2 Assets" Text="{Binding Action, Converter={StaticResource ActionIconConverter}}"
+                                           VerticalAlignment="Center" Margin="10,0,5,0" FontSize="16" Foreground="{Binding Action, Converter={StaticResource ActionForegroundConverter}}"/>
+                                
+                                <TextBlock Grid.Column="2" x:Name="FullPath" Text="{Binding FullPath, Converter={StaticResource FullPathConverter}}" Margin="5,5,5,5" FontWeight="SemiLight" FontSize="15">
+                                    
+                                    <TextBlock.Resources>
+                                        <Storyboard x:Name="CopiedToClipboard">
+                                            <ColorAnimation
+                                                Storyboard.TargetName="FullPath"
+                                                Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                From="#ADA2F2" 
+                                                To="#434343"
+                                                Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </TextBlock.Resources>
+                                
+                                </TextBlock>
+                                
+                                <TextBlock Grid.Column="0" Text="{Binding Date, Converter={StaticResource DateConverter}}" 
+                                           Margin="10,5,5,5" FontWeight="SemiLight" FontSize="12"/>
+
+                                <!-- Delte ListViewItem -->
+                                <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center"
+                                        Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}" ToolTipService.ToolTip="Copy to clipboard"
+                                        Command="{Binding CopyPathCommand}" CommandParameter="{Binding ElementName=FullPath}">
+                                    
+                                    <FontIcon x:Name="IconBlur" FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8C8;"/>
+                                    
+                                    <Button.DataContext>
+                                        <viewmodelsSettings:SettingsHistoryPageViewModel/>
+                                    </Button.DataContext>
+
+                                </Button>
+
+                                <Rectangle Grid.Row="1" Height="0.5" Grid.Column="0" Grid.ColumnSpan="4" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
 
                             </Grid>
                         </DataTemplate>

@@ -170,7 +170,7 @@
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8C1;"/>
 
                     <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Menu" Key="Number1"/>
+                        <KeyboardAccelerator Modifiers="{Binding OpenDictionaryModifiers}" Key="{Binding OpenDictionaryKey}"/>
                     </Button.KeyboardAccelerators>
 
                 </Button>

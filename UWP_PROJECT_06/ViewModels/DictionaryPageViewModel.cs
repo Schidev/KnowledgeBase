@@ -745,12 +745,15 @@ namespace UWP_PROJECT_06.ViewModels
                     return;
                 }
 
-                if (viewModel.MeaningString.ExtraText == String.Empty)
+                if (viewModel.PartOfSpeechSelectionComboBoxSelectedIndex != 5)
                 {
-                    message = new MessageDialog("Meaning string cannot be empty.", "Woops...");
-                    await message.ShowAsync();
+                    if (viewModel.MeaningString.ExtraText == String.Empty)
+                    {
+                        message = new MessageDialog("Meaning string cannot be empty.", "Woops...");
+                        await message.ShowAsync();
 
-                    return;
+                        return;
+                    }
                 }
 
                 var partsOfSpeechDic = new Dictionary<int, string>()
@@ -798,15 +801,17 @@ namespace UWP_PROJECT_06.ViewModels
                 };
 
                 if (IsAddingMode)
+                {
                     DictionaryService.CreateWord(tempWord);
+                }
                 else
                 {
                     Word oldWord = DictionaryService.ReadWord(tempWord.Id);
 
                     if (oldWord.Word1 != tempWord.Word1)
                         await MarkdownService.RenameFile(oldWord, tempWord);
-                    
-                    DictionaryService.UpdateWord(tempWord);
+
+                    DictionaryService.UpdateWord(tempWord);                    
                 }
 
                 tempWord = DictionaryService.ReadWord(tempWord.Word1);
@@ -815,7 +820,7 @@ namespace UWP_PROJECT_06.ViewModels
 
                 for (int q = 0; q < viewModel.Extras.Count; q++)
                 {
-                    if (q == 5)
+                    if (q == 5 && tempWord.PartOfSpeech != 5)
                     {
                         viewModel.MeaningString.WordId = tempWord.Id;
                         viewModel.MeaningString.LinkedWordId = 0;

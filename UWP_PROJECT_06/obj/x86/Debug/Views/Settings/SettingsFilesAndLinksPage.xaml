@@ -6,6 +6,8 @@
     xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels.Settings"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{StaticResource colorWhite}">
 
@@ -48,6 +50,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding VaultPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -57,7 +65,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -84,6 +91,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding DictionaryPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -93,7 +106,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -120,6 +132,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding BookmarksPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -129,7 +147,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -156,6 +173,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding VideosPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -165,7 +188,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -192,6 +214,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding SoundsPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -201,7 +229,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -228,6 +255,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding ImagesPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -237,7 +270,6 @@
                             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
                             <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
-
                         </TextBox.Resources>
 
                     </TextBox>
@@ -264,6 +296,12 @@
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
                              Text="{Binding DocumentsPath, Mode=TwoWay}">
 
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="LostFocus">
+                                <core:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
