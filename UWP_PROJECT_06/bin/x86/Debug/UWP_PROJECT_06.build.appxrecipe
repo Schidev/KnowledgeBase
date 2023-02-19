@@ -378,8 +378,17 @@
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\DictionaryPage.xbf">
-      <PackagePath>Views\DictionaryPage.xbf</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\DictionaryPage.xbf">
+      <PackagePath>Views\Dictionary\DictionaryPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourceCardPage.xbf">
+      <PackagePath>Views\Notes\SourceCardPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourceEditPage.xbf">
+      <PackagePath>Views\Notes\SourceEditPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourcesPage.xbf">
+      <PackagePath>Views\Notes\SourcesPage.xbf</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsAppearancePage.xbf">
       <PackagePath>Views\Settings\SettingsAppearancePage.xbf</PackagePath>
@@ -408,11 +417,11 @@
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\VideoListPage.xbf">
       <PackagePath>Views\VideoListPage.xbf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordCardPage.xbf">
-      <PackagePath>Views\WordCardPage.xbf</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\WordCardPage.xbf">
+      <PackagePath>Views\Dictionary\WordCardPage.xbf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordEditPage.xbf">
-      <PackagePath>Views\WordEditPage.xbf</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\WordEditPage.xbf">
+      <PackagePath>Views\Dictionary\WordEditPage.xbf</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordPage.xbf">
       <PackagePath>Views\WordPage.xbf</PackagePath>

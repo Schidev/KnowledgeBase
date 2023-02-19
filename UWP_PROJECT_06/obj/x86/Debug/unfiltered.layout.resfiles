@@ -54,7 +54,12 @@ Assets\Wide310x150Logo.scale-400.png
 App.xbf
 MainPage.xbf
 UWP_PROJECT_06.xr.xml
-Views\DictionaryPage.xbf
+Views\Dictionary\DictionaryPage.xbf
+Views\Dictionary\WordCardPage.xbf
+Views\Dictionary\WordEditPage.xbf
+Views\Notes\SourceCardPage.xbf
+Views\Notes\SourceEditPage.xbf
+Views\Notes\SourcesPage.xbf
 Views\Settings\SettingsAppearancePage.xbf
 Views\Settings\SettingsBookmarksPage.xbf
 Views\Settings\SettingsDictionaryPage.xbf
@@ -64,7 +69,5 @@ Views\Settings\SettingsHotkeysPage.xbf
 Views\Settings\SettingsPage.xbf
 Views\Settings\SettingsSourcesPage.xbf
 Views\VideoListPage.xbf
-Views\WordCardPage.xbf
-Views\WordEditPage.xbf
 Views\WordPage.xbf
 Properties\Default.rd.xml

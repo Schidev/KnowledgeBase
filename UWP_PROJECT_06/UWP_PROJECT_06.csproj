@@ -167,17 +167,29 @@
     <Compile Include="Services\OnlineDictionaryService.cs" />
     <Compile Include="Services\ProblemsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="ViewModels\DictionaryPageViewModel.cs" />
+    <Compile Include="ViewModels\Dictionary\DictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\Notes\SourceCardPageViewModel.cs" />
+    <Compile Include="ViewModels\Notes\SourceEditPageViewModel.cs" />
+    <Compile Include="ViewModels\Notes\SourcesPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsDictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsFilesAndLinksPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsHistoryPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\WordCardPageViewModel.cs" />
-    <Compile Include="ViewModels\WordEditPageViewModel.cs" />
-    <Compile Include="Views\DictionaryPage.xaml.cs">
+    <Compile Include="ViewModels\Dictionary\WordCardPageViewModel.cs" />
+    <Compile Include="ViewModels\Dictionary\WordEditPageViewModel.cs" />
+    <Compile Include="Views\Dictionary\DictionaryPage.xaml.cs">
       <DependentUpon>DictionaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notes\SourceCardPage.xaml.cs">
+      <DependentUpon>SourceCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notes\SourceEditPage.xaml.cs">
+      <DependentUpon>SourceEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notes\SourcesPage.xaml.cs">
+      <DependentUpon>SourcesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\SettingsAppearancePage.xaml.cs">
       <DependentUpon>SettingsAppearancePage.xaml</DependentUpon>
@@ -206,10 +218,10 @@
     <Compile Include="Views\VideoListPage.xaml.cs">
       <DependentUpon>VideoListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WordCardPage.xaml.cs">
+    <Compile Include="Views\Dictionary\WordCardPage.xaml.cs">
       <DependentUpon>WordCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WordEditPage.xaml.cs">
+    <Compile Include="Views\Dictionary\WordEditPage.xaml.cs">
       <DependentUpon>WordEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WordPage.xaml.cs">
@@ -285,7 +297,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DictionaryPage.xaml">
+    <Page Include="Views\Dictionary\DictionaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Notes\SourceCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Notes\SourceEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Notes\SourcesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -325,11 +349,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WordCardPage.xaml">
+    <Page Include="Views\Dictionary\WordCardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WordEditPage.xaml">
+    <Page Include="Views\Dictionary\WordEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

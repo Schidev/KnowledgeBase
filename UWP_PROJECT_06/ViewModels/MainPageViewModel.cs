@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.History;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
+using UWP_PROJECT_06.Views.Notes;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -32,6 +33,7 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand<object> OpenCommand { get; }
 
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
+        public AsyncCommand<object> OpenNotesPageCommand { get; }
         public AsyncCommand<object> OpenVideosListPageCommand { get; }
         public AsyncCommand<object> OpenWordPageCommand { get; }
         public AsyncCommand<object> OpenSettingsPageCommand { get; }
@@ -49,6 +51,7 @@ namespace UWP_PROJECT_06.ViewModels
             OpenCommand = new AsyncCommand<object>(OpenFile);
 
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
+            OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
             OpenVideosListPageCommand = new AsyncCommand<object>(OpenVideosListPage);
             OpenWordPageCommand = new AsyncCommand<object>(OpenWordPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
@@ -88,6 +91,28 @@ namespace UWP_PROJECT_06.ViewModels
                 tabControl.SelectedItem = currentTab;
             }
         }
+
+        private async Task OpenNotesPage(object arg)
+        {
+            var tabControl = arg as TabView;
+
+            if (tabControl != null)
+            {
+                var currentTab = new TabViewItem();
+
+                currentTab.Header = "Notes";
+                currentTab.Name = "NotesPage";
+                var frame = new Frame();
+                frame.Navigate(typeof(SourcesPage));
+
+                currentTab.Content = frame;
+
+                tabControl.TabItems.Add(currentTab);
+                tabControl.SelectedItem = currentTab;
+            }
+
+        }
+
         private async Task OpenVideosListPage(object arg)
         {
             var tabControl = arg as TabView;

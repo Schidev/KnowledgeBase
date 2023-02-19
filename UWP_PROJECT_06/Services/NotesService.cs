@@ -656,5 +656,164 @@ namespace UWP_PROJECT_06.Services
 
         #endregion
 
+        #region State
+
+        public static string ReadState(int id)
+        {
+            string state = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT State FROM States WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    state = query.GetString(0);
+                }
+
+                conn.Close();
+            }
+
+            return state;
+        }
+        public static List<string> ReadStates()
+        {
+            List<string> states = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT State FROM States;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    states.Add(query.GetString(0));
+                }
+
+                conn.Close();
+            }
+
+            return states;
+        }
+
+        #endregion
+
+        #region Themes
+
+        public static string ReadTheme(int id)
+        {
+            string theme = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Theme FROM Themes WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    theme = query.GetString(0);
+                }
+
+                conn.Close();
+            }
+
+            return theme;
+        }
+        public static List<string> ReadThemes()
+        {
+            List<string> themes = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Theme FROM Themes;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    themes.Add(query.GetString(0));
+                }
+
+                conn.Close();
+            }
+
+            return themes;
+        }
+
+        #endregion
+
+        #region Source types
+
+        public static string ReadSourceType(int id)
+        {
+            string sourceType = "";
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT SourceType FROM SourceTypes WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    sourceType = query.GetString(0);
+                }
+
+                conn.Close();
+            }
+
+            return sourceType;
+        }
+        public static List<string> ReadSourceTypes()
+        {
+            List<string> sourceTypes = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT SourceType FROM SourceTypes;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    sourceTypes.Add(query.GetString(0));
+                }
+
+                conn.Close();
+            }
+
+            return sourceTypes;
+        }
+
+        #endregion
+
     }
 }

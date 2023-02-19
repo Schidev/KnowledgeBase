@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
+using UWP_PROJECT_06.Models.Notes;
 using UWP_PROJECT_06.Views;
 using Windows.Media.Ocr;
 using Windows.Storage;
@@ -18,6 +19,7 @@ using Windows.UI.Popups;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Shapes;
+using static SQLite.SQLite3;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -48,7 +50,7 @@ namespace UWP_PROJECT_06.Services
                 return await Windows.Storage.FileIO.ReadTextAsync(await folder.GetFileAsync(word.Word1 + ".md"));
             }
 
-            StorageFile file = await localFolder.CreateFileAsync("WORD_NOT_FOUND.md", CreationCollisionOption.ReplaceExisting);
+            StorageFile file = await localFolder.CreateFileAsync("FILE_NOT_FOUND.md", CreationCollisionOption.ReplaceExisting);
             
             await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {word.Word1}.md does not exist or path is wrong\n{folder.Path}\\{word.Word1.Replace("_", "\\_")}.md");
             return await Windows.Storage.FileIO.ReadTextAsync(file);
@@ -360,6 +362,238 @@ namespace UWP_PROJECT_06.Services
             }
         }
 
+
+
+        public async static Task<string> ReadSource(Source source)
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string vaultName = await SettingsService.ReadPath("vault");
+            string folderName = await SettingsService.ReadPath("videos");
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+
+            StorageFolder folder = await localFolder.GetFolderAsync(folderName);
+
+            if (await folder.FileExistsAsync(source.SourceName + ".md"))
+            {
+                var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
+                await SettingsService.WriteDictionaryHistory("Read", path);
+
+                return await Windows.Storage.FileIO.ReadTextAsync(await folder.GetFileAsync(source.SourceName + ".md"));
+            }
+
+            StorageFile file = await localFolder.CreateFileAsync("FILE_NOT_FOUND.md", CreationCollisionOption.ReplaceExisting);
+
+            await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {source.SourceName}.md does not exist or path is wrong\n{folder.Path}\\{source.SourceName.Replace("_", "\\_")}.md");
+            return await Windows.Storage.FileIO.ReadTextAsync(file);
+        }
+        public async static Task WriteSource(Source source, IEnumerable<Quote> quotes, IEnumerable<Note> notes, IEnumerable<SourceExtra> extras)
+        {
+            string vaultName = await SettingsService.ReadPath("vault");
+            string folderName = await SettingsService.ReadPath("videos");
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
+
+            if (await folder.FileExistsAsync(source.SourceName + ".md"))
+            {
+                var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
+                await SettingsService.WriteDictionaryHistory("Updated", path);
+            }
+            else
+            {
+                var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
+                await SettingsService.WriteDictionaryHistory("Created", path);
+            }
+
+            StorageFile file = await folder.CreateFileAsync(source.SourceName + ".md", CreationCollisionOption.ReplaceExisting);
+
+            StringBuilder output = new StringBuilder();
+
+            output.AppendLine(String.Format("## Источник: **{0}**", source.SourceName));
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("![|400]()"));
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("### Основная информация"));
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("**Длительность:** {0}.", source.Duration));
+            output.AppendLine(String.Format("**Время посмотра:** {0}%% в полных минутах %%.", source.ActualTime));
+            output.AppendLine(String.Format("**Состояние:** {0}%% просмотрено, просматривается, просмотрится %%.", NotesService.ReadState(source.State)));
+            output.AppendLine(String.Format("**Тема:** {0}%% развлечение, музыка, фильм, образование, спорт, питание, разработка %%.", NotesService.ReadTheme(source.Theme)));
+            output.AppendLine(String.Format("**Тип источника:** {0}%% видео, аудио, изображение, документ %%.", NotesService.ReadSourceType(source.SourceType)));
+            output.AppendLine(String.Format("**Загружено:** {0}%% да, нет %%.", source.IsDownloaded ? "да" : "нет"));
+            output.AppendLine(String.Format("**Описание:** {0}.", source.Description));
+            output.AppendLine(String.Format("**Ссылка:** {0}.", source.SourceLink));
+            output.AppendLine(String.Format("**Временные метки:**"));
+
+            int counter = 1;
+            Regex noteRegex1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)");
+            Regex noteRegex2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+            Regex noteRegex3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+
+            Regex noteRegex4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)([0-9]+)([\s]*)([lL]*)([\s]+)([0-9]+)([\s]*)");
+            Regex noteRegex5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
+
+            foreach (Note note in notes)
+            {
+                string result = "";
+
+                if (noteRegex4.IsMatch(note.Stamp) || noteRegex5.IsMatch(note.Stamp))
+                {
+                    var temp = Regex.Replace(note.Stamp, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                    result = String.Format("page {0} line {1} - page {2} line {3}", temp[0], temp[1], temp[2], temp[3]);
+                }
+                else if (noteRegex1.IsMatch(note.Stamp) && !noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
+                {
+                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    result = String.Format("00:00:{0}-00:00:{1}", temp[0], temp[1]);
+                }
+                else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
+                {
+                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    result = String.Format("00:{0}:{1}-00:{2}:{3}", temp[0], temp[1], temp[2], temp[3]);
+                }
+                else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && noteRegex3.IsMatch(note.Stamp))
+                {
+                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    result = String.Format("{0}:{1}:{2}-{3}:{4}:{5}", temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
+                }
+                else 
+                {
+                    result = note.Stamp;
+                }
+
+                output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, result, note.Title));
+            }
+
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("### Дополнительная информация"));
+
+            foreach (SourceExtra extra in extras)
+                output.AppendLine(String.Format("**{0}:** {1}.", extra.Key, extra.Value));
+            
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("### Заметки"));
+            output.AppendLine(String.Format(""));
+
+            counter = 1;
+            foreach (Note note in notes)
+            {
+                output.AppendLine(String.Format("{0}. {1}.", counter++, note.Note1));
+            }
+
+            output.AppendLine(String.Format(""));
+            output.AppendLine(String.Format("### Цитаты"));
+            output.AppendLine(String.Format(""));
+
+            Regex quoteString1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)");
+            Regex quoteString2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+            Regex quoteString3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+
+            Regex quoteString4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)");
+            Regex quoteString5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
+
+            foreach (Quote quote in quotes)
+            {
+                #region Quote begin
+
+                var quoteBegin = "";
+                
+                if (quoteString4.IsMatch(quote.QuoteBegin) || quoteString5.IsMatch(quote.QuoteBegin))
+                {
+                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                    quoteBegin = String.Format("page {0} line {1}", temp[0], temp[1]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteBegin) && !quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
+                {
+                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteBegin = String.Format("00:00:{0}", temp[0]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
+                {
+                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteBegin = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && quoteString3.IsMatch(quote.QuoteBegin))
+                {
+                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteBegin = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                }
+                else 
+                {
+                    quoteBegin = quote.QuoteBegin;
+                }
+
+                #endregion
+                #region Quote end
+                
+                var quoteEnd = "";
+
+                if (quoteString4.IsMatch(quote.QuoteEnd) || quoteString5.IsMatch(quote.QuoteEnd))
+                {
+                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                    quoteEnd = String.Format("page {0} line {1}", temp[0], temp[1]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteEnd) && !quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
+                {
+                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteEnd = String.Format("00:00:{0}", temp[0]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
+                {
+                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteEnd = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                }
+                else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && quoteString3.IsMatch(quote.QuoteEnd))
+                {
+                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                    quoteEnd = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                }
+                else 
+                {
+                    quoteEnd = quote.QuoteEnd;
+                }
+
+                #endregion
+                #region Original quote
+
+                // <br> = \r\r
+
+                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\\r\\r");
+                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\\r>");
+                quote.OriginalQuote += ">";
+
+                #endregion
+                #region Original quote
+
+                quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r\\r");
+                quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r>");
+                quote.TranslatedQuote += ">";
+
+                #endregion
+
+                output.AppendLine(String.Format("{0}", quote.OriginalQuote));
+                output.AppendLine(String.Format(">"));
+                output.AppendLine(String.Format("{0}", quote.TranslatedQuote));
+                output.AppendLine(String.Format(">"));
+                output.AppendLine(String.Format("{0} - {1}", quoteBegin, quoteEnd));
+            }
+
+            await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());
+        }
+
+
+
         public async static Task<string> ReadNoCardsOpen()
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -372,9 +606,9 @@ namespace UWP_PROJECT_06.Services
         public async static Task<string> ReadWebEmptyWord()
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile file = await localFolder.CreateFileAsync("EMPTY_WORD.md", CreationCollisionOption.OpenIfExists);
+            StorageFile file = await localFolder.CreateFileAsync("EMPTY_SEARCH.md", CreationCollisionOption.OpenIfExists);
 
-            await Windows.Storage.FileIO.WriteTextAsync(file, $"# EMPTY WORD\r\nWord must contain at least one character.", Windows.Storage.Streams.UnicodeEncoding.Utf8);
+            await Windows.Storage.FileIO.WriteTextAsync(file, $"# EMPTY SEARCH\r\nSearch request must contain at least one character.", Windows.Storage.Streams.UnicodeEncoding.Utf8);
 
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }

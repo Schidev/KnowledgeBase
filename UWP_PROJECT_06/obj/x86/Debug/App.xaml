@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:UWP_PROJECT_06"
     xmlns:models="using:UWP_PROJECT_06.Models.Dictionary"
+    xmlns:modelsNotes="using:UWP_PROJECT_06.Models.Notes"
     xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
     xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    xmlns:viewmodelsNotes="using:UWP_PROJECT_06.ViewModels.Notes"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:ani="using:Microsoft.Toolkit.Uwp.UI.Animations"
@@ -340,8 +342,6 @@
                 </Setter>
             </Style>
 
-           
-
             <Style TargetType="ListView" x:Key="SettingsHistoryListViewStyle">
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>
@@ -405,7 +405,7 @@
                                 <TextBlock Grid.Column="0" Text="{Binding Date, Converter={StaticResource DateConverter}}" 
                                            Margin="10,5,5,5" FontWeight="SemiLight" FontSize="12"/>
 
-                                <!-- Delte ListViewItem -->
+                                <!-- Delete ListViewItem -->
                                 <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" VerticalAlignment="Center"
                                         Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}" ToolTipService.ToolTip="Copy to clipboard"
                                         Command="{Binding CopyPathCommand}" CommandParameter="{Binding ElementName=FullPath}">
@@ -426,6 +426,373 @@
                 </Setter>
             </Style>
 
+
+            <Style TargetType="ListView" x:Key="SourcesExtrasListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate> 
+                            <Grid x:Name="ExtrasGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0.5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="0.5"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Key, Mode=TwoWay}" 
+                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" 
+                                             PlaceholderText="Start typing new key...">
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                    <Rectangle Grid.Column="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                    <TextBox Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Value, Mode=TwoWay}"
+                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10"
+                                             PlaceholderText="Start typing new value...">
+
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                </Grid>
+
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Grid.Column="1" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=ExtrasGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE74D;"/>
+
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="ListView" x:Key="NotesListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid x:Name="NotesGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0.5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="0.5"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Title, Mode=TwoWay}" 
+                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" 
+                                             PlaceholderText="Start typing new quote...">
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                    <Rectangle Grid.Column="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                    <TextBox Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Note1, Mode=TwoWay}"
+                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10"
+                                             PlaceholderText="Start typing translation...">
+
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                </Grid>
+
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="1" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                             Text="{Binding Stamp, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
+                                             PlaceholderText="HH:mm:ss-HH:mm:ss...">
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+                                    </TextBox>
+
+                                    
+                                    <Rectangle Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                    <Button Grid.Column="3" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=NotesGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE74D;"/>
+
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+
+
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="ListView" x:Key="QuotesListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid x:Name="QuoteGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0.5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="0.5"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding OriginalQuote, Mode=TwoWay}" 
+                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" 
+                                             PlaceholderText="Start typing new quote...">
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                    <Rectangle Grid.Column="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                    <TextBox Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding TranslatedQuote, Mode=TwoWay}"
+                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10"
+                                             PlaceholderText="Start typing translation...">
+
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                </Grid>
+
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="1" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                             Text="{Binding QuoteBegin, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
+                                             PlaceholderText="HH:mm:ss...">
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+                                    </TextBox>
+
+                                    <TextBox Grid.Column="2" Margin="5,0,0,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                             Text="{Binding QuoteEnd, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
+                                             PlaceholderText="HH:mm:ss...">
+
+                                        <TextBox.Resources>
+                                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                                            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                                        </TextBox.Resources>
+
+                                    </TextBox>
+
+                                    <Rectangle Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+                                    <Button Grid.Column="4" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=QuoteGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE74D;"/>
+
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+
+
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
     
