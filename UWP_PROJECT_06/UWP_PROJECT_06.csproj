@@ -136,6 +136,7 @@
     <Compile Include="Models\Dictionary\WordExtra.cs" />
     <Compile Include="Models\History\HistoryItem.cs" />
     <Compile Include="Models\History\Pair.cs" />
+    <Compile Include="Models\History\UnknownSource.cs" />
     <Compile Include="Models\History\UnknownWord.cs" />
     <Compile Include="Models\Notes\Note.cs" />
     <Compile Include="Models\Notes\Quote.cs" />
@@ -157,6 +158,11 @@
     <Compile Include="Services\Converters\SettingsHistoryActionIconConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryDateConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryFullPathConverter.cs" />
+    <Compile Include="Services\Converters\SourceIsDownloadedConverter.cs" />
+    <Compile Include="Services\Converters\SourceStateConverter.cs" />
+    <Compile Include="Services\Converters\SourceThemeConverter.cs" />
+    <Compile Include="Services\Converters\SourceTypeConverter.cs" />
+    <Compile Include="Services\Converters\SourceTypeToColorConverter.cs" />
     <Compile Include="Services\Converters\StatusConverter.cs" />
     <Compile Include="Services\Converters\WordColorAccentConverter.cs" />
     <Compile Include="Services\Converters\WordColorLightConverter.cs" />

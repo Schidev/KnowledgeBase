@@ -74,18 +74,37 @@
     <RootPropertyPathName Name="LostFocusCommand" />
     <RootPropertyPathName Name="Notes" />
     <RootPropertyPathName Name="Extras" />
-    <RootPropertyPathName Name="SourceTypes" />
     <RootPropertyPathName Name="Source" />
-    <RootPropertyPathName Name="SourceType" />
+    <RootPropertyPathName Name="SourceLink" />
+    <RootPropertyPathName Name="Description" />
+    <RootPropertyPathName Name="ActualTime" />
+    <RootPropertyPathName Name="Duration" />
+    <RootPropertyPathName Name="IsDownloaded" />
+    <RootPropertyPathName Name="SourceTypes" />
+    <RootPropertyPathName Name="SelectedSourceType" />
+    <RootPropertyPathName Name="SourceTypeSelectedCommand" />
     <RootPropertyPathName Name="Themes" />
-    <RootPropertyPathName Name="Theme" />
+    <RootPropertyPathName Name="SelectedTheme" />
+    <RootPropertyPathName Name="ThemeSelectedCommand" />
     <RootPropertyPathName Name="States" />
-    <RootPropertyPathName Name="State" />
+    <RootPropertyPathName Name="SelectedState" />
+    <RootPropertyPathName Name="StateSelectedCommand" />
+    <RootPropertyPathName Name="UnknownSources" />
     <RootPropertyPathName Name="Sources" />
     <RootPropertyPathName Name="IsUnknownSourceSelected" />
+    <RootPropertyPathName Name="RefreshCommand" />
+    <RootPropertyPathName Name="ForwardCommand" />
+    <RootPropertyPathName Name="BackCommand" />
+    <RootPropertyPathName Name="SelectedUnknownSource" />
+    <RootPropertyPathName Name="UnknownSourceSelectedCommand" />
+    <RootPropertyPathName Name="SourceType" />
+    <RootPropertyPathName Name="SelectedSourceTypeUnknown" />
+    <RootPropertyPathName Name="UnknownSourceTypeSelectedCommand" />
+    <RootPropertyPathName Name="SearchUnknownSourceText" />
     <RootPropertyPathName Name="SelectedSource" />
     <RootPropertyPathName Name="SourceSelectedCommand" />
-    <RootPropertyPathName Name="SelectedSourceType" />
+    <RootPropertyPathName Name="Theme" />
+    <RootPropertyPathName Name="State" />
     <RootPropertyPathName Name="SearchSourceText" />
     <RootPropertyPathName Name="Colors" />
     <RootPropertyPathName Name="DocumentsPath" />
@@ -152,6 +171,7 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Height" />
+      <RootProperty Name="MinHeight" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.GridViewItem" />
     <RootType FullName="Windows.UI.Xaml.Controls.Control">
@@ -385,6 +405,7 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="ResizeDirection" />
       <RootProperty Name="Height" />
+      <RootProperty Name="VerticalAlignment" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension" />
     <RootType FullName="Windows.UI.Xaml.Input.KeyboardAccelerator">
@@ -526,8 +547,20 @@
       <RootProperty Name="Background" />
     </RootType>
     <RootType FullName="UWP_PROJECT_06.Views.Notes.SourceCardPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ToggleSwitch">
+      <RootProperty Name="Margin" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="IsOn" />
+      <RootProperty Name="OnContent" />
+      <RootProperty Name="OffContent" />
+    </RootType>
     <RootType FullName="UWP_PROJECT_06.Views.Notes.SourceEditPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Notes.SourcesPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceIsDownloadedConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceStateConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceTypeToColorConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceThemeConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceTypeConverter" />
     <RootType FullName="UWP_PROJECT_06.Views.Notes.SourcesPage" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsAppearancePage" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsBookmarksPage" />

@@ -536,7 +536,7 @@
 
                     <!-- Save in unknown words-->
                     <Button Grid.Column="10" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Click="Button_Click">
+                            Click="Button_Click" Visibility="Collapsed">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE952;"/>
                     </Button>
 

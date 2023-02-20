@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UWP_PROJECT_06.ViewModels;
+using UWP_PROJECT_06.ViewModels.Notes;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -31,17 +32,22 @@ namespace UWP_PROJECT_06.Views.Notes
 
         private void Autosuggest_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                var t = (AutoSuggestBox)sender;
+                var data = t.DataContext as SourcesPageViewModel;
+                data.SearchOnlineCommand.ExecuteAsync();
+            }
         }
 
         void FocusOnSearch(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            
+            Autosuggest.Focus(FocusState.Programmatic);
         }
 
         void FocusOnLanguages(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            
+            SourceTypesComboBox.Focus(FocusState.Programmatic);
         }
 
     }

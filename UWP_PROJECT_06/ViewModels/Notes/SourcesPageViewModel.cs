@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.ServiceModel.Channels;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.History;
@@ -19,14 +21,18 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using static SQLite.SQLite3;
 
 namespace UWP_PROJECT_06.ViewModels.Notes
 {
     public class SourcesPageViewModel : ViewModelBase
     {
         string searchSourceText; public string SearchSourceText { get => searchSourceText; set => SetProperty(ref searchSourceText, value); }
+        string searchUnknownSourceText; public string SearchUnknownSourceText { get => searchUnknownSourceText; set => SetProperty(ref searchUnknownSourceText, value); }
         int selectedSourceType; public int SelectedSourceType { get => selectedSourceType; set => SetProperty(ref selectedSourceType, value);}
+        int selectedSourceTypeUnknown; public int SelectedSourceTypeUnknown { get => selectedSourceTypeUnknown; set => SetProperty(ref selectedSourceTypeUnknown, value);}
         Source selectedSource; public Source SelectedSource { get => selectedSource; set => SetProperty(ref selectedSource, value); }
+        Source selectedUnknownSource; public Source SelectedUnknownSource { get => selectedUnknownSource; set => SetProperty(ref selectedUnknownSource, value); }
         bool isUnknownSourceSelected; public bool IsUnknownSourceSelected { get => isUnknownSourceSelected; set => SetProperty(ref isUnknownSourceSelected, value);}
         int selectedUnknownSourceId; public int SelectedUnknownSourceId { get => selectedUnknownSourceId; set => SetProperty(ref selectedUnknownSourceId, value); }
 
@@ -47,15 +53,20 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
 
         public ObservableCollection<Grouping<string, Source>> Sources { get; set; }
+        public ObservableCollection<Grouping<string, UnknownSource>> UnknownSources { get; set; }
         public ObservableRangeCollection<string> SourceTypes { get; set; }
 
-
+        
         public AsyncCommand DeleteUnknownWordCommand { get; }
         public AsyncCommand ClearCommand { get; }
         public AsyncCommand BackCommand { get; }
         public AsyncCommand ForwardCommand { get; }
         public AsyncCommand RefreshCommand { get; }
         public AsyncCommand SaveCommand { get; }
+        public AsyncCommand<object> TextChangedCommand { get; }
+        public AsyncCommand<object> UnknownSourceTextChangedCommand { get; }
+        public AsyncCommand<object> SourceTypeSelectedCommand { get; }
+        public AsyncCommand<object> UnknownSourceTypeSelectedCommand { get; }
 
 
         public AsyncCommand ChangeModeCommand { get; }
@@ -64,6 +75,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
 
         public AsyncCommand<object> SourceSelectedCommand { get; }
+        public AsyncCommand<object> UnknownSourceSelectedCommand { get; }
 
         public SourcesPageViewModel()
         {
@@ -73,12 +85,14 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             LastWebSearchRequest = new WebView();
 
             Sources = new ObservableCollection<Grouping<string, Source>>();
-            searchSourceText = string.Empty;
+            UnknownSources = new ObservableCollection<Grouping<string, UnknownSource>>();
+            SearchSourceText = string.Empty;
 
             FrameContent = null;
 
             CurrentBrowserWord = "";
             searchSourceText = "";
+            searchUnknownSourceText = "";
             
             SelectedSourceType = 0;
             
@@ -90,6 +104,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
             SelectedSource = null;
             SelectedUnknownSourceId = 0;
+            
 
             ChangeMode();
 
@@ -99,6 +114,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
 
             LoadSources();
+            LoadUnknownSources();
 
             DeleteUnknownWordCommand = new AsyncCommand(DeleteUnknownWord);
             ClearCommand = new AsyncCommand(Clear);
@@ -106,14 +122,128 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             ForwardCommand = new AsyncCommand(Forward);
             RefreshCommand = new AsyncCommand(Refresh);
             SaveCommand = new AsyncCommand(Save);
+            TextChangedCommand = new AsyncCommand<object>(TextChanged);
+            UnknownSourceTextChangedCommand = new AsyncCommand<object>(UnknownSourceTextChanged);
+            SourceTypeSelectedCommand = new AsyncCommand<object>(SourceTypeSelected);
+            UnknownSourceTypeSelectedCommand = new AsyncCommand<object>(UnknownSourceTypeSelected);
 
             ChangeModeCommand = new AsyncCommand(ChangeMode);
             SearchOnlineCommand = new AsyncCommand(SearchOnline);
             AddWordCommand = new AsyncCommand(AddWord);
 
             SourceSelectedCommand = new AsyncCommand<object>(SourceSelected);
+            UnknownSourceSelectedCommand = new AsyncCommand<object>(UnknownSourceSelected);
         }
 
+        async Task LoadSources()
+        {
+            List<Source> sources = new List<Source>();
+            List<int> sourceTypes = new List<int>();
+
+            List<Source> received_sources = NotesService.ReadSources();
+
+            foreach (Source source in received_sources)
+            {
+                source.SourceName = source.SourceName.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+
+                if (!MarkdownService.CheckText(source.SourceName).StartsWith(MarkdownService.CheckText(SearchSourceText))) continue;
+                if (selectedSourceType != 0 && source.SourceType != selectedSourceType) continue;
+
+
+                sources.Add(source);
+
+                if (!sourceTypes.Contains(source.SourceType))
+                    sourceTypes.Add(source.SourceType);
+            }
+
+            Sources.Clear();
+
+            foreach (int sourceType in sourceTypes)
+            {
+                string source_type = NotesService.ReadSourceType(sourceType);
+
+                Sources.Add(new Grouping<string, Source>(
+                    source_type,
+                    sources.Where(e => e.SourceType == sourceType)));
+            }
+        }
+        async Task LoadUnknownSources()
+        {
+            List<UnknownSource> sources = new List<UnknownSource>();
+            List<int> sourceTypes = new List<int>();
+
+            List<UnknownSource> received_sources = HistoryService.ReadUnknownSources();
+
+            foreach (UnknownSource source in received_sources)
+            {
+                if (!MarkdownService.CheckText(source.Source).StartsWith(MarkdownService.CheckText(SearchUnknownSourceText))) continue;
+                if (SelectedSourceTypeUnknown != 0 && source.SourceType != SelectedSourceTypeUnknown) continue;
+
+                sources.Add(source);
+
+                if (!sourceTypes.Contains(source.SourceType))
+                    sourceTypes.Add(source.SourceType);
+            }
+
+            UnknownSources.Clear();
+
+            foreach (int sourceTypeId in sourceTypes)
+            {
+                string sourceType = NotesService.ReadSourceType(sourceTypeId);
+
+                UnknownSources.Add(new Grouping<string, UnknownSource>(
+                    sourceType,
+                    sources.Where(e => e.SourceType == sourceTypeId)));
+            }
+
+        }
+        
+        async Task UnknownSourceTextChanged(object arg)
+        {
+            var autoSuggestBox = arg as AutoSuggestBox;
+
+            if (autoSuggestBox != null)
+            {
+                autoSuggestBox.Text = autoSuggestBox.Text.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+
+                LoadUnknownSources();
+            }
+        }
+        async Task TextChanged(object arg)
+        {
+            var autoSuggestBox = arg as AutoSuggestBox;
+
+            if (autoSuggestBox != null)
+            {
+                autoSuggestBox.Text = autoSuggestBox.Text.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+
+                LoadSources();
+            }
+        }
+        
+        async Task UnknownSourceTypeSelected(object arg)
+        {
+            ComboBox comboBox = arg as ComboBox;
+
+            if (comboBox != null)
+                LoadUnknownSources();
+            
+        }
+        async Task SourceTypeSelected(object arg)
+        {
+            ComboBox comboBox = arg as ComboBox;
+
+            if (comboBox != null)
+            {
+                LoadSources();
+                if (IsOnlineDictionaryActive)
+                {
+                    IsOnlineDictionaryActive = false;
+                    SearchOnline();
+                }
+
+            }
+        }
 
         async Task Save()
         {
@@ -135,10 +265,9 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                     viewModel = LastOpenedSourceAddingCard.DataContext as SourceEditPageViewModel;
                 }
 
-
                 if (viewModel == null)
                     return;
-
+                
                 if (viewModel.Source.SourceName == String.Empty)
                 {
                     message = new MessageDialog("Name must contains at least one character.", "Woops...");
@@ -179,205 +308,442 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                     return;
                 }
 
-                // ToDo: то, что внизу)
+                Regex reg = new Regex(@"[0-9]+");
 
-                //    var partsOfSpeechDic = new Dictionary<int, string>()
-                //    {
-                //        { 1, "noun" },
-                //        { 2, "noun" },
-                //        { 3, "noun" },
-                //        { 4, "noun" },
-                //        { 5, "noun" },
-                //        { 6, "verb" },
-                //        { 7, "adj" },
-                //        { 8, "adv" },
-                //        { 9, "prep" },
-                //        { 10, "num" },
-                //        { 11, "pron" },
-                //        { 12, "conj" },
-                //        { 13, "part" },
-                //        { 14, "interj" },
-                //        { 15, "posspron" },
-                //        { 16, "det" },
-                //        { 17, "pref" },
-                //    };
-                //    var languagesDic = new Dictionary<int, string>()
-                //    {
-                //        { 1, "rus" },
-                //        { 2, "deu" },
-                //        { 3, "eng" },
-                //        { 4, "fra" },
-                //        { 5, "ita" },
-                //        { 6, "spa" },
-                //    };
+                if (!reg.IsMatch(viewModel.Source.Duration.ToString()))
+                {
+                    message = new MessageDialog("Duration is not valid.", "Woops...");
+                    await message.ShowAsync();
 
-                //    var tempWord = new Word()
-                //    {
-                //        Id = viewModel.id,
-                //        Language = viewModel.LanguageSelectionComboBoxSelectedIndex,
-                //        Status = viewModel.StatusSelectionComboBoxSelectedIndex,
-                //        LastRepeatedOn = viewModel.SelectedDate.UtcDateTime,
-                //        CreatedOn = DateTime.UtcNow,
-                //        LastModifiedOn = DateTime.UtcNow,
-                //        PartOfSpeech = viewModel.PartOfSpeechSelectionComboBoxSelectedIndex,
-                //        Word1 = viewModel.CurrentWord.Contains("_rus") || viewModel.CurrentWord.Contains("_deu") || viewModel.CurrentWord.Contains("_eng") || viewModel.CurrentWord.Contains("_fra") || viewModel.CurrentWord.Contains("_ita") || viewModel.CurrentWord.Contains("_spa")
-                //                ? String.Format("{0}_{1}_{2}", MarkdownService.CheckWord(viewModel.CurrentWord).Replace(" ", "_"), partsOfSpeechDic[viewModel.PartOfSpeechSelectionComboBoxSelectedIndex], languagesDic[viewModel.LanguageSelectionComboBoxSelectedIndex])
-                //                : String.Format("{0}_{1}_{2}", viewModel.CurrentWord.Replace(" ", "_"), partsOfSpeechDic[viewModel.PartOfSpeechSelectionComboBoxSelectedIndex], languagesDic[viewModel.LanguageSelectionComboBoxSelectedIndex])
-                //    };
+                    return;
+                }
 
-                //    if (IsAddingMode)
-                //    {
-                //        DictionaryService.CreateWord(tempWord);
-                //    }
-                //    else
-                //    {
-                //        Word oldWord = DictionaryService.ReadWord(tempWord.Id);
+                if (!reg.IsMatch(viewModel.Source.Duration.ToString()))
+                {
+                    message = new MessageDialog("Duration is not valid.", "Woops...");
+                    await message.ShowAsync();
 
-                //        if (oldWord.Word1 != tempWord.Word1)
-                //            await MarkdownService.RenameFile(oldWord, tempWord);
+                    return;
+                }
 
-                //        DictionaryService.UpdateWord(tempWord);
-                //    }
+                var SourceTypesDictionary = new Dictionary<int, string>()
+                    {
+                        { 1, "VIDEO" },
+                        { 2, "SOUND" },
+                        { 3, "IMAGE" },
+                        { 4, "DOCUMENT" }
+                    };
 
-                //    tempWord = DictionaryService.ReadWord(tempWord.Word1);
-                //    var extrasList = new List<WordExtra>();
+                var tempSource = new Source()
+                {
+                    Id = viewModel.Id,
+                    SourceName = viewModel.Source.SourceName.Contains("VIDEO_") || viewModel.Source.SourceName.Contains("SOUND_") || viewModel.Source.SourceName.Contains("IMAGE_") || viewModel.Source.SourceName.Contains("DOCUMENT_")
+                                ? String.Format("{0}_{1}", SourceTypesDictionary[viewModel.Source.SourceType], viewModel.Source.SourceName.Replace(" ", "_").Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", ""))
+                                : String.Format("{0}_{1}", SourceTypesDictionary[viewModel.Source.SourceType], viewModel.Source.SourceName.Replace(" ", "_")),
+                    Duration = viewModel.Source.Duration,
+                    ActualTime = viewModel.Source.ActualTime,
+                    State = viewModel.Source.State,
+                    Theme = viewModel.Source.Theme,
+                    SourceType = viewModel.Source.SourceType,
+                    IsDownloaded = viewModel.IsDownloaded,
+                    Description = viewModel.Source.Description,
+                    SourceLink = viewModel.Source.SourceLink
+                };
 
+                if (IsAddingMode)
+                {
+                    NotesService.CreateSource(tempSource);
+                }
+                else
+                {
+                    Source oldSource = NotesService.ReadSource(tempSource.Id);
 
-                //    for (int q = 0; q < viewModel.Extras.Count; q++)
-                //    {
-                //        if (q == 5 && tempWord.PartOfSpeech != 5)
-                //        {
-                //            viewModel.MeaningString.WordId = tempWord.Id;
-                //            viewModel.MeaningString.LinkedWordId = 0;
+                    if (oldSource.SourceName != tempSource.SourceName || oldSource.SourceType != tempSource.SourceType)
+                        await MarkdownService.RenameFile(oldSource, tempSource);
 
-                //            if (IsReadingMode)
-                //                DictionaryService.UpdateWordExtra(viewModel.MeaningString);
-                //            else
-                //                DictionaryService.CreateWordExtra(viewModel.MeaningString);
+                    NotesService.UpdateSource(tempSource);
+                }
 
-                //            extrasList.Add(viewModel.MeaningString);
-                //            continue;
-                //        }
+                tempSource = NotesService.ReadSource(tempSource.SourceName);
 
-                //        foreach (WordExtra extra in viewModel.Extras[q])
-                //        {
-                //            if (extra.ExtraText.Trim() == String.Empty)
-                //                continue;
+                #region Quotes
 
-                //            extra.ExtraText = extra.ExtraText.Trim();
+                var quotesList = new List<Quote>();
 
-                //            if ((q <= 4) || (q >= 8))
-                //            {
-                //                var extraText = extra.ExtraText.Contains("_rus") || extra.ExtraText.Contains("_deu") || extra.ExtraText.Contains("_eng") || extra.ExtraText.Contains("_fra") || extra.ExtraText.Contains("_ita") || extra.ExtraText.Contains("_spa")
-                //                ? extra.ExtraText
-                //                : String.Format("{0}_{1}_{2}", extra.ExtraText.Replace(" ", "_"), partsOfSpeechDic[tempWord.PartOfSpeech], languagesDic[tempWord.Language]);
+                Regex quoteString1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)");
+                Regex quoteString2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+                Regex quoteString3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
 
-                //                extra.LinkedWordId = DictionaryService.ReadWord(extraText).Id;
-                //                extra.ExtraText = extra.LinkedWordId == 0 ? extra.ExtraText : "";
-                //            }
-                //            else if (q == 6 || q == 7)
-                //            {
-                //                extra.ExtraText = String.Format("{0}", extra.ExtraText);
-                //                extra.LinkedWordId = 0;
-                //            }
-
-                //            extra.WordId = tempWord.Id;
-
-                //            if ((extra.ExtraText != String.Empty && extra.LinkedWordId == 0) || (extra.ExtraText == String.Empty && extra.LinkedWordId != 0))
-                //            {
-                //                if (!IsReadingMode || extra.RowID == 0)
-                //                {
-                //                    DictionaryService.CreateWordExtra(extra);
-
-                //                }
-                //                else
-                //                {
-                //                    DictionaryService.UpdateWordExtra(extra);
-                //                }
-
-                //                extrasList.Add(extra);
-                //            }
-                //        }
-                //    }
-
-                //    await MarkdownService.WriteWord(tempWord, extrasList);
+                Regex quoteString4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)");
+                Regex quoteString5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
 
 
-                //    if (IsAddingMode)
-                //    {
-                //        LastOpenedWordAddingCard.DataContext = null;
-                //    }
+                foreach (Quote quote in viewModel.Quotes)
+                {
+                    quote.QuoteBegin = quote.QuoteBegin.Trim();
+                    quote.QuoteEnd = quote.QuoteEnd.Trim();
+                    quote.OriginalQuote = quote.OriginalQuote.Trim();
+                    quote.TranslatedQuote = quote.TranslatedQuote.Trim();
 
-                //    AutoSuggestBoxText = tempWord.Word1;
-                //    SelectedWord = null;
+                    if (quote.QuoteBegin == String.Empty || quote.QuoteEnd == String.Empty || quote.OriginalQuote == String.Empty || quote.TranslatedQuote == String.Empty)
+                        continue;
 
-                //    LastOpenedWordCard.DataContext = new WordCardPageViewModel(tempWord.Id);
-                //    LastOpenedWordEditCard.DataContext = new WordEditPageViewModel(tempWord.Id);
+                    #region Quote begin
 
-                //    FrameContent = LastOpenedWordCard;
+                    if (quoteString4.IsMatch(quote.QuoteBegin) || quoteString5.IsMatch(quote.QuoteBegin))
+                    {
+                        var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
 
-                //    IsReadingMode = true;
-                //    IsWritingMode = false;
-                //    IsOnlineDictionaryActive = false;
-                //    IsAddingMode = false;
-                //    IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
+                        quote.QuoteBegin = String.Format("page {0} line {1}", temp[0], temp[1]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteBegin) && !quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
+                    {
+                        var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //    message = new MessageDialog("Word was correctly saved.", "Congratulations!");
-                //    await message.ShowAsync();
-                //    return;
-                //}
+                        quote.QuoteBegin = String.Format("00:00:{0}", temp[0]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
+                    {
+                        var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //if (IsOnlineDictionaryActive)
-                //{
-                //    message = new MessageDialog("Would you like to save this unknown word?");
+                        quote.QuoteBegin = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && quoteString3.IsMatch(quote.QuoteBegin))
+                    {
+                        var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //    message.Commands.Add(new UICommand { Label = "Yes, I would", Id = 0 });
-                //    message.Commands.Add(new UICommand { Label = "No, I wouldn't", Id = 1 });
+                        quote.QuoteBegin = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                    }
 
-                //    var result = await message.ShowAsync();
+                    #endregion
+                    #region Quote end
 
-                //    if ((int)result.Id == 0)
-                //    {
-                //        UnknownWord word = new UnknownWord();
+                    if (quoteString4.IsMatch(quote.QuoteEnd) || quoteString5.IsMatch(quote.QuoteEnd))
+                    {
+                        var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
 
-                //        word.Word = MarkdownService.CheckText(CurrentBrowserWord);
-                //        word.Language = comboBoxSelectedIndex == 0 ? 2 : comboBoxSelectedIndex;
-                //        word.LastModifiedOn = DateTime.Now;
+                        quote.QuoteEnd = String.Format("page {0} line {1}", temp[0], temp[1]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteEnd) && !quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
+                    {
+                        var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //        if (word.Word != String.Empty)
-                //        {
-                //            HistoryService.CreateUnknownWord(word);
-                //            LoadUnknownWordsGroups();
+                        quote.QuoteEnd = String.Format("00:00:{0}", temp[0]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
+                    {
+                        var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //            message = new MessageDialog("Unknown word was correctly saved.", "Congratulations!");
-                //            await message.ShowAsync();
-                //        }
-                //        else
-                //        {
-                //            message = new MessageDialog("Word must contains at least one character.", "Woops...");
-                //            await message.ShowAsync();
-                //        }
-                //    }
-                //    else
-                //    {
-                //        message = new MessageDialog("Unknown word wasn't saved.", "Woops...");
-                //        await message.ShowAsync();
-                //    }
-                //}
+                        quote.QuoteEnd = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                    }
+                    else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && quoteString3.IsMatch(quote.QuoteEnd))
+                    {
+                        var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                //IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
+                        quote.QuoteEnd = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                    }
+
+                    #endregion
+                    #region Original quote
+
+                    quote.OriginalQuote = quote.OriginalQuote.Replace("<br>", "\\r\\r");
+
+                    #endregion
+                    #region Original quote
+
+                    quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r\\r");
+
+                    #endregion
+
+                    quote.SourceID = tempSource.Id;
+
+                    if (!IsReadingMode || quote.Id == 0)
+                        NotesService.CreateQuote(quote);
+                    else
+                        NotesService.UpdateQuote(quote);
+
+                    quotesList.Add(quote);
+                }
+
+                #endregion
+                #region Notes
+
+                var notesList = new List<Note>();
+
+                Regex noteRegex1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)");
+                Regex noteRegex2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+                Regex noteRegex3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+
+                Regex noteRegex4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)([0-9]+)([\s]*)([lL]*)([\s]+)([0-9]+)([\s]*)");
+                Regex noteRegex5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
+
+
+                foreach (Note note in viewModel.Notes)
+                {
+                    note.Stamp = note.Stamp.Trim();
+                    note.Title = note.Title.Trim();
+                    note.Note1 = note.Note1.Trim();
+
+                    if (note.Stamp == String.Empty || note.Title == String.Empty || note.Note1 == String.Empty)
+                        continue;
+
+                    if (noteRegex4.IsMatch(note.Stamp) || noteRegex5.IsMatch(note.Stamp))
+                    {
+                        var temp = Regex.Replace(note.Stamp, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                        note.Stamp = String.Format("page {0} line {1} - page {2} line {3}", temp[0], temp[1], temp[2], temp[3]);
+                    }
+                    else if (noteRegex1.IsMatch(note.Stamp) && !noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
+                    {
+                        var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                        note.Stamp = String.Format("00:00:{0}-00:00:{1}", temp[0], temp[1]);
+                    }
+                    else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
+                    {
+                        var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                        note.Stamp = String.Format("00:{0}:{1}-00:{2}:{3}", temp[0], temp[1], temp[2], temp[3]);
+                    }
+                    else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && noteRegex3.IsMatch(note.Stamp))
+                    {
+                        var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                        note.Stamp = String.Format("{0}:{1}:{2}-{3}:{4}:{5}", temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
+                    }
+
+                    note.SourceID = tempSource.Id;
+
+                    if (!IsReadingMode || note.Id == 0)
+                        NotesService.CreateNote(note);
+                    else
+                        NotesService.UpdateNote(note);
+
+                    notesList.Add(note);
+                }
+
+                #endregion
+                #region Extras
+
+                var extrasList = new List<SourceExtra>();
+
+                foreach (SourceExtra extra in viewModel.Extras)
+                {
+                    extra.Key = extra.Key.Trim();
+                    extra.Value = extra.Value.Trim();
+
+                    if (extra.Key == String.Empty || extra.Value == String.Empty)
+                        continue;
+
+                    extra.SourceID = tempSource.Id;
+
+                    if (!IsReadingMode || extra.Id == 0)
+                        NotesService.CreateSourceExtra(extra);
+                    else
+                        NotesService.UpdateSourceExtra(extra);
+                    
+                    extrasList.Add(extra);
+                }
+
+                #endregion
+
+                LoadSources();
+
+                await MarkdownService.WriteSource(tempSource, quotesList, notesList, extrasList);
+
+                if (IsAddingMode)
+                {
+                    LastOpenedSourceAddingCard.DataContext = null;
+                }
+
+                SearchSourceText = tempSource.SourceName;
+                SelectedSource = null;
+
+                LastOpenedSourceCard.DataContext = new SourceCardPageViewModel(tempSource.Id);
+                LastOpenedSourceEditCard.DataContext = new SourceEditPageViewModel(tempSource.Id);
+                
+                FrameContent = LastOpenedSourceCard;
+
+                IsReadingMode = true;
+                IsWritingMode = false;
+                IsOnlineDictionaryActive = false;
+                IsAddingMode = false;
+                IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
+
+                message = new MessageDialog("Card was correctly saved.", "Congratulations!");
+                await message.ShowAsync();
+                return;
+            }
+
+            if (IsOnlineDictionaryActive)
+            {
+                message = new MessageDialog("Would you like to save this unknown word?");
+
+                message.Commands.Add(new UICommand { Label = "Yes, I would", Id = 0 });
+                message.Commands.Add(new UICommand { Label = "No, I wouldn't", Id = 1 });
+
+                var result = await message.ShowAsync();
+
+                if ((int)result.Id == 0)
+                {
+                    UnknownSource source = new UnknownSource();
+
+                    source.Source = MarkdownService.CheckText(CurrentBrowserWord);
+                    source.SourceType = SelectedSourceType == 0 ? 1 : SelectedSourceType;
+                    source.LastModifiedOn = DateTime.Now;
+
+                    if (source.Source != String.Empty)
+                    {
+                        HistoryService.CreateUnknownSource(source);
+                        LoadUnknownSources();
+
+                        message = new MessageDialog("Unknown source was correctly saved.", "Congratulations!");
+                        await message.ShowAsync();
+                    }
+                    else
+                    {
+                        message = new MessageDialog("Source must contains at least one character.", "Woops...");
+                        await message.ShowAsync();
+                    }
+                }
+                else
+                {
+                    message = new MessageDialog("Unknown source wasn't saved.", "Woops...");
+                    await message.ShowAsync();
+                }
+            }
+
+            IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
+
+        }
+        async Task Back()
+        {
+            WebView frameContent = FrameContent as WebView;
+
+            if (frameContent != null)
+            {
+                if (frameContent.CanGoBack)
+                    frameContent.GoBack();
+
+                return;
             }
         }
+        async Task Forward()
+        {
+            WebView frameContent = FrameContent as WebView;
 
-        async Task Refresh() {}
+            if (frameContent != null)
+            {
+                if (frameContent.CanGoForward)
+                    frameContent.GoForward();
 
-        async Task Forward() {}
+                return;
+            }
+        }
+        async Task Refresh()
+        {
+            WebView frameContent = FrameContent as WebView;
 
-        async Task Back() {}
+            if (frameContent != null)
+                frameContent.Refresh();
 
-        async Task Clear() {}
-        async Task DeleteUnknownWord() { }
+            return;
+        }
 
+        async Task Clear() 
+        {
+            MessageDialog message = new MessageDialog("Would you like to delete source permanently or clear all data?");
+
+            message.Commands.Add(new UICommand { Label = "Delete", Id = 0 });
+            message.Commands.Add(new UICommand { Label = "Clear", Id = 1 });
+            message.Commands.Add(new UICommand { Label = "Cancel", Id = 2 });
+
+            var result = await message.ShowAsync();
+
+            bool ForDeleting = (int)result.Id == 0;
+
+            if ((int)result.Id == 2)
+                return;
+
+            if ((int)result.Id == 0)
+            {
+                var viewModel = LastOpenedSourceEditCard.DataContext as SourceEditPageViewModel;
+
+                if (viewModel != null)
+                {
+                    Source source = NotesService.ReadSource(viewModel.Id);
+
+                    if (source != null)
+                    {
+                        await MarkdownService.DeleteFile(source);
+                        NotesService.DeleteSource(source.Id);
+
+                        if (IsAddingMode)
+                            LastOpenedSourceAddingCard.DataContext = null;
+
+                        LastOpenedSourceCard.DataContext = null;
+                        LastOpenedSourceEditCard.DataContext = null;
+
+                        IsReadingMode = false;
+                        IsWritingMode = false;
+                        IsOnlineDictionaryActive = false;
+                        IsAddingMode = false;
+                        IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
+
+                        ChangeMode();
+                        LoadSources();
+
+                        message = new MessageDialog("Source was permanentely deleted.", "Congratulations!");
+                        await message.ShowAsync();
+                        return;
+                    }
+                    else
+                    {
+                        message = new MessageDialog("Source doesn't exist.", "Woops...");
+                        await message.ShowAsync();
+                        return;
+                    }
+                }
+                else
+                {
+                    message = new MessageDialog("Action is not availiable.", "Woops...");
+                    await message.ShowAsync();
+                    return;
+                }
+            }
+            else
+            {
+                var viewModel = LastOpenedSourceEditCard.DataContext as SourceEditPageViewModel;
+
+                if (viewModel != null)
+                {
+                    viewModel.Source.SourceName = "";
+                    viewModel.SelectedState = 0;
+                    viewModel.SelectedTheme = 0;
+                    viewModel.SelectedSourceType = 0;
+                    viewModel.IsDownloaded = false;
+
+                    viewModel.Source.Duration = 0;
+                    viewModel.Source.ActualTime = 0;
+                    viewModel.Source.Description = "";
+                    viewModel.Source.SourceLink = "";
+
+                    viewModel.Quotes.Clear();
+                    viewModel.Notes.Clear();
+                    viewModel.Extras.Clear();
+
+                    message = new MessageDialog("Your edit page is now blank.", "Congratulations!");
+                    await message.ShowAsync();
+                    return;
+                }
+                else
+                {
+                    message = new MessageDialog("Action is not availiable.", "Woops...");
+                    await message.ShowAsync();
+                    return;
+                }
+            }
+        }
         async Task ChangeMode()
         {
             MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
@@ -581,34 +947,68 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 IsAddingMode = false;
             }
         }
-        async Task LoadSources()
+        async Task UnknownSourceSelected(object arg)
         {
-            List<Source> sources = new List<Source>();
-            List<int> sourceTypes = new List<int>();
+            ListView sourcesList = arg as ListView;
 
-            List<Source> received_sources = NotesService.ReadSources();
-
-            foreach (Source source in received_sources)
+            if (sourcesList.SelectedItem != null)
             {
-                if (!MarkdownService.CheckText(source.SourceName).StartsWith(MarkdownService.CheckText(SearchSourceText))) continue;
-                if (selectedSourceType != 0 && source.SourceType != selectedSourceType) continue;
+                var unknownSource = sourcesList.SelectedItem as UnknownSource;
 
-                sources.Add(source);
+                CurrentBrowserWord = unknownSource.Source;
+                SelectedUnknownSourceId = unknownSource.SourceType;
 
-                if (!sourceTypes.Contains(source.SourceType))
-                    sourceTypes.Add(source.SourceType);
-            }
+                LastWebSearchRequest.Source = new Uri(@"https://www.google.com/search?q=" + CurrentBrowserWord + "+это");
 
-            Sources.Clear();
+                FrameContent = LastWebSearchRequest;
+                SelectedUnknownSourceId = unknownSource.Id;
+                SelectedUnknownSource = null;
 
-            foreach (int sourceType in sourceTypes)
-            {
-                string source_type = DictionaryService.ReadLanguage(sourceType);
-
-                Sources.Add(new Grouping<string, Source>(
-                    source_type,
-                    sources.Where(e => e.SourceType == sourceType)));
+                IsReadingMode = false;
+                IsAddingMode = false;
+                IsWritingMode = false;
+                IsOnlineDictionaryActive = true;
+                IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
             }
         }
+
+
+      
+
+
+
+        async Task DeleteUnknownWord() 
+        {
+            MessageDialog message = new MessageDialog("Are you sure you want to delete this unknown source permanentely?", "Deleting");
+
+            message.Commands.Add(new UICommand { Label = "Yeah, delete it", Id = 0 });
+            message.Commands.Add(new UICommand { Label = "No, cancel", Id = 1 });
+
+            var result = await message.ShowAsync();
+
+            if ((int)result.Id == 1)
+                return;
+
+            HistoryService.DeleteUnknownSource(SelectedUnknownSourceId);
+            SelectedUnknownSourceId = 0;
+            IsOnlineDictionaryActive = false;
+            LastWebSearchRequest.DataContext = null;
+
+            IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
+            LoadUnknownSources();
+
+            MarkdownTextBlock markdownTextBlock = new MarkdownTextBlock();
+            FrameContent = markdownTextBlock;
+
+            markdownTextBlock.Text = await MarkdownService.ReadWebEmptyWord();
+
+            markdownTextBlock.Padding = new Thickness(20, 0, 20, 0);
+            markdownTextBlock.Background = Application.Current.Resources["colorWhite"] as SolidColorBrush;
+            markdownTextBlock.Foreground = Application.Current.Resources["colorDimGray"] as SolidColorBrush;
+            markdownTextBlock.VerticalAlignment = VerticalAlignment.Center;
+            markdownTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+        }
+
+
     }
 }

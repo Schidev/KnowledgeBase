@@ -32,7 +32,6 @@ namespace UWP_PROJECT_06.Services
             string folderName = await SettingsService.ReadPath("dictionary");
             folderName = System.IO.Path.Combine(vaultName, folderName);
 
-
             if (word.Language == 1) folderName += @"\Rus\WORDS";
             if (word.Language == 2) folderName += @"\Deu\WORDS";
             if (word.Language == 3) folderName += @"\Eng\WORDS";
@@ -40,7 +39,7 @@ namespace UWP_PROJECT_06.Services
             if (word.Language == 5) folderName += @"\Ita\WORDS";
             if (word.Language == 6) folderName += @"\Spa\WORDS";
 
-            StorageFolder folder = await localFolder.GetFolderAsync(folderName);
+            StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
@@ -55,7 +54,6 @@ namespace UWP_PROJECT_06.Services
             await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {word.Word1}.md does not exist or path is wrong\n{folder.Path}\\{word.Word1.Replace("_", "\\_")}.md");
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
-
         public async static Task WriteWord(Word word, IEnumerable<WordExtra> wordExtras)
         {
             string vaultName = await SettingsService.ReadPath("vault");
@@ -69,7 +67,7 @@ namespace UWP_PROJECT_06.Services
             if (word.Language == 5) folderName += @"\Ita\WORDS";
             if (word.Language == 6) folderName += @"\Spa\WORDS";
 
-            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
+            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
@@ -229,7 +227,6 @@ namespace UWP_PROJECT_06.Services
             #endregion
 
         }
-
         public async static Task RenameFile(Word oldWord, Word newWord)
         {
             #region Read
@@ -247,13 +244,13 @@ namespace UWP_PROJECT_06.Services
             if (oldWord.Language == 5) fullPath += @"\Ita\WORDS";
             if (oldWord.Language == 6) fullPath += @"\Spa\WORDS";
 
-            StorageFolder folder = await localFolder.GetFolderAsync(fullPath);
+            StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
 
             string fileInnerText = "";
             
             if (await folder.FileExistsAsync(oldWord.Word1 + ".md"))
             {
-                StorageFile oldFile = await folder.GetFileAsync(oldWord.Word1 + ".md");
+                StorageFile oldFile = await folder.CreateFileAsync(oldWord.Word1 + ".md", CreationCollisionOption.OpenIfExists);
                 fileInnerText = await Windows.Storage.FileIO.ReadTextAsync(oldFile);
 
                 var path = oldFile.Path;
@@ -314,11 +311,11 @@ namespace UWP_PROJECT_06.Services
             if (word.Language == 5) folderName += @"\Ita\WORDS";
             if (word.Language == 6) folderName += @"\Spa\WORDS";
 
-            StorageFolder folder = await localFolder.GetFolderAsync(folderName);
+            StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
-                StorageFile file = await folder.GetFileAsync(word.Word1 + ".md");
+                StorageFile file = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.OpenIfExists);
                 await file.DeleteAsync();
 
                 string path = file.Path;
@@ -332,7 +329,6 @@ namespace UWP_PROJECT_06.Services
                 return;
             } 
         }
-
         public async static Task<string> FindWordCardFullPath(Word word)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -349,11 +345,11 @@ namespace UWP_PROJECT_06.Services
             if (word.Language == 5) fullPath += @"\Ita\WORDS";
             if (word.Language == 6) fullPath += @"\Spa\WORDS";
 
-            StorageFolder folder = await localFolder.GetFolderAsync(fullPath);
+            StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
-                StorageFile oldFile = await folder.GetFileAsync(word.Word1 + ".md");
+                StorageFile oldFile = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.OpenIfExists);
                 return oldFile.Path;
             }
             else 
@@ -363,15 +359,22 @@ namespace UWP_PROJECT_06.Services
         }
 
 
-
         public async static Task<string> ReadSource(Source source)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             string vaultName = await SettingsService.ReadPath("vault");
-            string folderName = await SettingsService.ReadPath("videos");
+
+            var F = "";
+            if (source.SourceType == 1) F = "videos";
+            if (source.SourceType == 2) F = "sounds";
+            if (source.SourceType == 3) F = "images";
+            if (source.SourceType == 4) F = "documents";
+
+            string folderName = await SettingsService.ReadPath(F);
+
             folderName = System.IO.Path.Combine(vaultName, folderName);
 
-            StorageFolder folder = await localFolder.GetFolderAsync(folderName);
+            StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(source.SourceName + ".md"))
             {
@@ -389,9 +392,18 @@ namespace UWP_PROJECT_06.Services
         public async static Task WriteSource(Source source, IEnumerable<Quote> quotes, IEnumerable<Note> notes, IEnumerable<SourceExtra> extras)
         {
             string vaultName = await SettingsService.ReadPath("vault");
-            string folderName = await SettingsService.ReadPath("videos");
+
+            var F = "";
+            if (source.SourceType == 1) F = "videos";
+            if (source.SourceType == 2) F = "sounds";
+            if (source.SourceType == 3) F = "images";
+            if (source.SourceType == 4) F = "documents";
+            
+            string folderName = await SettingsService.ReadPath(F);
+            
+            
             folderName = System.IO.Path.Combine(vaultName, folderName);
-            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
+            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
             if (await folder.FileExistsAsync(source.SourceName + ".md"))
             {
@@ -499,99 +511,196 @@ namespace UWP_PROJECT_06.Services
             {
                 #region Quote begin
 
-                var quoteBegin = "";
-                
                 if (quoteString4.IsMatch(quote.QuoteBegin) || quoteString5.IsMatch(quote.QuoteBegin))
                 {
                     var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
 
-                    quoteBegin = String.Format("page {0} line {1}", temp[0], temp[1]);
+                    quote.QuoteBegin = String.Format("page {0} line {1}", temp[0], temp[1]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteBegin) && !quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
                 {
                     var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteBegin = String.Format("00:00:{0}", temp[0]);
+                    quote.QuoteBegin = String.Format("00:00:{0}", temp[0]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
                 {
                     var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteBegin = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                    quote.QuoteBegin = String.Format("00:{0}:{1}", temp[0], temp[1]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && quoteString3.IsMatch(quote.QuoteBegin))
                 {
                     var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteBegin = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                    quote.QuoteBegin = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
                 }
                 else 
                 {
-                    quoteBegin = quote.QuoteBegin;
+                    quote.QuoteBegin = quote.QuoteBegin;
                 }
 
                 #endregion
                 #region Quote end
                 
-                var quoteEnd = "";
-
                 if (quoteString4.IsMatch(quote.QuoteEnd) || quoteString5.IsMatch(quote.QuoteEnd))
                 {
                     var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
 
-                    quoteEnd = String.Format("page {0} line {1}", temp[0], temp[1]);
+                    quote.QuoteEnd = String.Format("page {0} line {1}", temp[0], temp[1]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteEnd) && !quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
                 {
                     var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteEnd = String.Format("00:00:{0}", temp[0]);
+                    quote.QuoteEnd = String.Format("00:00:{0}", temp[0]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
                 {
                     var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteEnd = String.Format("00:{0}:{1}", temp[0], temp[1]);
+                    quote.QuoteEnd = String.Format("00:{0}:{1}", temp[0], temp[1]);
                 }
                 else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && quoteString3.IsMatch(quote.QuoteEnd))
                 {
                     var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                    quoteEnd = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+                    quote.QuoteEnd = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
                 }
                 else 
                 {
-                    quoteEnd = quote.QuoteEnd;
+                    quote.QuoteEnd = quote.QuoteEnd;
                 }
 
                 #endregion
                 #region Original quote
 
-                // <br> = \r\r
-
-                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\\r\\r");
-                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\\r>");
-                quote.OriginalQuote += ">";
+                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\r\r");
+                quote.OriginalQuote = quote.OriginalQuote.Replace("\r\r","\r>");
 
                 #endregion
                 #region Original quote
 
-                quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r\\r");
-                quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r>");
-                quote.TranslatedQuote += ">";
+                quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\r\r");
+                quote.TranslatedQuote = quote.TranslatedQuote.Replace("\r\r", "\r>");
 
                 #endregion
 
-                output.AppendLine(String.Format("{0}", quote.OriginalQuote));
+                output.AppendLine(String.Format(">{0}", quote.OriginalQuote));
                 output.AppendLine(String.Format(">"));
-                output.AppendLine(String.Format("{0}", quote.TranslatedQuote));
+                output.AppendLine(String.Format(">{0}", quote.TranslatedQuote));
                 output.AppendLine(String.Format(">"));
-                output.AppendLine(String.Format("{0} - {1}", quoteBegin, quoteEnd));
+                output.AppendLine(String.Format(">{0} - {1}", quote.QuoteBegin, quote.QuoteEnd));
             }
 
             await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());
         }
+        public async static Task RenameFile(Source oldSource, Source newSource)
+        {
+            #region Read
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string vaultName = await SettingsService.ReadPath("vault");
 
+            var F = "";
+            if (oldSource.SourceType == 1) F = "videos";
+            if (oldSource.SourceType == 2) F = "sounds";
+            if (oldSource.SourceType == 3) F = "images";
+            if (oldSource.SourceType == 4) F = "documents";
+
+            string folderName = await SettingsService.ReadPath(F);
+
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+
+            string fullPath = folderName;
+
+            StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
+
+            string fileInnerText = "";
+
+            if (await folder.FileExistsAsync(oldSource.SourceName + ".md"))
+            {
+                StorageFile oldFile = await folder.CreateFileAsync(oldSource.SourceName + ".md", CreationCollisionOption.OpenIfExists);
+                fileInnerText = await Windows.Storage.FileIO.ReadTextAsync(oldFile);
+
+                var path = oldFile.Path;
+                await SettingsService.WriteDictionaryHistory("Deleted", path);
+
+                #region Delete
+
+                await oldFile.DeleteAsync();
+
+                #endregion
+            }
+            else
+            {
+                MessageDialog message = new MessageDialog(String.Format("File {0}\\{1}.md doesn't exist.", folder.Path, oldSource.SourceName), "Error in file path");
+                await message.ShowAsync();
+
+                return;
+            }
+
+            #endregion
+            #region Write
+
+            if (oldSource.SourceType != newSource.SourceType)
+            {
+                if (newSource.SourceType == 1) F = "videos";
+                if (newSource.SourceType == 2) F = "sounds";
+                if (newSource.SourceType == 3) F = "images";
+                if (newSource.SourceType == 4) F = "documents";
+
+                folderName = await SettingsService.ReadPath(F);
+
+                folderName = System.IO.Path.Combine(vaultName, folderName);
+
+                fullPath = folderName;
+                folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
+            }
+
+            StorageFile newFile = await folder.CreateFileAsync(newSource.SourceName + ".md", CreationCollisionOption.OpenIfExists);
+
+            await Windows.Storage.FileIO.WriteTextAsync(newFile, fileInnerText);
+
+            var FullPath = newFile.Path;
+            await SettingsService.WriteDictionaryHistory("Created", FullPath);
+
+            #endregion
+        }
+        public async static Task DeleteFile(Source source)
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string vaultName = await SettingsService.ReadPath("vault");
+
+            var F = "";
+            if (source.SourceType == 1) F = "videos";
+            if (source.SourceType == 2) F = "sounds";
+            if (source.SourceType == 3) F = "images";
+            if (source.SourceType == 4) F = "documents";
+
+            string folderName = await SettingsService.ReadPath(F);
+
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+
+
+
+            StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+            if (await folder.FileExistsAsync(source.SourceName + ".md"))
+            {
+                StorageFile file = await folder.CreateFileAsync(source.SourceName + ".md", CreationCollisionOption.OpenIfExists);
+                await file.DeleteAsync();
+
+                string path = file.Path;
+                await SettingsService.WriteDictionaryHistory("Deleted", path);
+            }
+            else
+            {
+                MessageDialog message = new MessageDialog(String.Format("File {0}\\{1}.md doesn't exist.", folder.Path, source.SourceName), "Error in file path");
+                await message.ShowAsync();
+
+                return;
+            }
+        }
 
 
         public async static Task<string> ReadNoCardsOpen()
@@ -612,6 +721,8 @@ namespace UWP_PROJECT_06.Services
 
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
+
+        
         public static string CheckText(string str)
         {
             str = str.ToLower();

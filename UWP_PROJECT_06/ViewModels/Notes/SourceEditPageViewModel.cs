@@ -13,12 +13,21 @@ using System.Security.AccessControl;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
+using System.Text.RegularExpressions;
 
 namespace UWP_PROJECT_06.ViewModels.Notes
 {
     public class SourceEditPageViewModel : ViewModelBase
     {
         public int Id { get; set; }
+        
+        int selectedState; public int SelectedState { get => selectedState; set => SetProperty(ref selectedState, value); }
+        int selectedTheme; public int SelectedTheme { get => selectedTheme; set => SetProperty(ref selectedTheme, value); }
+        int selectedSourceType; public int SelectedSourceType { get => selectedSourceType; set => SetProperty(ref selectedSourceType, value); }
+        bool isDownloaded; public bool IsDownloaded { get => isDownloaded; set => SetProperty(ref isDownloaded, value); }
+        
+       
+
         Source source; public Source Source { get => source; set => SetProperty(ref source, value); }
         Quote selectedQuote; public Quote SelectedQuote { get => selectedQuote; set => SetProperty(ref selectedQuote, value); }
 
@@ -31,6 +40,9 @@ namespace UWP_PROJECT_06.ViewModels.Notes
         public ObservableRangeCollection<SourceExtra> Extras { get; set; } 
 
         public AsyncCommand<object> DeleteCommand { get; set; }
+        public AsyncCommand<object> StateSelectedCommand { get; }
+        public AsyncCommand<object> ThemeSelectedCommand { get; }
+        public AsyncCommand<object> SourceTypeSelectedCommand { get; }
         public AsyncCommand<object> LostFocusCommand { get; set; }
 
         public SourceEditPageViewModel() : this(0) { }
@@ -50,6 +62,11 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             Load();
 
             DeleteCommand = new AsyncCommand<object>(Delete);
+
+            StateSelectedCommand = new AsyncCommand<object>(StateSelected);
+            ThemeSelectedCommand = new AsyncCommand<object>(ThemeSelected);
+            SourceTypeSelectedCommand = new AsyncCommand<object>(SourceTypeSelected);
+
             LostFocusCommand = new AsyncCommand<object>(LostFocus);
         }
 
@@ -59,14 +76,20 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
             source = NotesService.ReadSource(Id);
             source.SourceName = source.Id == 0 ? "" : source.SourceName;
+            source.Duration = source.Id == 0 ? 0 : source.Duration;
+            source.ActualTime = source.Id == 0 ? 0 : source.ActualTime;
+            IsDownloaded = source.Id == 0 ? false : source.IsDownloaded;
+            source.IsDownloaded = IsDownloaded;
             source.Description = source.Id == 0 ? "" : source.Description;
             source.SourceLink = source.Id == 0 ? "" : source.SourceLink;
 
-#endregion
+            #endregion
             #region States
 
             foreach (string state in NotesService.ReadStates())
                 States.Add(state);
+
+            SelectedState = source.Id == 0 ? 0 : source.State;
 
             #endregion
             #region Themes
@@ -74,12 +97,16 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             foreach (string theme in NotesService.ReadThemes())
                 Themes.Add(theme);
 
+            SelectedTheme = source.Id == 0 ? 0 : source.Theme;
+
             #endregion
             #region Source types
 
             foreach (string sourceType in NotesService.ReadSourceTypes())
                 SourceTypes.Add(sourceType);
-            
+
+            SelectedSourceType = source.Id == 0 ? 0 : source.SourceType;
+
             #endregion
             #region Quotes
 
@@ -117,6 +144,20 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             LostFocus(Quotes);
         }
 
+        async Task StateSelected(object arg)
+        {
+            source.State = (byte)SelectedState;
+        }
+
+        async Task ThemeSelected(object arg)
+        {
+            source.Theme = (byte)SelectedTheme;
+        }
+
+        async Task SourceTypeSelected(object arg)
+        {
+            source.SourceType = (byte)SelectedSourceType;
+        }
 
         async Task Delete(object arg)
         {
@@ -257,6 +298,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             }
 
             #endregion
+
         }
 
 

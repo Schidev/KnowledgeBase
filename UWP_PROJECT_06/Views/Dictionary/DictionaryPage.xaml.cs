@@ -35,7 +35,6 @@ namespace UWP_PROJECT_06.Views
 
         private void Autosuggest_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            Debug.WriteLine(e.Key);
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 var t = (AutoSuggestBox)sender;

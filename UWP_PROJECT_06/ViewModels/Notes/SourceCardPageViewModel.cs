@@ -26,7 +26,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
         {
             MarkdownText = await MarkdownService.ReadSource(currentSource);
 
-            //MarkdownText = String.Format("**Язык:**{0}", MarkdownText.Split("**Язык:**")[1]);
+            MarkdownText = String.Format("### Основная информация{0}", MarkdownText.Split("### Основная информация")[1]);
             MarkdownText = MarkdownText.Replace("\r", "\n");
             MarkdownText = MarkdownText.Replace("\n", "\n\n");
         }

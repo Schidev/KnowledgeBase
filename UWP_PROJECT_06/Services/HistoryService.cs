@@ -50,13 +50,39 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
+
+                /////////////////////////////////////////////////
+                
+                // Create SourceTypes table and fill it
+
+                commandText = "CREATE TABLE IF NOT EXISTS SourceTypes ( Id INTEGER NOT NULL, SourceType TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+                commandText = "SELECT SourceType FROM SourceTypes";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                query = sqliteCommand.ExecuteReader();
+
+                if (!query.HasRows)
+                {
+                    commandText = "INSERT INTO SourceTypes (SourceType) VALUES ('VIDEO'), ('SOUND'), ('IMAGE'), ('DOCUMENT')";
+                    sqliteCommand = new SqliteCommand(commandText, conn);
+                    sqliteCommand.ExecuteReader();
+                }
+
+                // Create Sources table and fill it
+
+                commandText = "CREATE TABLE IF NOT EXISTS UnknownSources (Id INTEGER NOT NULL, Source TEXT NOT NULL, SourceType INTEGER NOT NULL, LastModifiedOn DATETIME NOT NULL, CONSTRAINT FK_Sources_SourceTypes FOREIGN KEY(SourceType) REFERENCES SourceTypes(Id), PRIMARY KEY(Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
+
+
                 conn.Close();
             }
         }
 
 
         #region UnknownWords
-
         public static void CreateUnknownWord(UnknownWord word)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
@@ -169,6 +195,129 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Connection = conn;
 
                 sqliteCommand.CommandText = "DELETE FROM UnknownWords WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
+        #endregion
+
+        #region UnknownSources
+        public static void CreateUnknownSource(UnknownSource source)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO UnknownSources VALUES (NULL, @Source, @SourceType, @LastModifiedOn);";
+                sqliteCommand.Parameters.AddWithValue("@Source", source.Source);
+                sqliteCommand.Parameters.AddWithValue("@SourceType", source.SourceType);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", source.LastModifiedOn);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static UnknownSource ReadUnknownSource(int id)
+        {
+            UnknownSource source = new UnknownSource();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, Source, SourceType, LastModifiedOn FROM UnknownSources WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    source = new UnknownSource()
+                    {
+                        Id = query.GetInt32(0),
+                        Source = query.GetString(1),
+                        SourceType = query.GetInt32(2),
+                        LastModifiedOn = query.GetDateTime(3)
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return source;
+        }
+        public static List<UnknownSource> ReadUnknownSources()
+        {
+            List<UnknownSource> sources = new List<UnknownSource>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, Source, SourceType, LastModifiedOn FROM UnknownSources;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    sources.Add(new UnknownSource()
+                    {
+                        Id = query.GetInt32(0),
+                        Source = query.GetString(1),
+                        SourceType = query.GetInt32(2),
+                        LastModifiedOn = query.GetDateTime(3)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return sources;
+        }
+        public static void UpdateUnknownSource(UnknownSource source)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "UPDATE UnknownSources SET Source = @Source, SourceType = @SourceType, LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", source.Id);
+                sqliteCommand.Parameters.AddWithValue("@Word", source.Source);
+                sqliteCommand.Parameters.AddWithValue("@Language", source.SourceType);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", source.LastModifiedOn);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteUnknownSource(int id)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "DELETE FROM UnknownSources WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", id);
 
                 sqliteCommand.ExecuteReader();

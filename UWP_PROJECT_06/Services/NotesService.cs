@@ -181,6 +181,42 @@ namespace UWP_PROJECT_06.Services
 
             return source;
         }
+        public static Source ReadSource(string name)
+        {
+            Source source = new Source();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources WHERE SourceName = \"{name}\";";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    source = new Source()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceName = query.GetString(1),
+                        Duration = query.GetInt32(2),
+                        ActualTime = query.GetInt32(3),
+                        State = query.GetByte(4),
+                        Theme = query.GetByte(5),
+                        SourceType = query.GetByte(6),
+                        IsDownloaded = query.GetBoolean(7),
+                        Description = query.GetString(8),
+                        SourceLink = query.GetString(9),
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return source;
+        }
         public static List<Source> ReadSources()
         {
             List<Source> sources = new List<Source>();

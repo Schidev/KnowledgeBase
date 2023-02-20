@@ -20,7 +20,14 @@
 
     <Page.Resources>
         <CollectionViewSource x:Name="Sources" Source="{Binding Sources}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:Name="UnknownSources" Source="{Binding UnknownSources}" IsSourceGrouped="True"/>
 
+        <converters:SourceIsDownloadedConverter x:Key="SourceIsDownloadedConverter" />
+        <converters:SourceStateConverter x:Key="SourceStateConverter" />
+        <converters:SourceTypeToColorConverter x:Key="SourceTypeToColorConverter" />
+        <converters:SourceThemeConverter x:Key="SourceThemeConverter" />
+        <converters:SourceTypeConverter x:Key="SourceTypeConverter" />
+        
         <converters:LanguageConverter x:Key="LanguageConverter" />
         <converters:StatusConverter x:Key="StatusConverter" />
         <converters:DateConverter x:Key="DateConverter" />
@@ -74,15 +81,15 @@
 
                 </Grid>
 
-                <Grid Grid.Row="1" MinWidth="600" HorizontalAlignment="Center">
+                <Grid Grid.Row="1" MinWidth="600" HorizontalAlignment="Stretch">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="0.5"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="50,0,50,0" Padding="0,0,0,0.5" 
+                    <Grid Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="50,0,50,0" Padding="0,0,0,0.5" 
                           CornerRadius="10" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5">
 
                         <Grid.RowDefinitions>
@@ -117,15 +124,15 @@
 
                             </AutoSuggestBox.Resources>
 
-                            <!--<i:Interaction.Behaviors>
+                            <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="TextChanged">
                                         <core:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{x:Bind Autosuggest}"/>
                                     </core:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>-->
+                                </i:Interaction.Behaviors>
 
                         </AutoSuggestBox>
 
-                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="SourceTypesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding SourceTypes}" SelectedIndex="{Binding SelectedSourceType, Mode=TwoWay}">
 
@@ -133,11 +140,11 @@
                                 <KeyboardAccelerator Modifiers="Menu" Key="L" Invoked="FocusOnLanguages"/>
                             </ComboBox.KeyboardAccelerators>
 
-                            <!--<i:Interaction.Behaviors>
+                            <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="SelectionChanged">
-                                        <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBox}"/>
+                                    <core:InvokeCommandAction Command="{Binding SourceTypeSelectedCommand}" CommandParameter="{x:Bind SourceTypesComboBox}"/>
                                     </core:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>-->
+                                </i:Interaction.Behaviors>
 
                         </ComboBox>
 
@@ -168,11 +175,50 @@
                                 </Style>
                             </ListView.ItemContainerStyle>
 
+
+
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Source">
+                                <DataTemplate>
                                     <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
-                                        <TextBlock Text="{Binding SourceName}"/>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="0.5"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="0.5"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="0.5"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Stretch" StrokeThickness="5" Stroke="{Binding SourceType, Converter={StaticResource SourceTypeToColorConverter}}"/>
+
+                                        <TextBlock Text="{Binding SourceName}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="9" Padding="10,0,10,2" HorizontalAlignment="Left" Text="{Binding SourceType, Converter={StaticResource SourceTypeConverter}}" Foreground="{StaticResource colorDimGray}"/>
+
+                                        
+                                        <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding State, Converter={StaticResource SourceStateConverter}}" Foreground="{StaticResource colorDimGray}"/>
+
+                                        
+                                        <Rectangle Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="5" FontSize="9" Padding="10,0,10,2" Text="{Binding Theme, Converter={StaticResource SourceThemeConverter}}" Foreground="{StaticResource colorDimGray}"/>
+                                        
+                                        
+                                        <Rectangle Grid.Row="1" Grid.Column="6" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="7" FontSize="9" Padding="10,0,10,2" Text="{Binding IsDownloaded, Converter={StaticResource SourceIsDownloadedConverter}}" Foreground="{StaticResource colorDimGray}"/>
+
 
                                     </Grid>
                                 </DataTemplate>
@@ -233,8 +279,9 @@
 
                     </Grid>
 
+                    <controls:GridSplitter Grid.Column="1" VerticalAlignment="Stretch" ResizeDirection="Columns"  Background="{StaticResource SplitterColor}" Width="0.5"/>
 
-                    <!--<Grid Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="50,0,50,30" Padding="0,0,0,0.5" CornerRadius="10" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5">
+                    <Grid Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="50,0,50,30" Padding="0,0,0,0.5" CornerRadius="10" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -247,10 +294,9 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <AutoSuggestBox x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center" 
-                         Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
-                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+                        <AutoSuggestBox x:Name="AutosuggestUnknownSource" Grid.Row="0" Grid.Column="0" Text="{Binding SearchUnknownSourceText, Mode=TwoWay}" 
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
+                                        BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
                                 <AutoSuggestBox.Resources>
                                     <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                                     <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -265,30 +311,30 @@
 
                                 <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="TextChanged">
-                                        <core:InvokeCommandAction Command="{Binding UnknownWordTextChangedCommand}" CommandParameter="{x:Bind AutosuggestUnknownWords}"/>
+                                    <core:InvokeCommandAction Command="{Binding UnknownWordTextChangedCommand}" CommandParameter="{x:Bind AutosuggestUnknownSource}"/>
                                     </core:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
 
                             </AutoSuggestBox>
 
-                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBoxUnknownWords" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="UnknownSourceTypes" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
-                              ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
+                              ItemsSource="{Binding SourceTypes}" SelectedIndex="{Binding SelectedSourceTypeUnknown, Mode=TwoWay}">
 
                                 <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="SelectionChanged">
-                                        <core:InvokeCommandAction Command="{Binding UnknownWordLanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBoxUnknownWords}"/>
+                                    <core:InvokeCommandAction Command="{Binding UnknownSourceTypeSelectedCommand}" CommandParameter="{x:Bind UnknownSourceTypes}"/>
                                     </core:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
 
                             </ComboBox>
 
-                            <ListView x:Name="UnknownWordsListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,0"
-                              ItemsSource="{Binding Source={StaticResource UnknownWordsGroups}}" SelectedItem="{Binding SelectedWordUnknownWord, Mode=TwoWay}">
+                            <ListView x:Name="UnknownSourcesList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="50,10,50,0"
+                              ItemsSource="{Binding Source={StaticResource UnknownSources}}" SelectedItem="{Binding SelectedUnknownSource, Mode=TwoWay}">
 
                                 <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="SelectionChanged">
-                                        <core:InvokeCommandAction Command="{Binding UnknownWordSelectedCommand}" CommandParameter="{x:Bind UnknownWordsListView}"/>
+                                    <core:InvokeCommandAction Command="{Binding UnknownSourceSelectedCommand}" CommandParameter="{x:Bind UnknownSourcesList}"/>
                                     </core:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
 
@@ -308,34 +354,34 @@
                                 </ListView.ItemContainerStyle>
 
                                 <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="hmodels:UnknownWord">
-                                        <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
+                                    <DataTemplate>
+                                    <Grid BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10,5,10,5">
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3"/>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="0.5"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="0.5"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                            <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Stretch" StrokeThickness="5" Stroke="{StaticResource colorDimGrey}"/>
+                                        <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Stretch" StrokeThickness="5" Stroke="{StaticResource colorDimGrey}"/>
 
-                                            <TextBlock Text="{Binding Word}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{Binding Source}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Padding="10,5,0,0" FontWeight="SemiBold"  FontFamily="ThickFont" HorizontalAlignment="Left"/>
 
-                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="9" Padding="10,0,10,2" HorizontalAlignment="Left" Text="{Binding Language, Converter={StaticResource LanguageConverter}}" Foreground="{StaticResource colorDimGray}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="9" Padding="10,0,10,2" HorizontalAlignment="Left" Text="{Binding SourceType, Converter={StaticResource SourceTypeConverter}}" Foreground="{StaticResource colorDimGray}"/>
 
-                                            <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" StrokeThickness="0.5" Margin="0,2,0,2" Stroke="{StaticResource colorDimGray}"/>
 
-                                            <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding LastModifiedOn, Converter={StaticResource DateConverter}}" Foreground="{StaticResource colorDimGray}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="3" FontSize="9" Padding="10,0,10,2" Text="{Binding LastModifiedOn, Converter={StaticResource DateConverter}}" Foreground="{StaticResource colorDimGray}"/>
 
-                                        </Grid>
-                                    </DataTemplate>
+                                    </Grid>
+                                </DataTemplate>
                                 </ListView.ItemTemplate>
 
                                 <ListView.Resources>
@@ -363,17 +409,17 @@
                                             <Style TargetType="ListViewHeaderItem">
                                                 <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
                                                 <Setter Property="FontSize" Value="15" />
-                                                -->
-                    <!--<Setter Property="FontSize" Value="{ThemeResource ListViewHeaderItemThemeFontSize}" />-->
-                    <!--
+                                                
+                    <Setter Property="FontSize" Value="{ThemeResource ListViewHeaderItemThemeFontSize}" />
+                    
                                                 <Setter Property="Background" Value="{StaticResource colorTransparent}" />
                                                 <Setter Property="Margin" Value="0" />
                                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
                                                 <Setter Property="Height" Value="{ThemeResource ListViewHeaderItemThemeFontSize}"/>
-                                                -->
-                    <!--<Setter Property="MinHeight" Value="{ThemeResource ListViewHeaderItemMinHeight}" />-->
-                    <!--
+                                                
+                    <Setter Property="MinHeight" Value="{ThemeResource ListViewHeaderItemMinHeight}" />
+                    
                                                 <Setter Property="UseSystemFocusVisuals" Value="True" />
                                                 <Setter Property="Template">
                                                     <Setter.Value>
@@ -399,7 +445,7 @@
 
                             <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="0.5" Margin="40,0,40,0"  StrokeThickness="0.5" Stroke="{StaticResource SplitterColor}"/>
 
-                        </Grid>-->
+                        </Grid>
 
                 </Grid>
 
@@ -435,7 +481,7 @@
 
 
                         <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ClearCommand}" Visibility="{Binding IsWritingMode}"  AccessKey="Down">
+                            Command="{Binding ClearCommand}" Visibility="{Binding IsReadingMode}"  AccessKey="Down">
                             <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
 
                             <Button.KeyboardAccelerators>
@@ -445,18 +491,18 @@
                         </Button>
 
                         <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardBackButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding BackCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                             <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
 
                         </Button>
 
                         <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardForwardButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding ForwardCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                             <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
                         </Button>
 
                         <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardRefreshButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding RefreshCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
                             <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;"/>
                         </Button>
 

@@ -427,6 +427,8 @@
             </Style>
 
 
+            
+            
             <Style TargetType="ListView" x:Key="SourcesExtrasListViewStyle">
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>
@@ -446,7 +448,7 @@
                 </Setter>
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
-                        <DataTemplate> 
+                        <DataTemplate>
                             <Grid x:Name="ExtrasGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
 
                                 <Grid.RowDefinitions>
@@ -527,7 +529,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
             <Style TargetType="ListView" x:Key="NotesListViewStyle">
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>

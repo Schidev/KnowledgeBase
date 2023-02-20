@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page x:ConnectionId='1'
     x:Class="UWP_PROJECT_06.Views.Notes.SourceEditPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -25,7 +25,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="Слово: " FontWeight="Bold" FontSize="25" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Text="Источник: " FontWeight="Bold" FontSize="25" VerticalAlignment="Center"/>
 
                 <TextBox Grid.Column="1" PlaceholderText="Tap to start..." Text="{Binding Source.SourceName, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="20" 
                          VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -48,15 +48,15 @@
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock Text="Состояние:" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                <ComboBox x:ConnectionId='7' x:Name="StatesComboBox" Margin="10,0,0,0" Padding="10,5,5,5" CornerRadius="5"
+                <ComboBox x:ConnectionId='9' x:Name="StatesComboBox" Margin="10,0,0,0" Padding="10,5,5,5" CornerRadius="5"
                       Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
-                      ItemsSource="{Binding States}" SelectedIndex="{Binding Source.State, Mode=TwoWay}">
+                      ItemsSource="{Binding States}" SelectedIndex="{Binding SelectedState, Mode=TwoWay}">
 
-                    <!--<i:Interaction.Behaviors>
+                    <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="SelectionChanged">
-                            <core:InvokeCommandAction Command="{Binding LanguageSelectedCommand}"/>
+                            <core:InvokeCommandAction x:ConnectionId='10' Command="{Binding StateSelectedCommand}"                                           />
                         </core:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>-->
+                    </i:Interaction.Behaviors>
 
                 </ComboBox>
 
@@ -65,10 +65,16 @@
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock Text="Тема:" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                <ComboBox x:ConnectionId='6' x:Name="ThemesComboBox" Margin="10,0,0,0" Padding="10,5,5,5" CornerRadius="5"
+                <ComboBox x:ConnectionId='7' x:Name="ThemesComboBox" Margin="10,0,0,0" Padding="10,5,5,5" CornerRadius="5"
                       Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
-                      ItemsSource="{Binding Themes}" SelectedIndex="{Binding Source.Theme, Mode=TwoWay}">
+                      ItemsSource="{Binding Themes}" SelectedIndex="{Binding SelectedTheme, Mode=TwoWay}">
 
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction x:ConnectionId='8' Command="{Binding ThemeSelectedCommand}"                                           />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    
                 </ComboBox>
             </StackPanel>
 
@@ -77,11 +83,142 @@
 
                 <ComboBox x:ConnectionId='5' x:Name="SourceTypesComboBox" Margin="10,0,0,0" Padding="10,5,5,5" CornerRadius="5"
                       Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
-                      ItemsSource="{Binding SourceTypes}" SelectedIndex="{Binding Source.SourceType, Mode=TwoWay}">
+                      ItemsSource="{Binding SourceTypes}" SelectedIndex="{Binding SelectedSourceType, Mode=TwoWay}">
 
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction x:ConnectionId='6' Command="{Binding SourceTypeSelectedCommand}"                                                />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    
                 </ComboBox>
             </StackPanel>
 
+            <!-- Description -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Загружено: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
+
+                <ToggleSwitch Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" IsOn="{Binding IsDownloaded, Mode=TwoWay}" OnContent="Yeah" OffContent="No"/>
+            </Grid>
+
+            <!-- Duration-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Длительность: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Column="1" PlaceholderText="Tap to start..." Text="{Binding Source.Duration, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="15" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                         Background="{StaticResource colorTransparent}"
+                         BorderThickness="0" CornerRadius="5" BorderBrush="{StaticResource colorDarkerGrey}">
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                    </TextBox.Resources>
+                </TextBox>
+            </Grid>
+
+            <!-- Actual Time-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Время обработки: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Column="1" PlaceholderText="Input actual time..." Text="{Binding Source.ActualTime, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="15" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                         Background="{StaticResource colorTransparent}"
+                         BorderThickness="0" CornerRadius="5" BorderBrush="{StaticResource colorDarkerGrey}">
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                    </TextBox.Resources>
+                </TextBox>
+            </Grid>
+
+            <!-- Description -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Описание: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Column="1" PlaceholderText="Tap to describe..." Text="{Binding Source.Description, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="15" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                         Background="{StaticResource colorTransparent}"
+                         BorderThickness="0" CornerRadius="5" BorderBrush="{StaticResource colorDarkerGrey}">
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                    </TextBox.Resources>
+                </TextBox>
+            </Grid>
+            
+            <!-- Source Link -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Ссылка: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Column="1" PlaceholderText="Tap to start..." Text="{Binding Source.SourceLink, Mode=TwoWay}" Margin="10,0,0,0" Padding="5,5,5,5" FontSize="15" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                         Background="{StaticResource colorTransparent}"
+                         BorderThickness="0" CornerRadius="5" BorderBrush="{StaticResource colorDarkerGrey}">
+                    <TextBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                    </TextBox.Resources>
+                </TextBox>
+            </Grid>
+            
             <!-- Extras -->
             <Grid  Margin="0,10,0,0">
 
