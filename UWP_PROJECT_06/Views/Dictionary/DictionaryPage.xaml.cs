@@ -52,37 +52,5 @@ namespace UWP_PROJECT_06.Views
         {
             LanguagesComboBox.Focus(FocusState.Programmatic);
         }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var w = cardGrid.Width;
-            var h = cardGrid.Height;
-
-            cardGrid.Width = cardGrid.DesiredSize.Width;
-            cardGrid.Height = cardGrid.DesiredSize.Height + 100;
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap();
-            await rtb.RenderAsync(cardGrid);
-
-            var pixelBuffer = await rtb.GetPixelsAsync();
-            var pixels = pixelBuffer.ToArray();
-            var displayInformation = DisplayInformation.GetForCurrentView();
-            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("testImage" + ".png", CreationCollisionOption.ReplaceExisting);
-            using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-            {
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
-                                     BitmapAlphaMode.Premultiplied,
-                                     (uint)rtb.PixelWidth,
-                                     (uint)rtb.PixelHeight,
-                                     displayInformation.RawDpiX,
-                                     displayInformation.RawDpiX,
-                                     pixels);
-                await encoder.FlushAsync();
-            }
-
-            cardGrid.Width = w;
-            cardGrid.Height = h;
-        }
     }
 }

@@ -7,6 +7,7 @@
     <RootPropertyPathName Name="DeleteCommand" />
     <RootPropertyPathName Name="QuoteEnd" />
     <RootPropertyPathName Name="QuoteBegin" />
+    <RootPropertyPathName Name="SourceID" />
     <RootPropertyPathName Name="TranslatedQuote" />
     <RootPropertyPathName Name="OriginalQuote" />
     <RootPropertyPathName Name="Stamp" />
@@ -40,6 +41,7 @@
     <RootPropertyPathName Name="ChangeModeCommand" />
     <RootPropertyPathName Name="IsWritingMode" />
     <RootPropertyPathName Name="IsReadingMode" />
+    <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="DeleteUnknownWordCommand" />
     <RootPropertyPathName Name="IsUnknownWordSelected" />
     <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
@@ -57,7 +59,6 @@
     <RootPropertyPathName Name="UnknownWordLanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxTextUnknownWord" />
     <RootPropertyPathName Name="UnknownWordTextChangedCommand" />
-    <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="WordSelectedCommand" />
     <RootPropertyPathName Name="LastRepeatedOn" />
     <RootPropertyPathName Name="Status" />
@@ -67,6 +68,7 @@
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
     <RootPropertyPathName Name="TextChangedCommand" />
+    <RootPropertyPathName Name="ScreenshotCommand" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentSource" />
     <RootPropertyPathName Name="SourceName" />
@@ -155,15 +157,15 @@
     <RootType FullName="Windows.UI.Xaml.Controls.TextBlock">
       <RootProperty Name="Foreground" />
       <RootProperty Name="HorizontalTextAlignment" />
-      <RootProperty Name="FontFamily" />
-      <RootProperty Name="Text" />
       <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Text" />
+      <RootProperty Name="FontFamily" />
       <RootProperty Name="Margin" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="FontWeight" />
       <RootProperty Name="Resources" />
       <RootProperty Name="TextAlignment" />
-      <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Padding" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.FrameworkElement">
@@ -237,11 +239,11 @@
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="Padding" />
+      <RootProperty Name="Resources" />
       <RootProperty Name="RowDefinitions" />
       <RootProperty Name="Children" />
       <RootProperty Name="ColumnDefinitions" />
       <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="Resources" />
       <RootProperty Name="Background" />
       <RootProperty Name="TabFocusNavigation" />
       <RootProperty Name="MinWidth" />
@@ -258,6 +260,7 @@
       <RootMethod Name="SetColumnSpan" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SourceIdToNameConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
       <RootProperty Name="Height" />
     </RootType>

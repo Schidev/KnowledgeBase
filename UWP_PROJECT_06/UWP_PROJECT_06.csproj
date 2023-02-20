@@ -158,6 +158,7 @@
     <Compile Include="Services\Converters\SettingsHistoryActionIconConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryDateConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryFullPathConverter.cs" />
+    <Compile Include="Services\Converters\SourceIdToNameConverter.cs" />
     <Compile Include="Services\Converters\SourceIsDownloadedConverter.cs" />
     <Compile Include="Services\Converters\SourceStateConverter.cs" />
     <Compile Include="Services\Converters\SourceThemeConverter.cs" />

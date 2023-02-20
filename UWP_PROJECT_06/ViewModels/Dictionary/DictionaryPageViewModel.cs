@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,15 +17,21 @@ using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Services.Converters;
 using UWP_PROJECT_06.Views;
 using Windows.Globalization;
+using Windows.Graphics.Display;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace UWP_PROJECT_06.ViewModels
 {
     public class DictionaryPageViewModel : ViewModelBase
     {
+        string selectedWordString; public string SelectedWordString { get => selectedWordString; set => SetProperty(ref selectedWordString, value); } 
+
         string autoSuggestBoxText;
         public string AutoSuggestBoxText
         {
@@ -152,6 +159,7 @@ namespace UWP_PROJECT_06.ViewModels
         public AsyncCommand SaveCommand { get; }
 
 
+        public AsyncCommand<object> ScreenshotCommand { get; }
         public AsyncCommand ChangeModeCommand { get; }
         public AsyncCommand SearchOnlineCommand { get; }
         public AsyncCommand AddWordCommand { get; }
@@ -167,6 +175,7 @@ namespace UWP_PROJECT_06.ViewModels
             LastOpenedWordCard = new WordCardPage() { DataContext = null };
             LastWebSearchRequest = new WebView();
 
+            SelectedWordString = "";
             CurrentBrowserWord = "";
             AutoSuggestBoxText = "";
             AutoSuggestBoxTextUnknownWord = "";
@@ -179,6 +188,7 @@ namespace UWP_PROJECT_06.ViewModels
             IsOnlineDictionaryActive = false;
             IsAddingMode = false;
 
+            SelectedWordString = "";
             SelectedWord = null;
             SelectedWordUnknownWord = null;
             SelectedUnknownWordId = 0;
@@ -209,6 +219,7 @@ namespace UWP_PROJECT_06.ViewModels
             RefreshCommand = new AsyncCommand(Refresh);
             SaveCommand = new AsyncCommand(Save);
 
+            ScreenshotCommand = new AsyncCommand<object>(Screenshot);
             ChangeModeCommand = new AsyncCommand(ChangeMode);
             SearchOnlineCommand = new AsyncCommand(SearchOnline);
             AddWordCommand = new AsyncCommand(AddWord);
@@ -308,7 +319,9 @@ namespace UWP_PROJECT_06.ViewModels
             {
                 LastOpenedWordCard.DataContext = new WordCardPageViewModel(SelectedWord.Id);
                 LastOpenedWordEditCard.DataContext = new WordEditPageViewModel(SelectedWord.Id);
-                
+
+                SelectedWordString = DictionaryService.ReadWord(SelectedWord.Id).Word1;
+
                 SelectedWord = null;
 
                 FrameContent = LastOpenedWordCard;
@@ -991,6 +1004,66 @@ namespace UWP_PROJECT_06.ViewModels
                 IsOnlineDictionaryActive = true;
                 IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
             }
+        }
+
+        async Task Screenshot(object arg)
+        {
+            MessageDialog message = new MessageDialog("Would you like to take a screenshot of this word card?");
+
+            message.Commands.Add(new UICommand { Label = "Yeah", Id = 0 });
+            message.Commands.Add(new UICommand { Label = "No", Id = 1 });
+
+            var result = await message.ShowAsync();
+
+            var cardGrid = arg as Grid;
+
+            if (cardGrid == null || (int)result.Id == 1)
+                return;
+
+            var w = cardGrid.Width;
+            var h = cardGrid.Height;
+
+            cardGrid.Width = cardGrid.DesiredSize.Width;
+            cardGrid.Height = cardGrid.DesiredSize.Height + 100;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap();
+            await rtb.RenderAsync(cardGrid);
+
+            var pixelBuffer = await rtb.GetPixelsAsync();
+            var pixels = pixelBuffer.ToArray();
+            var displayInformation = DisplayInformation.GetForCurrentView();
+
+            #region File System
+
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string vaultName = await SettingsService.ReadPath("vault");
+            string folderName = await SettingsService.ReadPath("images");
+
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+
+            string fullPath = folderName;
+
+            StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
+
+            var file = await folder.CreateFileAsync("IMAGE_" + DateTime.UtcNow.ToString("MM-dd-yyyy_HH_mm_ss") + SelectedWordString + ".png", CreationCollisionOption.ReplaceExisting);
+            
+            #endregion
+
+            using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                                     BitmapAlphaMode.Premultiplied,
+                                     (uint)rtb.PixelWidth,
+                                     (uint)rtb.PixelHeight,
+                                     displayInformation.RawDpiX,
+                                     displayInformation.RawDpiX,
+                                     pixels);
+                await encoder.FlushAsync();
+            }
+
+            cardGrid.Width = w;
+            cardGrid.Height = h;
         }
 
     }

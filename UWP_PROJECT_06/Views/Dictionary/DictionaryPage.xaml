@@ -32,6 +32,8 @@
         <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
         <converters:ForegroundButtonConverter x:Key="ForegroundButtonConverter" />
         <converters:ReadingModeIconConverter x:Key="ReadingModeIconConverter" />
+
+        <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter" />
     
     </Page.Resources>
     
@@ -63,6 +65,13 @@
 
             <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
                 <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <core:InvokeCommandAction Command="{Binding ScreenshotCommand}" CommandParameter="{x:Bind cardGrid}"/>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+
             </Button>
 
         </Grid>
@@ -488,7 +497,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
                     </Button>
 
-                    <TextBlock Grid.Column="5" Text="SOME_WORD" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="5" Text="{Binding SelectedWordString, Mode=TwoWay}" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
 
                     <!-- Btn Open Reading/Writing Mode-->
                     <Button Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
@@ -527,17 +536,11 @@
                     <Button Grid.Column="9" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
                             Command="{Binding SaveCommand}">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
-                        
+
                         <Button.KeyboardAccelerators>
                             <KeyboardAccelerator Modifiers="Menu" Key="S"/>
                         </Button.KeyboardAccelerators>
-                        
-                    </Button>
 
-                    <!-- Save in unknown words-->
-                    <Button Grid.Column="10" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Click="Button_Click" Visibility="Collapsed">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE952;"/>
                     </Button>
 
                 </Grid>

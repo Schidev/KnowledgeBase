@@ -481,7 +481,7 @@
 
 
                         <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ClearCommand}" Visibility="{Binding IsWritingMode}"  AccessKey="Down">
+                            Command="{Binding ClearCommand}" Visibility="{Binding IsReadingMode}"  AccessKey="Down">
                             <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
 
                             <Button.KeyboardAccelerators>
