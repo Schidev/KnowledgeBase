@@ -5,11 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{StaticResource TopMenuBackground}"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
-    xmlns:local="using:UWP_PROJECT_06">
+    Background="{StaticResource TopMenuBackground}">
 
     <Page.DataContext>
         <viewmodels:MainPageViewModel/>
@@ -31,7 +30,7 @@
             </Grid.ColumnDefinitions>
 
             <controls:Menu Grid.Column="0" Orientation="Horizontal" TooltipPlacement="Right" AllowTooltip="False">
-                <controls:MenuItem x:ConnectionId='12' Name="FileMenu" controls:Menu.InputGestureText="Alt+F">
+                <controls:MenuItem x:ConnectionId='11' Name="FileMenu" controls:Menu.InputGestureText="Alt+F">
 
                     <controls:MenuItem.Header>
                         <Button Margin="0" Padding="0" BorderThickness="0" BorderBrush="{StaticResource colorTransparent}" Foreground="{StaticResource colorTransparent}" Background="{StaticResource colorTransparent}">
@@ -41,7 +40,7 @@
 
                     <MenuFlyoutSubItem Text="New" Margin="0">
                         <MenuFlyoutItem Text="Project"/>
-                        <MenuFlyoutItem x:ConnectionId='17' Text="New tab" Command="{Binding AddTabCommand}"                                    >
+                        <MenuFlyoutItem x:ConnectionId='15' Text="New tab" Command="{Binding AddTabCommand}"                                    >
                             
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu" Key="T"/>
@@ -51,28 +50,28 @@
                     </MenuFlyoutSubItem>
 
                     <MenuFlyoutSubItem Text="Open" Margin="0">
-                        <MenuFlyoutItem x:ConnectionId='13' Text="Open dictionary" Command="{Binding OpenDictionaryPageCommand}"                                    >
+                        <MenuFlyoutItem x:ConnectionId='12' Text="Open dictionary" Command="{Binding OpenDictionaryPageCommand}"                                    >
                             
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu" Key="Number1"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
 
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:ConnectionId='14' Text="Open video list" Command="{Binding OpenVideosListPageCommand}"                                    >
+                        <MenuFlyoutItem Text="Open notes">
                             
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu" Key="Number2"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
 
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:ConnectionId='15' Text="Open right pane" Command="{Binding OpenCloseExtraPaneCommand}"                                      >
+                        <MenuFlyoutItem x:ConnectionId='13' Text="Open right pane" Command="{Binding OpenCloseExtraPaneCommand}"                                      >
                             
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu,Shift" Key="R"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
 
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:ConnectionId='16' Text="Open left pane" Command="{Binding OpenCloseExtraPaneCommand}"                                     >
+                        <MenuFlyoutItem x:ConnectionId='14' Text="Open left pane" Command="{Binding OpenCloseExtraPaneCommand}"                                     >
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu,Shift" Key="L"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
@@ -89,7 +88,8 @@
                 </controls:MenuItem>
             </controls:Menu>
 
-            <TextBlock Grid.Column="1" Text="YFXENGT5TVHANIKDKJ7KM5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="{StaticResource colorDarkerGrey}" FontWeight="Bold"/>
+            <TextBlock Grid.Column="1" Text="YFXENGT5TVHANIKDKJ7KM5" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                       Margin="10,0,10,0" Foreground="{StaticResource colorDarkerGrey}" FontWeight="Bold"/>
 
         </Grid>
 
@@ -114,7 +114,7 @@
 
             <!-- Left Panel Button -->
             <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource TopMenuBackground}">
-                <Button x:ConnectionId='11'  Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
+                <Button x:ConnectionId='10'  Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource TopMenuBackground}"
                              Command="{Binding OpenCloseExtraPaneCommand}"                                     >
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEA4B;"/>
 
@@ -189,9 +189,8 @@
                 </Button>
 
                 <!-- Films List Button -->
-                <Button x:ConnectionId='9' Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
-                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open word page?" ToolTipService.Placement="Right"
-                        Command="{Binding OpenWordPageCommand}"                                    >
+                <Button Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
+                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open word page?" ToolTipService.Placement="Right">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE786;"/>
 
                     <Button.KeyboardAccelerators>
@@ -226,7 +225,7 @@
                 </Border>
 
                 <!-- Settings Button -->
-                <Button x:ConnectionId='10' Grid.Row="8" Margin="5,5,5,10" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                <Button x:ConnectionId='9' Grid.Row="8" Margin="5,5,5,10" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
                         CornerRadius="5"  Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open settings" ToolTipService.Placement="Right"
                         VerticalAlignment="Bottom" Command="{Binding OpenSettingsPageCommand}"                                    >
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE713;"/>

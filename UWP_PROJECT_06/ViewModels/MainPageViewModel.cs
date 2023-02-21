@@ -2,7 +2,6 @@
 using MvvmHelpers.Commands;
 using System;
 using System.Threading.Tasks;
-using UWP_PROJECT_06.Models.History;
 using UWP_PROJECT_06.Services;
 using UWP_PROJECT_06.Views;
 using UWP_PROJECT_06.Views.Notes;
@@ -13,54 +12,38 @@ namespace UWP_PROJECT_06.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        Visibility leftExtendedPanelVisibility;
-        public Visibility LeftExtendedPanelVisibility
-        {
-            get => leftExtendedPanelVisibility;
-            set => SetProperty(ref leftExtendedPanelVisibility, value);
-        }
+        private Visibility leftExtendedPanelVisibility; public Visibility LeftExtendedPanelVisibility { get => leftExtendedPanelVisibility; set => SetProperty(ref leftExtendedPanelVisibility, value); }
+        private Visibility rightExtendedPanelVisibility; public Visibility RightExtendedPanelVisibility { get => rightExtendedPanelVisibility; set => SetProperty(ref rightExtendedPanelVisibility, value); }
 
-        Visibility rightExtendedPanelVisibility;
-        public Visibility RightExtendedPanelVisibility
-        {
-            get => rightExtendedPanelVisibility;
-            set => SetProperty(ref rightExtendedPanelVisibility, value);
-        }
-
+        #region TODO: Hotkeys in settings
+        // Maybe in settings hotkeys
         public String OpenDictionaryModifiers { get => "Menu"; }
         public String OpenDictionaryKey { get => "Number1"; }
+        #endregion
 
-        public AsyncCommand<object> OpenCommand { get; }
-
-        public AsyncCommand<object> OpenDictionaryPageCommand { get; }
         public AsyncCommand<object> OpenNotesPageCommand { get; }
-        public AsyncCommand<object> OpenVideosListPageCommand { get; }
-        public AsyncCommand<object> OpenWordPageCommand { get; }
         public AsyncCommand<object> OpenSettingsPageCommand { get; }
-
+        public AsyncCommand<object> OpenDictionaryPageCommand { get; }
+        
         public AsyncCommand<object> AddTabCommand { get; }
         public AsyncCommand<object> OpenCloseExtraPaneCommand { get; }
 
         public MainPageViewModel()
         {
-            rightExtendedPanelVisibility = Visibility.Collapsed;
-            leftExtendedPanelVisibility = Visibility.Visible;
+            rightExtendedPanelVisibility = Visibility.Collapsed; // Into settings
+            leftExtendedPanelVisibility = Visibility.Collapsed; // Ito settings
 
             InitializeServices();
 
-            OpenCommand = new AsyncCommand<object>(OpenFile);
-
-            OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
             OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
-            OpenVideosListPageCommand = new AsyncCommand<object>(OpenVideosListPage);
-            OpenWordPageCommand = new AsyncCommand<object>(OpenWordPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
+            OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
 
             AddTabCommand = new AsyncCommand<object>(AddTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
         }
 
-        async Task InitializeServices()
+        private async Task InitializeServices()
         {
             await SettingsService.Initialize();
             DictionaryService.InitializeDatabase();
@@ -70,173 +53,104 @@ namespace UWP_PROJECT_06.ViewModels
             HistoryService.InitializeDatabase();
         }
 
-
-        private async Task OpenDictionaryPage(object arg)
-        {
-            var tabControl = arg as TabView;
-
-            if (tabControl != null)
-            {
-                var currentTab = new TabViewItem();
-
-                currentTab.Header = "Dictionary";
-                currentTab.Name = "dictionaryPage";
-
-                var frame = new Frame();
-                frame.Navigate(typeof(DictionaryPage));
-
-                currentTab.Content = frame;
-
-                tabControl.TabItems.Add(currentTab);
-                tabControl.SelectedItem = currentTab;
-            }
-        }
-
         private async Task OpenNotesPage(object arg)
         {
-            var tabControl = arg as TabView;
+            TabView tabControl = arg as TabView;
 
-            if (tabControl != null)
-            {
-                var currentTab = new TabViewItem();
+            if (tabControl == null)
+                return;
 
-                currentTab.Header = "Notes";
-                currentTab.Name = "NotesPage";
-                var frame = new Frame();
-                frame.Navigate(typeof(SourcesPage));
+            Frame frame = new Frame();
+            frame.Navigate(typeof(SourcesPage));
 
-                currentTab.Content = frame;
+            TabViewItem currentTab = new TabViewItem()
+            { 
+                Header = "Notes",
+                Name = "NotesPage",
+                Content = frame
+            };
 
-                tabControl.TabItems.Add(currentTab);
-                tabControl.SelectedItem = currentTab;
-            }
-
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
         }
-
-        private async Task OpenVideosListPage(object arg)
+        private async Task OpenSettingsPage(object arg)
         {
-            var tabControl = arg as TabView;
+            TabView tabControl = arg as TabView;
 
-            if (tabControl != null)
+            if (tabControl == null)
+                return;
+
+            Frame frame = new Frame();
+            frame.Navigate(typeof(SettingsPage));
+
+            TabViewItem currentTab = new TabViewItem()
             {
-                var index = tabControl.SelectedIndex;
+                Header = "Settings",
+                Name = "settingsPage",
+                Content = frame
+            };
 
-                var currentTab = new TabViewItem();
-
-                currentTab.Header = "Videos";
-                currentTab.Name = "videoListPage";
-                var frame = new Frame();
-                frame.Navigate(typeof(VideoListPage));
-
-                currentTab.Content = frame;
-
-
-                tabControl.TabItems.Add(currentTab);
-                tabControl.SelectedItem = currentTab;
-            }
-
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
         }
-        private async Task OpenWordPage(object arg)
-        {
-            var tabControl = arg as TabView;
-
-            if (tabControl != null)
-            {
-                var index = tabControl.SelectedIndex;
-
-                var currentTab = new TabViewItem();
-
-                currentTab.Header = "Word";
-                currentTab.Name = "wordPage";
-                var frame = new Frame();
-                frame.Navigate(typeof(WordPage));
-
-                currentTab.Content = frame;
-
-
-                tabControl.TabItems.Add(currentTab);
-                tabControl.SelectedItem = currentTab;
-            }
-
-        }
-        async Task OpenSettingsPage(object arg)
+        private async Task OpenDictionaryPage(object arg)
         {
             var tabControl = arg as TabView;
 
             if (tabControl == null)
                 return;
 
-            var currentTab = new TabViewItem();
+            Frame frame = new Frame();
+            frame.Navigate(typeof(DictionaryPage));
 
-            currentTab.Header = "Settings";
-            currentTab.Name = "settingsPage";
-
-            var frame = new Frame();
-            frame.Navigate(typeof(SettingsPage));
-
-            currentTab.Content = frame;
+            TabViewItem currentTab = new TabViewItem()
+            {
+                Header = "Dictionary",
+                Name = "dictionaryPage",
+                Content = frame
+            };
 
             tabControl.TabItems.Add(currentTab);
             tabControl.SelectedItem = currentTab;
-
         }
-
-        private async Task OpenFile(object arg)
-        {
-            var webBrowser = arg as WebView;
-
-            if (webBrowser != null)
-                webBrowser.Source = new Uri(@"https://www.google.com/search?q=hello+world");
-        }
-
+        
         private async Task AddTab(object arg)
         {
-            var tabControl = arg as TabView;
+            TabView tabControl = arg as TabView;
 
-            if (tabControl != null)
+            if (tabControl == null)
+                return;
+
+            Frame frame = new Frame();
+            frame.Navigate(typeof(DictionaryPage));
+
+            TabViewItem newTab = new TabViewItem()
             {
-                // New tab
-                var newTab = new TabViewItem();
-                // Name the header "Settings"
-                newTab.Header = "Dictionary Page";
-                // name the tab
-                newTab.Name = "newTab";
-
-                // Change the tab icon.
-                //newTab.IconSource = new muxc.SymbolIconSource() { Symbol = Symbol.Setting };
-
-                // Create a frame instance
-                Frame frame = new Frame();
-
-                // Add the frame to the tab
-                newTab.Content = frame;
-
-                // Navigate the frame to the settings page.
-                frame.Navigate(typeof(DictionaryPage));
-
-                // Add the tab to the tab control.
-                tabControl.TabItems.Add(newTab);
-
-                // Set the newly created tab as the selected tab.
-                tabControl.SelectedItem = newTab;
-            }
+                Header = "Dictionary Page",
+                Name = "newTab",
+                Content = frame
+            };
+            
+            tabControl.TabItems.Add(newTab);
+            tabControl.SelectedItem = newTab;
         }
-
         private async Task OpenCloseExtraPane(object arg)
         {
-            var pane = arg as Grid;
+            Grid pane = arg as Grid;
             if (pane == null) return;
 
-            var parent = pane.Parent as Grid;
+            Grid parent = pane.Parent as Grid;
             if (parent == null) return;
 
             int columnIndex = pane.Name == "leftPane" ? 2 : 6;
 
-            pane.Visibility = pane.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+            pane.Visibility = pane.Visibility == Visibility.Collapsed 
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
 
             parent.ColumnDefinitions[columnIndex].Width = pane.Visibility == Visibility.Collapsed
-                                                ? new GridLength(0)
-                                                : new GridLength(1, GridUnitType.Auto);
+                ? new GridLength(0)
+                : new GridLength(1, GridUnitType.Auto);
         }
     }
 }

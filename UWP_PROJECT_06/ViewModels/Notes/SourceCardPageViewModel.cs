@@ -11,8 +11,8 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 {
     public class SourceCardPageViewModel : ViewModelBase
     {
-        Source currentSource; public Source CurrentSource { get => currentSource; set => SetProperty(ref currentSource, value); }
-        string markdownText; public string MarkdownText { get => markdownText; set => SetProperty(ref markdownText, value); }
+        private Source currentSource; public Source CurrentSource { get => currentSource; set => SetProperty(ref currentSource, value); }
+        private string markdownText; public string MarkdownText { get => markdownText; set => SetProperty(ref markdownText, value); }
 
         public SourceCardPageViewModel() { }
         public SourceCardPageViewModel(int sourceId)
@@ -22,7 +22,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             Load();
         }
 
-        async Task Load()
+        private async Task Load()
         {
             MarkdownText = await MarkdownService.ReadSource(currentSource);
 
@@ -30,6 +30,5 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             MarkdownText = MarkdownText.Replace("\r", "\n");
             MarkdownText = MarkdownText.Replace("\n", "\n\n");
         }
-
     }
 }

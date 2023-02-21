@@ -13,7 +13,9 @@ namespace UWP_PROJECT_06.Services.Converters
         {
             int sourceId = (int)value;
 
-            return NotesService.ReadSource(sourceId).SourceName.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+            return sourceId == 0 
+                ? ""
+                : NotesService.ReadSource(sourceId).SourceName.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

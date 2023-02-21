@@ -1,28 +1,21 @@
 ﻿using MvvmHelpers.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Views.Settings;
-using Windows.Security.Authentication.Identity.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
 namespace UWP_PROJECT_06.ViewModels
 {
     public class SettingsPageViewModel : ViewModelBase
     {
-        bool isSettingsAppearanceOpen; public bool IsSettingsAppearanceOpen { get => isSettingsAppearanceOpen; set => SetProperty(ref isSettingsAppearanceOpen, value); }
-        bool isSettingsFilesAndLinksOpen; public bool IsSettingsFilesAndLinksOpen { get => isSettingsFilesAndLinksOpen; set => SetProperty(ref isSettingsFilesAndLinksOpen, value); }
-        bool isSettingsHotkeysOpen; public bool IsSettingsHotkeysOpen { get => isSettingsHotkeysOpen; set => SetProperty(ref isSettingsHotkeysOpen, value); }
-        bool isSettingsHistoryOpen; public bool IsSettingsHistoryOpen { get => isSettingsHistoryOpen; set => SetProperty(ref isSettingsHistoryOpen, value); }
-        bool isSettingsDictionaryOpen; public bool IsSettingsDictionaryOpen { get => isSettingsDictionaryOpen; set => SetProperty(ref isSettingsDictionaryOpen, value); }
-        bool isSettingsSourcesOpen; public bool IsSettingsSourcesOpen { get => isSettingsSourcesOpen; set => SetProperty(ref isSettingsSourcesOpen, value); }
-        bool isSettingsBookmarksOpen; public bool IsSettingsBookmarksOpen { get => isSettingsBookmarksOpen; set => SetProperty(ref isSettingsBookmarksOpen, value); }
+        private bool isSettingsAppearanceOpen; public bool IsSettingsAppearanceOpen { get => isSettingsAppearanceOpen; set => SetProperty(ref isSettingsAppearanceOpen, value); }
+        private bool isSettingsFilesAndLinksOpen; public bool IsSettingsFilesAndLinksOpen { get => isSettingsFilesAndLinksOpen; set => SetProperty(ref isSettingsFilesAndLinksOpen, value); }
+        private bool isSettingsHotkeysOpen; public bool IsSettingsHotkeysOpen { get => isSettingsHotkeysOpen; set => SetProperty(ref isSettingsHotkeysOpen, value); }
+        private bool isSettingsHistoryOpen; public bool IsSettingsHistoryOpen { get => isSettingsHistoryOpen; set => SetProperty(ref isSettingsHistoryOpen, value); }
+        private bool isSettingsDictionaryOpen; public bool IsSettingsDictionaryOpen { get => isSettingsDictionaryOpen; set => SetProperty(ref isSettingsDictionaryOpen, value); }
+        private bool isSettingsSourcesOpen; public bool IsSettingsSourcesOpen { get => isSettingsSourcesOpen; set => SetProperty(ref isSettingsSourcesOpen, value); }
+        private bool isSettingsBookmarksOpen; public bool IsSettingsBookmarksOpen { get => isSettingsBookmarksOpen; set => SetProperty(ref isSettingsBookmarksOpen, value); }
 
-        object currentContent; public object CurrentContent { get => currentContent; set => SetProperty(ref currentContent, value); }
+        private object currentContent; public object CurrentContent { get => currentContent; set => SetProperty(ref currentContent, value); }
         
         public AsyncCommand<object> SelectCommand { get; }
 
@@ -41,9 +34,9 @@ namespace UWP_PROJECT_06.ViewModels
             SelectCommand = new AsyncCommand<object>(Select);
         }
 
-        async Task Select(object arg)
+        private async Task Select(object arg)
         {
-            var button = arg as Button;
+            Button button = arg as Button;
 
             if (button == null)
                 return;

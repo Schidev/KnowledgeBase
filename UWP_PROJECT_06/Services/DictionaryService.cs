@@ -180,7 +180,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, Word, Language, Status, PartOfSpeech, CreatedOn, LastModifiedOn, LastRepeatedOn FROM Words WHERE Word = '{word1}';";
+                string commandText = $"SELECT Id, Word, Language, Status, PartOfSpeech, CreatedOn, LastModifiedOn, LastRepeatedOn FROM Words WHERE Word = \"{word1}\";";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();

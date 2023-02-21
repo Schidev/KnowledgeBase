@@ -507,17 +507,30 @@
 
                                 </Grid>
 
-                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
 
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+                                    <Button Grid.Column="0" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Take screenshot" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding ScreenshotCommand}" CommandParameter="{Binding ElementName=ExtrasGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE722;"/>
 
-                                    <Button Grid.Column="1" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+                                    
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+
+                                    <Button Grid.Column="2" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
                                             CornerRadius="5"  Background="{StaticResource colorWhite}" 
                                             ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
                                             Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=ExtrasGrid}">
@@ -613,17 +626,31 @@
 
                                 </Grid>
 
-                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
 
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+
+                                    <Button Grid.Column="0" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Take screenshot" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding ScreenshotCommand}" CommandParameter="{Binding ElementName=NotesGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE722;"/>
+
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
 
                                     <TextBox Grid.Column="1" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                              Text="{Binding Stamp, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
@@ -642,9 +669,9 @@
                                     </TextBox>
 
                                     
-                                    <Rectangle Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                    <Rectangle Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
 
-                                    <Button Grid.Column="3" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                    <Button Grid.Column="2" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
                                             CornerRadius="5"  Background="{StaticResource colorWhite}" 
                                             ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
                                             Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=NotesGrid}">
@@ -684,7 +711,7 @@
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <Grid x:Name="QuoteGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+                            <Grid x:Name="QuoteGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0" Background="{StaticResource colorWhite}">
 
                                 <Grid.Resources>
                                     <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter"/>
@@ -704,7 +731,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBox Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding OriginalQuote, Mode=TwoWay}" 
-                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" 
+                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" Background="{StaticResource colorWhite}" 
                                              PlaceholderText="Start typing new quote...">
                                         <TextBox.Resources>
                                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
@@ -723,7 +750,7 @@
                                     <Rectangle Grid.Column="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
 
                                     <TextBox Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding TranslatedQuote, Mode=TwoWay}"
-                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10"
+                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10" Background="{StaticResource colorWhite}"
                                              PlaceholderText="Start typing translation...">
 
                                         <TextBox.Resources>
@@ -742,10 +769,11 @@
 
                                 </Grid>
 
-                                <Rectangle Grid.Row="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                <Rectangle Grid.Row="1" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
 
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -753,9 +781,21 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+                                    <Button Grid.Column="0" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Take screenshot" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            Command="{Binding ScreenshotCommand}" CommandParameter="{Binding ElementName=QuoteGrid}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE722;"/>
 
-                                    <TextBox Grid.Column="1" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                        <Button.DataContext>
+                                            <viewmodelsNotes:SourceEditPageViewModel/>
+                                        </Button.DataContext>
+
+                                    </Button>
+
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+
+                                    <TextBox Grid.Column="2" Margin="0,5,5,5" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center"  Background="{StaticResource colorWhite}"
                                              Text="{Binding QuoteBegin, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
                                              PlaceholderText="HH:mm:ss...">
                                         <TextBox.Resources>
@@ -771,8 +811,8 @@
                                         </TextBox.Resources>
                                     </TextBox>
 
-                                    <TextBox Grid.Column="2" Margin="5,0,0,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                             Text="{Binding QuoteEnd, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
+                                    <TextBox Grid.Column="3" Margin="5,0,0,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                             Text="{Binding QuoteEnd, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Background="{StaticResource colorWhite}"
                                              PlaceholderText="HH:mm:ss...">
 
                                         <TextBox.Resources>
@@ -789,9 +829,9 @@
 
                                     </TextBox>
 
-                                    <Rectangle Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                    <Rectangle Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
 
-                                    <Button Grid.Column="4" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                    <Button Grid.Column="5" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
                                             CornerRadius="5"  Background="{StaticResource colorWhite}" 
                                             ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
                                             Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=QuoteGrid}">

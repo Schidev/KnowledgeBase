@@ -1,24 +1,16 @@
-﻿using ColorCode;
-using Microsoft.Toolkit.Uwp.Helpers;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
 using MvvmHelpers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.Notes;
-using UWP_PROJECT_06.Views;
-using Windows.Media.Ocr;
 using Windows.Storage;
 using Windows.UI.Popups;
-using Windows.UI.Text;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Shapes;
 using static SQLite.SQLite3;
 
 namespace UWP_PROJECT_06.Services
@@ -133,7 +125,7 @@ namespace UWP_PROJECT_06.Services
                                                         ? (extra.ExtraText == "" || extra.ExtraText == null ? "" : extra.ExtraText)
                                                         : DictionaryService.ReadWord(extra.LinkedWordId).Word1;
 
-                        string extraText = CheckWord(extraTextWithUnderscores);
+                        string extraText = CheckWord(extraTextWithUnderscores).Replace("_"," ");
 
                         if (extra != group.Items.Last())
                         {
@@ -437,47 +429,10 @@ namespace UWP_PROJECT_06.Services
             output.AppendLine(String.Format("**Временные метки:**"));
 
             int counter = 1;
-            Regex noteRegex1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)");
-            Regex noteRegex2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
-            Regex noteRegex3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
-
-            Regex noteRegex4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)([0-9]+)([\s]*)([lL]*)([\s]+)([0-9]+)([\s]*)");
-            Regex noteRegex5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
-
+            
             foreach (Note note in notes)
             {
-                string result = "";
-
-                if (noteRegex4.IsMatch(note.Stamp) || noteRegex5.IsMatch(note.Stamp))
-                {
-                    var temp = Regex.Replace(note.Stamp, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
-
-                    result = String.Format("page {0} line {1} - page {2} line {3}", temp[0], temp[1], temp[2], temp[3]);
-                }
-                else if (noteRegex1.IsMatch(note.Stamp) && !noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
-                {
-                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    result = String.Format("00:00:{0}-00:00:{1}", temp[0], temp[1]);
-                }
-                else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && !noteRegex3.IsMatch(note.Stamp))
-                {
-                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    result = String.Format("00:{0}:{1}-00:{2}:{3}", temp[0], temp[1], temp[2], temp[3]);
-                }
-                else if (noteRegex1.IsMatch(note.Stamp) && noteRegex2.IsMatch(note.Stamp) && noteRegex3.IsMatch(note.Stamp))
-                {
-                    var temp = Regex.Replace(note.Stamp, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    result = String.Format("{0}:{1}:{2}-{3}:{4}:{5}", temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
-                }
-                else 
-                {
-                    result = note.Stamp;
-                }
-
-                output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, result, note.Title));
+                output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, MarkdownService.CheckQuoteStamp(note.Stamp), note.Title));
             }
 
             output.AppendLine(String.Format(""));
@@ -511,66 +466,12 @@ namespace UWP_PROJECT_06.Services
             {
                 #region Quote begin
 
-                if (quoteString4.IsMatch(quote.QuoteBegin) || quoteString5.IsMatch(quote.QuoteBegin))
-                {
-                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
-
-                    quote.QuoteBegin = String.Format("page {0} line {1}", temp[0], temp[1]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteBegin) && !quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
-                {
-                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteBegin = String.Format("00:00:{0}", temp[0]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && !quoteString3.IsMatch(quote.QuoteBegin))
-                {
-                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteBegin = String.Format("00:{0}:{1}", temp[0], temp[1]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteBegin) && quoteString2.IsMatch(quote.QuoteBegin) && quoteString3.IsMatch(quote.QuoteBegin))
-                {
-                    var temp = Regex.Replace(quote.QuoteBegin, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteBegin = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
-                }
-                else 
-                {
-                    quote.QuoteBegin = quote.QuoteBegin;
-                }
+                quote.QuoteBegin = MarkdownService.CheckQuoteStamp(quote.QuoteBegin);
 
                 #endregion
                 #region Quote end
-                
-                if (quoteString4.IsMatch(quote.QuoteEnd) || quoteString5.IsMatch(quote.QuoteEnd))
-                {
-                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
 
-                    quote.QuoteEnd = String.Format("page {0} line {1}", temp[0], temp[1]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteEnd) && !quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
-                {
-                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteEnd = String.Format("00:00:{0}", temp[0]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && !quoteString3.IsMatch(quote.QuoteEnd))
-                {
-                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteEnd = String.Format("00:{0}:{1}", temp[0], temp[1]);
-                }
-                else if (quoteString1.IsMatch(quote.QuoteEnd) && quoteString2.IsMatch(quote.QuoteEnd) && quoteString3.IsMatch(quote.QuoteEnd))
-                {
-                    var temp = Regex.Replace(quote.QuoteEnd, @"[\s:_-]+", " ").Trim().Split(' ');
-
-                    quote.QuoteEnd = String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
-                }
-                else 
-                {
-                    quote.QuoteEnd = quote.QuoteEnd;
-                }
+                quote.QuoteEnd = MarkdownService.CheckQuoteStamp(quote.QuoteEnd);
 
                 #endregion
                 #region Original quote
@@ -736,21 +637,105 @@ namespace UWP_PROJECT_06.Services
 
             return str;
         }
-        public static string CheckWord(string wordWithUnderscores)
+        public static string CheckWord(string word)
         {
-            string result = "";
+            if (word.Contains("_rus") || word.Contains("_deu") || word.Contains("_eng") || word.Contains("_fra") || word.Contains("_ita") || word.Contains("_spa"))
+            {
+                string result = "";
 
-            if (wordWithUnderscores == null)
-                return result;
+                if (word == null)
+                    return result;
 
-            int underscoresAmount = wordWithUnderscores.Split("_").Length - 1;
-            string[] splittedWord = wordWithUnderscores.Split("_", underscoresAmount);
+                int underscoresAmount = word.Split("_").Length - 1;
+                string[] splittedWord = word.Split("_", underscoresAmount);
 
-            foreach (string str in splittedWord)
-                if (str != splittedWord.Last())
-                    result += str;
+                foreach (string str in splittedWord)
+                    if (str != splittedWord.Last())
+                        result += str + " ";
 
-            return result;
+                return result.Trim().Replace(" ", "_");
+            }
+
+            return word.Trim().Replace(" ", "_");
+        }
+        public static string CheckSource(string source)
+        {
+            return source.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+        }
+
+        public static string CheckQuoteStamp(string quoteStamp)
+        {
+            Regex quoteString1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)");
+            Regex quoteString2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+            Regex quoteString3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+
+            Regex quoteString4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)");
+            Regex quoteString5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
+
+
+            if (quoteString4.IsMatch(quoteStamp) || quoteString5.IsMatch(quoteStamp))
+            {
+                var temp = Regex.Replace(quoteStamp, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                return String.Format("page {0} line {1}", temp[0], temp[1]);
+            }
+            else if (quoteString1.IsMatch(quoteStamp) && !quoteString2.IsMatch(quoteStamp) && !quoteString3.IsMatch(quoteStamp))
+            {
+                var temp = Regex.Replace(quoteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                 return String.Format("00:00:{0}", temp[0]);
+            }
+            else if (quoteString1.IsMatch(quoteStamp) && quoteString2.IsMatch(quoteStamp) && !quoteString3.IsMatch(quoteStamp))
+            {
+                var temp = Regex.Replace(quoteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                return String.Format("00:{0}:{1}", temp[0], temp[1]);
+            }
+            else if (quoteString1.IsMatch(quoteStamp) && quoteString2.IsMatch(quoteStamp) && quoteString3.IsMatch(quoteStamp))
+            {
+                var temp = Regex.Replace(quoteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+                return String.Format("{0}:{1}:{2}", temp[0], temp[1], temp[2]);
+            }
+
+            return quoteStamp;
+        }
+
+        public static string CheckNoteStamp(string noteStamp)
+        {
+            Regex noteRegex1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)");
+            Regex noteRegex2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+            Regex noteRegex3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
+
+            Regex noteRegex4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)([0-9]+)([\s]*)([lL]*)([\s]+)([0-9]+)([\s]*)");
+            Regex noteRegex5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s-]([\s]*)([pP]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
+
+
+            if (noteRegex4.IsMatch(noteStamp) || noteRegex5.IsMatch(noteStamp))
+            {
+                var temp = Regex.Replace(noteStamp, @"[\s:_-lLpP]+", " ").Trim().Split(' ');
+
+                return String.Format("page {0} line {1} - page {2} line {3}", temp[0], temp[1], temp[2], temp[3]);
+            }
+            else if (noteRegex1.IsMatch(noteStamp) && !noteRegex2.IsMatch(noteStamp) && !noteRegex3.IsMatch(noteStamp))
+            {
+                var temp = Regex.Replace(noteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                return String.Format("00:00:{0}-00:00:{1}", temp[0], temp[1]);
+            }
+            else if (noteRegex1.IsMatch(noteStamp) && noteRegex2.IsMatch(noteStamp) && !noteRegex3.IsMatch(noteStamp))
+            {
+                var temp = Regex.Replace(noteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                return String.Format("00:{0}:{1}-00:{2}:{3}", temp[0], temp[1], temp[2], temp[3]);
+            }
+            else if (noteRegex1.IsMatch(noteStamp) && noteRegex2.IsMatch(noteStamp) && noteRegex3.IsMatch(noteStamp))
+            {
+                var temp = Regex.Replace(noteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
+
+                return String.Format("{0}:{1}:{2}-{3}:{4}:{5}", temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
+            }
+
+            return noteStamp;
         }
 
     }

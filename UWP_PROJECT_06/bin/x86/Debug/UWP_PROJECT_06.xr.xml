@@ -8,6 +8,7 @@
     <RootPropertyPathName Name="QuoteEnd" />
     <RootPropertyPathName Name="QuoteBegin" />
     <RootPropertyPathName Name="SourceID" />
+    <RootPropertyPathName Name="ScreenshotCommand" />
     <RootPropertyPathName Name="TranslatedQuote" />
     <RootPropertyPathName Name="OriginalQuote" />
     <RootPropertyPathName Name="Stamp" />
@@ -25,12 +26,10 @@
     <RootPropertyPathName Name="AddTabCommand" />
     <RootPropertyPathName Name="LeftExtendedPanelVisibility" />
     <RootPropertyPathName Name="OpenSettingsPageCommand" />
-    <RootPropertyPathName Name="OpenWordPageCommand" />
     <RootPropertyPathName Name="OpenNotesPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryModifiers" />
     <RootPropertyPathName Name="OpenDictionaryKey" />
-    <RootPropertyPathName Name="OpenVideosListPageCommand" />
     <RootPropertyPathName Name="UnknownWordsGroups" />
     <RootPropertyPathName Name="WordsGroups" />
     <RootPropertyPathName Name="SaveCommand" />
@@ -41,7 +40,7 @@
     <RootPropertyPathName Name="ChangeModeCommand" />
     <RootPropertyPathName Name="IsWritingMode" />
     <RootPropertyPathName Name="IsReadingMode" />
-    <RootPropertyPathName Name="SelectedWord" />
+    <RootPropertyPathName Name="SelectedWordString" />
     <RootPropertyPathName Name="DeleteUnknownWordCommand" />
     <RootPropertyPathName Name="IsUnknownWordSelected" />
     <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
@@ -59,6 +58,7 @@
     <RootPropertyPathName Name="UnknownWordLanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxTextUnknownWord" />
     <RootPropertyPathName Name="UnknownWordTextChangedCommand" />
+    <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="WordSelectedCommand" />
     <RootPropertyPathName Name="LastRepeatedOn" />
     <RootPropertyPathName Name="Status" />
@@ -68,7 +68,6 @@
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
     <RootPropertyPathName Name="TextChangedCommand" />
-    <RootPropertyPathName Name="ScreenshotCommand" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentSource" />
     <RootPropertyPathName Name="SourceName" />
@@ -210,7 +209,6 @@
       <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="HorizontalContentAlignment" />
-      <RootEvent Name="Click" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Margin" />
@@ -239,12 +237,12 @@
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="Padding" />
+      <RootProperty Name="Background" />
       <RootProperty Name="Resources" />
       <RootProperty Name="RowDefinitions" />
       <RootProperty Name="Children" />
       <RootProperty Name="ColumnDefinitions" />
       <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="Background" />
       <RootProperty Name="TabFocusNavigation" />
       <RootProperty Name="MinWidth" />
       <RootProperty Name="Visibility" />
@@ -278,11 +276,18 @@
       <RootProperty Name="Width" />
       <RootProperty Name="MinWidth" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ToolTipService">
+      <RootMethod Name="GetToolTip" />
+      <RootMethod Name="SetToolTip" />
+      <RootMethod Name="GetPlacement" />
+      <RootMethod Name="SetPlacement" />
+    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="Margin" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Background" />
       <RootProperty Name="Text" />
       <RootProperty Name="BorderBrush" />
       <RootProperty Name="BorderThickness" />
@@ -293,15 +298,8 @@
       <RootProperty Name="Padding" />
       <RootProperty Name="IsSpellCheckEnabled" />
       <RootProperty Name="Foreground" />
-      <RootProperty Name="Background" />
       <RootProperty Name="CornerRadius" />
       <RootProperty Name="MaxWidth" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.ToolTipService">
-      <RootMethod Name="GetToolTip" />
-      <RootMethod Name="SetToolTip" />
-      <RootMethod Name="GetPlacement" />
-      <RootMethod Name="SetPlacement" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="ElementName" />

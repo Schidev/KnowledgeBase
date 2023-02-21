@@ -1,14 +1,8 @@
-﻿using ColorCode;
-using Microsoft.Toolkit;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.Dictionary.OnlineDictionary;
@@ -16,57 +10,19 @@ using UWP_PROJECT_06.Services;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
 namespace UWP_PROJECT_06.ViewModels
 {
     public class WordEditPageViewModel : ViewModelBase
     {
         public int id { get; set; }
-        Definition CurrentDefinition { get; set; }
-
-
-        string currentWord;
-        public string CurrentWord
-        {
-            get => currentWord;
-            set => SetProperty(ref currentWord, value);
-        }
-
-        int languageSelectionComboBoxSelectedIndex;
-        public int LanguageSelectionComboBoxSelectedIndex
-        {
-            get => languageSelectionComboBoxSelectedIndex;
-            set => SetProperty(ref languageSelectionComboBoxSelectedIndex, value);
-        }
-
-        int statusSelectionComboBoxSelectedIndex;
-        public int StatusSelectionComboBoxSelectedIndex
-        {
-            get => statusSelectionComboBoxSelectedIndex;
-            set => SetProperty(ref statusSelectionComboBoxSelectedIndex, value);
-        }
-        
-        int partOfSpeechSelectionComboBoxSelectedIndex;
-        public int PartOfSpeechSelectionComboBoxSelectedIndex
-        {
-            get => partOfSpeechSelectionComboBoxSelectedIndex;
-            set => SetProperty(ref partOfSpeechSelectionComboBoxSelectedIndex, value);
-        }
-
-        DateTimeOffset selectedDate;
-        public DateTimeOffset SelectedDate
-        {
-            get => selectedDate;
-            set => SetProperty(ref selectedDate, value);
-        }
-
-        WordExtra meaningString;
-        public WordExtra MeaningString
-        {
-            get => meaningString;
-            set => SetProperty(ref meaningString, value);
-        }
+        private Definition CurrentDefinition { get; set; }
+        private string currentWord; public string CurrentWord { get => currentWord; set => SetProperty(ref currentWord, value); }
+        private int languageSelectionComboBoxSelectedIndex; public int LanguageSelectionComboBoxSelectedIndex { get => languageSelectionComboBoxSelectedIndex; set => SetProperty(ref languageSelectionComboBoxSelectedIndex, value); }
+        private int statusSelectionComboBoxSelectedIndex; public int StatusSelectionComboBoxSelectedIndex { get => statusSelectionComboBoxSelectedIndex; set => SetProperty(ref statusSelectionComboBoxSelectedIndex, value); }
+        private int partOfSpeechSelectionComboBoxSelectedIndex; public int PartOfSpeechSelectionComboBoxSelectedIndex { get => partOfSpeechSelectionComboBoxSelectedIndex; set => SetProperty(ref partOfSpeechSelectionComboBoxSelectedIndex, value); }
+        private DateTimeOffset selectedDate; public DateTimeOffset SelectedDate { get => selectedDate; set => SetProperty(ref selectedDate, value); }
+        private WordExtra meaningString; public WordExtra MeaningString { get => meaningString; set => SetProperty(ref meaningString, value); }
 
         Visibility isRussian; public Visibility IsRussian { get => isRussian; set => SetProperty(ref isRussian, value); }
         Visibility isGerman; public Visibility IsGerman { get => isGerman; set => SetProperty(ref isGerman, value); }
@@ -80,11 +36,7 @@ namespace UWP_PROJECT_06.ViewModels
         public ObservableRangeCollection<string> PartsOfSpeech { get; set; }
 
         public List<ObservableRangeCollection<WordExtra>> extras;
-        public List<ObservableRangeCollection<WordExtra>> Extras
-        {
-            get => extras;
-            set => SetProperty(ref extras, value);
-        }
+        public List<ObservableRangeCollection<WordExtra>> Extras {get => extras; set => SetProperty(ref extras, value); }
 
         public AsyncCommand LanguageSelectedCommand { get; }
         public AsyncCommand<object> DeleteCommand { get; }
@@ -158,22 +110,13 @@ namespace UWP_PROJECT_06.ViewModels
 
                 for (int q = 0; q < currentWordExtras.Count; q++)
                 {
-                    int index = currentWordExtras[q].LinkType;
-                    int linkedWordId = currentWordExtras[q].LinkedWordId;
+                    WordExtra e = currentWordExtras[q];
 
-                    if (linkedWordId != 0)
-                    {
-                        string text = DictionaryService.ReadWord(linkedWordId).Word1;
-
-                        int underscoresAmount = text.Split("_").Length - 1;
-                        string[] splittedText = text.Split("_", underscoresAmount);
-
-                        foreach (string str in splittedText)
-                            if (str != splittedText.Last())
-                                currentWordExtras[q].ExtraText += str;
-                    }
-
-                    extras[index].Add(currentWordExtras[q]);
+                    e.ExtraText = e.LinkedWordId == 0 
+                            ? e.ExtraText
+                            : MarkdownService.CheckWord(DictionaryService.ReadWord(e.LinkedWordId).Word1);
+                    
+                    extras[e.LinkType].Add(currentWordExtras[q]);
                 }
 
                 MeaningString = extras[5].FirstOrDefault();
@@ -197,34 +140,31 @@ namespace UWP_PROJECT_06.ViewModels
 
         async Task LostFocus(object arg)
         {
-            var extras = arg as ObservableRangeCollection<WordExtra>;
+            ObservableRangeCollection<WordExtra> extras = arg as ObservableRangeCollection<WordExtra>;
             if (extras == null) return;
 
             int linkType = extras.FirstOrDefault().LinkType;
 
             for (int q = extras.Count - 1; q >= 0; q--)
             {
-                extras[q].ExtraText = extras[q].ExtraText.Trim();
+                WordExtra e = extras[q];
+                e.ExtraText = e.ExtraText.Trim();
 
-                if (extras[q].ExtraText == "")
+                if (e.ExtraText != "")
+                    continue;
+                
+                if (e.RowID != 0)
                 {
-                    if (extras[q].RowID != 0)
-                    {
-                        DictionaryService.DeleteWordExtra(extras[q].RowID);
-                        
-                        await MarkdownService.WriteWord(DictionaryService.ReadWord(extras[q].WordId), 
-                            DictionaryService.ReadWordExtras(extras[q].WordId));
-                    }
-                    extras.RemoveAt(q);
+                    DictionaryService.DeleteWordExtra(e.RowID);
 
+                    await MarkdownService.WriteWord(DictionaryService.ReadWord(e.WordId),
+                        DictionaryService.ReadWordExtras(e.WordId));
                 }
+
+                extras.RemoveAt(q);
             }
 
-            extras.Add(new WordExtra()
-            {
-                LinkType = linkType,
-                ExtraText = ""
-            });
+            extras.Add(new WordExtra() { LinkType = linkType, ExtraText = "" });
         }
 
         async Task Delete(object arg)
@@ -306,7 +246,6 @@ namespace UWP_PROJECT_06.ViewModels
 
             foreach (ObservableRangeCollection<WordExtra> extrasCollection in Extras)
                 await LostFocus(extrasCollection);
-            
         }
     }
 }

@@ -14,22 +14,25 @@ using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
 using System.Text.RegularExpressions;
+using Windows.Graphics.Display;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace UWP_PROJECT_06.ViewModels.Notes
 {
     public class SourceEditPageViewModel : ViewModelBase
     {
         public int Id { get; set; }
+        private int selectedState; public int SelectedState { get => selectedState; set => SetProperty(ref selectedState, value); }
+        private int selectedTheme; public int SelectedTheme { get => selectedTheme; set => SetProperty(ref selectedTheme, value); }
+        private int selectedSourceType; public int SelectedSourceType { get => selectedSourceType; set => SetProperty(ref selectedSourceType, value); }
+        private bool isDownloaded; public bool IsDownloaded { get => isDownloaded; set => SetProperty(ref isDownloaded, value); }
         
-        int selectedState; public int SelectedState { get => selectedState; set => SetProperty(ref selectedState, value); }
-        int selectedTheme; public int SelectedTheme { get => selectedTheme; set => SetProperty(ref selectedTheme, value); }
-        int selectedSourceType; public int SelectedSourceType { get => selectedSourceType; set => SetProperty(ref selectedSourceType, value); }
-        bool isDownloaded; public bool IsDownloaded { get => isDownloaded; set => SetProperty(ref isDownloaded, value); }
-        
-       
-
-        Source source; public Source Source { get => source; set => SetProperty(ref source, value); }
-        Quote selectedQuote; public Quote SelectedQuote { get => selectedQuote; set => SetProperty(ref selectedQuote, value); }
+        private Source source; public Source Source { get => source; set => SetProperty(ref source, value); }
+        private Quote selectedQuote; public Quote SelectedQuote { get => selectedQuote; set => SetProperty(ref selectedQuote, value); }
 
         public ObservableRangeCollection<string> States { get; set; }
         public ObservableRangeCollection<string> Themes{ get; set; }
@@ -39,6 +42,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
         public ObservableRangeCollection<Note> Notes { get; set; } 
         public ObservableRangeCollection<SourceExtra> Extras { get; set; } 
 
+        public AsyncCommand<object> ScreenshotCommand { get; set; }
         public AsyncCommand<object> DeleteCommand { get; set; }
         public AsyncCommand<object> StateSelectedCommand { get; }
         public AsyncCommand<object> ThemeSelectedCommand { get; }
@@ -61,6 +65,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
             Load();
 
+            ScreenshotCommand = new AsyncCommand<object>(Screenshot);
             DeleteCommand = new AsyncCommand<object>(Delete);
 
             StateSelectedCommand = new AsyncCommand<object>(StateSelected);
@@ -70,7 +75,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             LostFocusCommand = new AsyncCommand<object>(LostFocus);
         }
 
-        async Task Load()
+        private async Task Load()
         {
             #region Source
 
@@ -144,22 +149,97 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             LostFocus(Quotes);
         }
 
-        async Task StateSelected(object arg)
+        private async Task StateSelected(object arg)
         {
             source.State = (byte)SelectedState;
         }
 
-        async Task ThemeSelected(object arg)
+        private async Task ThemeSelected(object arg)
         {
             source.Theme = (byte)SelectedTheme;
         }
 
-        async Task SourceTypeSelected(object arg)
+        private async Task SourceTypeSelected(object arg)
         {
             source.SourceType = (byte)SelectedSourceType;
         }
 
-        async Task Delete(object arg)
+        private async Task Screenshot(object arg)
+        {
+            MessageDialog message = new MessageDialog("Would you like to take a screenshot of this card?");
+
+            message.Commands.Add(new UICommand { Label = "Yeah", Id = 0 });
+            message.Commands.Add(new UICommand { Label = "No", Id = 1 });
+
+            var result = await message.ShowAsync();
+
+            Grid cardGrid = arg as Grid;
+
+            if (cardGrid == null || (int)result.Id == 1)
+                return;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap();
+            await rtb.RenderAsync(cardGrid);
+
+            var pixelBuffer = await rtb.GetPixelsAsync();
+            byte[] pixels = pixelBuffer.ToArray();
+            DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
+
+            #region File System
+
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            string vaultName = await SettingsService.ReadPath("vault");
+            string folderName = await SettingsService.ReadPath("images");
+
+            folderName = System.IO.Path.Combine(vaultName, folderName);
+
+            string fullPath = folderName;
+
+            StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
+
+            StorageFile file = null;
+
+            if (cardGrid.DataContext as Quote != null)
+            {
+                Quote quote = cardGrid.DataContext as Quote;
+
+                file = await folder.CreateFileAsync(String.Format("IMAGE_QUOTE_{0}_STAMP_{1}.png",
+                    MarkdownService.CheckSource(NotesService.ReadSource(quote.SourceID).SourceName),
+                    quote.QuoteBegin.Replace(" ", "_").Replace(":", "_")), CreationCollisionOption.ReplaceExisting);
+            }
+
+            if (cardGrid.DataContext as Note != null)
+            {
+                Note note = cardGrid.DataContext as Note;
+                file = await folder.CreateFileAsync(String.Format("IMAGE_NOTE_{0}_STAMP_{1}.png",
+                    MarkdownService.CheckSource(NotesService.ReadSource(note.SourceID).SourceName),
+                    note.Title.Replace(" ", "_").Replace(":", "_")), CreationCollisionOption.ReplaceExisting);
+            }
+
+            if (cardGrid.DataContext as SourceExtra != null)
+            {
+                SourceExtra extra = cardGrid.DataContext as SourceExtra;
+                file = await folder.CreateFileAsync(String.Format("IMAGE_SOURCE_EXTRA_{0}_KEY_{1}.png",
+                    MarkdownService.CheckSource(NotesService.ReadSource(extra.SourceID).SourceName),
+                    extra.Key.ToUpper().Replace(" ","_").Replace(":", "_")), CreationCollisionOption.ReplaceExisting);
+            }
+
+            #endregion
+
+            using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                                     BitmapAlphaMode.Premultiplied,
+                                     (uint)rtb.PixelWidth,
+                                     (uint)rtb.PixelHeight,
+                                     displayInformation.RawDpiX,
+                                     displayInformation.RawDpiX,
+                                     pixels);
+                await encoder.FlushAsync();
+            }
+        }
+        private async Task Delete(object arg)
         {
             var grid = arg as Grid;
 
@@ -185,7 +265,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             grid.Visibility = Visibility.Collapsed;
         }
 
-        async Task LostFocus(object arg)
+        private async Task LostFocus(object arg)
         {
             var SourceExtrasCollection = arg as ObservableRangeCollection<SourceExtra>;
 
@@ -193,21 +273,25 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
             if (SourceExtrasCollection != null)
             {
-                
                 for (int q = Extras.Count - 1; q >= 0; q--)
                 {
-                    Extras[q].Key = Extras[q].Key.Trim();
-                    Extras[q].Value = Extras[q].Value.Trim();
+                    SourceExtra e = Extras[q];
 
-                    if (Extras[q].Key == "" && Extras[q].Value == "")
+                    e.Key = e.Key.Trim();
+                    e.Value = e.Value.Trim();
+
+                    if (e.Key == "" && e.Value == "")
                     {
-                        if (Extras[q].Id != 0)
+                        if (e.Id != 0)
                         {
-                            //NotesService.DeleteQuote(Quotes[q].Id);
+                            NotesService.DeleteSourceExtra(e.Id);
 
-                            //await MarkdownService.WriteWord(NotesService.ReadSource(Quotes[q].SourceID),
-                            //    NotesService...);
+                            await MarkdownService.WriteSource(NotesService.ReadSource(e.SourceID),
+                                NotesService.ReadQuotes(e.SourceID),
+                                NotesService.ReadNotes(e.SourceID),
+                                NotesService.ReadSourceExtras(e.SourceID));
                         }
+
                         Extras.RemoveAt(q);
                     }
                 }
@@ -218,6 +302,8 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                     Key = "",
                     Value = ""
                 });
+
+                return;
             }
 
             #endregion
@@ -230,21 +316,24 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             {
                 for (int q = Notes.Count - 1; q >= 0; q--)
                 {
-                    Notes[q].Stamp = Notes[q].Stamp.Trim();
-                    Notes[q].Title = Notes[q].Title.Trim();
-                    Notes[q].Note1 = Notes[q].Note1.Trim();
+                    Note n = Notes[q];
+                    n.Stamp = n.Stamp.Trim();
+                    n.Title = n.Title.Trim();
+                    n.Note1 = n.Note1.Trim();
 
-                    if (Notes[q].Stamp == "" && Notes[q].Title == "" && Notes[q].Note1 == "")
+                    if (n.Stamp == "" && n.Title == "" && n.Note1 == "")
                     {
-                        if (Notes[q].Id != 0)
+                        if (n.Id != 0)
                         {
-                            //NotesService.DeleteQuote(Quotes[q].Id);
+                            NotesService.DeleteNote(n.Id);
 
-                            //await MarkdownService.WriteWord(NotesService.ReadSource(Quotes[q].SourceID),
-                            //    NotesService...);
+                            await MarkdownService.WriteSource(NotesService.ReadSource(n.SourceID),
+                                NotesService.ReadQuotes(n.SourceID),
+                                NotesService.ReadNotes(n.SourceID),
+                                NotesService.ReadSourceExtras(n.SourceID));
                         }
-                        Notes.RemoveAt(q);
 
+                        Notes.RemoveAt(q);
                     }
                 }
 
@@ -255,6 +344,8 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                     Title = "",
                     Note1 = ""
                 });
+
+                return;
             }
 
             #endregion
@@ -267,23 +358,27 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             {
                 for (int q = Quotes.Count - 1; q >= 0; q--)
                 {
-                    Quotes[q].OriginalQuote = Quotes[q].OriginalQuote.Trim();
-                    Quotes[q].TranslatedQuote = Quotes[q].TranslatedQuote.Trim();
-                    Quotes[q].QuoteBegin = Quotes[q].QuoteBegin.Trim();
-                    Quotes[q].QuoteEnd = Quotes[q].QuoteEnd.Trim();
+                    Quote qu = Quotes[q];
 
-                    if (Quotes[q].OriginalQuote == "" && Quotes[q].TranslatedQuote == "" &&
-                        Quotes[q].QuoteBegin == "" && Quotes[q].QuoteEnd == "")
+                    qu.OriginalQuote = qu.OriginalQuote.Trim();
+                    qu.TranslatedQuote = qu.TranslatedQuote.Trim();
+                    qu.QuoteBegin = qu.QuoteBegin.Trim();
+                    qu.QuoteEnd = qu.QuoteEnd.Trim();
+
+                    if (qu.OriginalQuote == "" && qu.TranslatedQuote == "" &&
+                        qu.QuoteBegin == "" && qu.QuoteEnd == "")
                     {
-                        if (Quotes[q].Id != 0)
+                        if (qu.Id != 0)
                         {
-                            //NotesService.DeleteQuote(Quotes[q].Id);
+                            NotesService.DeleteNote(qu.Id);
 
-                            //await MarkdownService.WriteWord(NotesService.ReadSource(Quotes[q].SourceID),
-                            //    NotesService...);
+                            await MarkdownService.WriteSource(NotesService.ReadSource(qu.SourceID),
+                                NotesService.ReadQuotes(qu.SourceID),
+                                NotesService.ReadNotes(qu.SourceID),
+                                NotesService.ReadSourceExtras(qu.SourceID));
                         }
-                        Quotes.RemoveAt(q);
 
+                        Quotes.RemoveAt(q);
                     }
                 }
 
@@ -298,9 +393,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             }
 
             #endregion
-
         }
-
 
     }
 
