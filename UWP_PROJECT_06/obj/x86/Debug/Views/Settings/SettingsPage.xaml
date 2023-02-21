@@ -103,6 +103,13 @@
                             Content="Bookmarks" FontSize="16" 
                             HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
                             Command="{Binding SelectCommand}"                                         />
+                    
+                    <Button x:ConnectionId='9' x:Name="recoveryBtn" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="7" CornerRadius="5" 
+                            Background="{Binding IsSettingsRecoveryOpen, Converter={StaticResource SettingsBackgroundButtonConverter}}" 
+                            Foreground="{Binding IsSettingsRecoveryOpen, Converter={StaticResource SettingsForegroundButtonConverter}}" 
+                            Content="Recovery" FontSize="16" 
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                            Command="{Binding SelectCommand}"                                        />
 
                 </StackPanel>
             </ScrollViewer>

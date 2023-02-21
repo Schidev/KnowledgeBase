@@ -449,7 +449,7 @@
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <Grid x:Name="ExtrasGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+                            <Grid x:Name="ExtrasGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0" Background="{StaticResource colorWhite}" >
 
                                 <Grid.Resources>
                                     <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter"/>
@@ -568,7 +568,7 @@
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <Grid x:Name="NotesGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0">
+                            <Grid x:Name="NotesGrid" CornerRadius="10" Margin="10,10,10,10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" Padding="0,0,0.5,0" Background="{StaticResource colorWhite}">
 
                                 <Grid.Resources>
                                     <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter"/>
@@ -652,7 +652,7 @@
 
                                     <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
 
-                                    <TextBox Grid.Column="1" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                    <TextBox Grid.Column="2" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                              Text="{Binding Stamp, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
                                              PlaceholderText="HH:mm:ss-HH:mm:ss...">
                                         <TextBox.Resources>
@@ -669,9 +669,9 @@
                                     </TextBox>
 
                                     
-                                    <Rectangle Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+                                    <Rectangle Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
 
-                                    <Button Grid.Column="2" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                    <Button Grid.Column="4" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
                                             CornerRadius="5"  Background="{StaticResource colorWhite}" 
                                             ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
                                             Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=NotesGrid}">

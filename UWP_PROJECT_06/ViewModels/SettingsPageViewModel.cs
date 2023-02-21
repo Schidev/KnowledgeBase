@@ -14,6 +14,7 @@ namespace UWP_PROJECT_06.ViewModels
         private bool isSettingsDictionaryOpen; public bool IsSettingsDictionaryOpen { get => isSettingsDictionaryOpen; set => SetProperty(ref isSettingsDictionaryOpen, value); }
         private bool isSettingsSourcesOpen; public bool IsSettingsSourcesOpen { get => isSettingsSourcesOpen; set => SetProperty(ref isSettingsSourcesOpen, value); }
         private bool isSettingsBookmarksOpen; public bool IsSettingsBookmarksOpen { get => isSettingsBookmarksOpen; set => SetProperty(ref isSettingsBookmarksOpen, value); }
+        private bool isSettingsRecoveryOpen; public bool IsSettingsRecoveryOpen { get => isSettingsRecoveryOpen; set => SetProperty(ref isSettingsRecoveryOpen, value); }
 
         private object currentContent; public object CurrentContent { get => currentContent; set => SetProperty(ref currentContent, value); }
         
@@ -21,13 +22,14 @@ namespace UWP_PROJECT_06.ViewModels
 
         public SettingsPageViewModel()
         {
-            isSettingsAppearanceOpen = true;
-            isSettingsFilesAndLinksOpen = false;
-            isSettingsHotkeysOpen = false;
-            isSettingsHistoryOpen = false;
-            isSettingsDictionaryOpen = false;
-            isSettingsSourcesOpen = false;
-            isSettingsBookmarksOpen = false;
+            IsSettingsAppearanceOpen = true;
+            IsSettingsFilesAndLinksOpen = false;
+            IsSettingsHotkeysOpen = false;
+            IsSettingsHistoryOpen = false;
+            IsSettingsDictionaryOpen = false;
+            IsSettingsSourcesOpen = false;
+            IsSettingsBookmarksOpen = false;
+            IsSettingsRecoveryOpen = false;
 
             CurrentContent = new SettingsAppearancePage();
 
@@ -111,6 +113,15 @@ namespace UWP_PROJECT_06.ViewModels
                 IsSettingsBookmarksOpen = false;
             }
 
+            if (button.Name == "recoveryBtn")
+            {
+                IsSettingsRecoveryOpen = true;
+                CurrentContent = new SettingsRecoveryPage();
+            }
+            else
+            {
+                IsSettingsRecoveryOpen = false;
+            }
         }
 
     }

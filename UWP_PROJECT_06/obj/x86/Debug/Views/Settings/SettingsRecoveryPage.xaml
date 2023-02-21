@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="UWP_PROJECT_06.Views.Settings.SettingsRecoveryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels.Settings"
+    Background="{StaticResource colorWhite}">
+
+    <Page.DataContext>
+        <viewmodels:SettingsRecoveryPageViewModel />
+    </Page.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Padding="0,0,10,0">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Synchronize all data" FontWeight="Bold" Margin="0,10,0,5" FontSize="15"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Wait until all databases wi'll be sinchronized for you" Margin="0,5,0,10" FontSize="13"/>
+
+                    <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
+                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Synchronize" ToolTipService.Placement="Bottom"
+                        Command="{Binding SynchronizeCommand}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8C1;"/>
+                    </Button>
+
+                </Grid>
+
+                <Rectangle Height="0.5" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5" HorizontalAlignment="Stretch" Margin="0,10,0,10" />
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
+

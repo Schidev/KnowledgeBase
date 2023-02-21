@@ -411,6 +411,9 @@
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsPage.xbf">
       <PackagePath>Views\Settings\SettingsPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsRecoveryPage.xbf">
+      <PackagePath>Views\Settings\SettingsRecoveryPage.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsSourcesPage.xbf">
       <PackagePath>Views\Settings\SettingsSourcesPage.xbf</PackagePath>
     </AppxPackagedFile>

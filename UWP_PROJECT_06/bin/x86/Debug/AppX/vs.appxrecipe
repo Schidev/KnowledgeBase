@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2023-02-21T15:21:51.847</Modified>
+      <Modified>2023-02-21T16:13:48.531</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\UWP_PROJECT_06.exe">
       <PackagePath>entrypoint\UWP_PROJECT_06.exe</PackagePath>
-      <Modified>2023-02-21T15:21:50.452</Modified>
+      <Modified>2023-02-21T16:13:47.267</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\.nuget\packages\microsoft.web.webview2\1.0.1264.42\build\..\runtimes\win-x86\native_uap\Microsoft.Web.WebView2.Core.dll">
       <PackagePath>Microsoft.Web.WebView2.Core.dll</PackagePath>
@@ -478,79 +478,83 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\UWP_PROJECT_06.xr.xml">
       <PackagePath>UWP_PROJECT_06.xr.xml</PackagePath>
-      <Modified>2023-02-21T15:06:55.320</Modified>
+      <Modified>2023-02-21T16:03:53.460</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.015</Modified>
+      <Modified>2023-02-21T16:13:46.886</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.027</Modified>
+      <Modified>2023-02-21T16:13:46.898</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\DictionaryPage.xbf">
       <PackagePath>Views\Dictionary\DictionaryPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.044</Modified>
+      <Modified>2023-02-21T16:13:46.915</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourceCardPage.xbf">
       <PackagePath>Views\Notes\SourceCardPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.103</Modified>
+      <Modified>2023-02-21T16:13:46.972</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourceEditPage.xbf">
       <PackagePath>Views\Notes\SourceEditPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.054</Modified>
+      <Modified>2023-02-21T16:13:46.924</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourcesPage.xbf">
       <PackagePath>Views\Notes\SourcesPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.071</Modified>
+      <Modified>2023-02-21T16:13:46.941</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsAppearancePage.xbf">
       <PackagePath>Views\Settings\SettingsAppearancePage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.104</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsBookmarksPage.xbf">
       <PackagePath>Views\Settings\SettingsBookmarksPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.104</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsDictionaryPage.xbf">
       <PackagePath>Views\Settings\SettingsDictionaryPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.104</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsFilesAndLinksPage.xbf">
       <PackagePath>Views\Settings\SettingsFilesAndLinksPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.082</Modified>
+      <Modified>2023-02-21T16:13:46.951</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsHistoryPage.xbf">
       <PackagePath>Views\Settings\SettingsHistoryPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.104</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsHotkeysPage.xbf">
       <PackagePath>Views\Settings\SettingsHotkeysPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.105</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsPage.xbf">
       <PackagePath>Views\Settings\SettingsPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.090</Modified>
+      <Modified>2023-02-21T16:13:46.958</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsRecoveryPage.xbf">
+      <PackagePath>Views\Settings\SettingsRecoveryPage.xbf</PackagePath>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsSourcesPage.xbf">
       <PackagePath>Views\Settings\SettingsSourcesPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.105</Modified>
+      <Modified>2023-02-21T16:13:46.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\VideoListPage.xbf">
       <PackagePath>Views\VideoListPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.105</Modified>
+      <Modified>2023-02-21T16:13:46.974</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\WordCardPage.xbf">
       <PackagePath>Views\Dictionary\WordCardPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.105</Modified>
+      <Modified>2023-02-21T16:13:46.974</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Dictionary\WordEditPage.xbf">
       <PackagePath>Views\Dictionary\WordEditPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.102</Modified>
+      <Modified>2023-02-21T16:13:46.971</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\WordPage.xbf">
       <PackagePath>Views\WordPage.xbf</PackagePath>
-      <Modified>2023-02-21T15:21:50.105</Modified>
+      <Modified>2023-02-21T16:13:46.974</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.UniversalCRT.Debug\10.0.19041.0\\redist\Debug\x86\ucrtbased.dll">
       <PackagePath>ucrtbased.dll</PackagePath>
@@ -566,11 +570,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2023-02-20T03:06:50.254</Modified>
+      <Modified>2023-02-21T16:03:55.200</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Core\UWP_PROJECT_06.exe">
       <PackagePath>UWP_PROJECT_06.exe</PackagePath>
-      <Modified>2023-02-21T15:21:51.843</Modified>
+      <Modified>2023-02-21T16:13:48.527</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

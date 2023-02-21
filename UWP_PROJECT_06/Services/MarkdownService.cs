@@ -639,6 +639,9 @@ namespace UWP_PROJECT_06.Services
         }
         public static string CheckWord(string word)
         {
+            if (word == null)
+                return "";
+
             if (word.Contains("_rus") || word.Contains("_deu") || word.Contains("_eng") || word.Contains("_fra") || word.Contains("_ita") || word.Contains("_spa"))
             {
                 string result = "";

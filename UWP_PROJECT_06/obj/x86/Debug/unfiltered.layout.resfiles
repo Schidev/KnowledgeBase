@@ -67,6 +67,7 @@ Views\Settings\SettingsFilesAndLinksPage.xbf
 Views\Settings\SettingsHistoryPage.xbf
 Views\Settings\SettingsHotkeysPage.xbf
 Views\Settings\SettingsPage.xbf
+Views\Settings\SettingsRecoveryPage.xbf
 Views\Settings\SettingsSourcesPage.xbf
 Views\VideoListPage.xbf
 Views\WordPage.xbf

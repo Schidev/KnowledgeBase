@@ -16,6 +16,7 @@ using Windows.Storage.Streams;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System.ServiceModel.Channels;
 using Windows.UI.Popups;
+using UWP_PROJECT_06.Models.Notes;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -51,7 +52,6 @@ namespace UWP_PROJECT_06.Services
             folderName = @"\Spa\WORDS";
             await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
-            //RecreateDictionaryVoult();
         }
 
         public async static Task CreateSettingsFile()
@@ -233,6 +233,11 @@ namespace UWP_PROJECT_06.Services
 
             MessageDialog msg = new MessageDialog(String.Format("Dictionary was synchronized for {0} second!", (int)(timer.ElapsedMilliseconds / 1000) ), "Notification.");
             await msg.ShowAsync();
+        }
+        public async static Task RecreateSourcesVoult()
+        {
+            foreach (Source source in NotesService.ReadSources())
+                await MarkdownService.WriteSource(source, NotesService.ReadQuotes(source.Id), NotesService.ReadNotes(source.Id), NotesService.ReadSourceExtras(source.Id));
         }
 
         public async static Task<string> ReadPath(string localName)

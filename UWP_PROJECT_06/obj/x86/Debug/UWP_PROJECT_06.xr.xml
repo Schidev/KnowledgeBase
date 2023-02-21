@@ -119,14 +119,16 @@
     <RootPropertyPathName Name="SelectedItem" />
     <RootPropertyPathName Name="ReloadCommand" />
     <RootPropertyPathName Name="CurrentContent" />
-    <RootPropertyPathName Name="IsSettingsBookmarksOpen" />
+    <RootPropertyPathName Name="IsSettingsRecoveryOpen" />
     <RootPropertyPathName Name="SelectCommand" />
+    <RootPropertyPathName Name="IsSettingsBookmarksOpen" />
     <RootPropertyPathName Name="IsSettingsSourcesOpen" />
     <RootPropertyPathName Name="IsSettingsDictionaryOpen" />
     <RootPropertyPathName Name="IsSettingsHistoryOpen" />
     <RootPropertyPathName Name="IsSettingsHotkeysOpen" />
     <RootPropertyPathName Name="IsSettingsFilesAndLinksOpen" />
     <RootPropertyPathName Name="IsSettingsAppearanceOpen" />
+    <RootPropertyPathName Name="SynchronizeCommand" />
     <RootPropertyPathName Name="CurrentWord" />
     <RootPropertyPathName Name="IsFrench" />
     <RootPropertyPathName Name="IsItalian" />
@@ -575,6 +577,8 @@
     <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsBackgroundButtonConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsForegroundButtonConverter" />
     <RootType FullName="UWP_PROJECT_06.Views.SettingsPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsRecoveryPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsRecoveryPage" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsSourcesPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.WordCardPageViewModel" />
