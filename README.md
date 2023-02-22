@@ -1,13 +1,15 @@
-# About this project
+# Knowledge Base
 
 This project is the result of my first experiece with UWP. This app should help to organize your notes. Now it has two options: dictionary and notes page.
 
 ## Dictionary
 
 Dictionary page has two list of words and card frame.
+
 <img src="https://user-images.githubusercontent.com/56796561/220498103-db99f18f-d90f-4b03-8c0b-9f1e946a9348.png" width="800" height="400">
 
 List in top cantains all words in dictionary, list under contains words you googled but not yet added to dictionary for whatever reason.
+
 <img src="https://user-images.githubusercontent.com/56796561/220499116-7813fb4a-0af9-480b-a276-f1822e7f7da4.png" width="400" height="500">
 
 Frame right to lists gives an opportunity to see and edit words in dictionary (use button with eye for switching between reading and writing mode). 
@@ -27,6 +29,7 @@ It also has two lists but in horizontal orientation and source card below.
  
 Every source has required fields (like name, duration, theme, description...) but you may add your own in extras. Use "Key" for naming field and "Value" to fill it.
 There is one non-deleting source for saving all quotes and stamps which have no source link or it's unknown. When you delete some source all notes and quotes will be saved there.
+
 <img src="https://user-images.githubusercontent.com/56796561/220503313-f8ea6f34-ba06-4375-8bed-b9b886a1fbb2.png" width="800" height="400">
 
 You may also take a picture of every single note and quote if you need. Path will be in Settings.
