@@ -42,12 +42,12 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Synchronize all data" FontWeight="Bold" Margin="0,10,0,5" FontSize="15"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Wait until all databases wi'll be sinchronized for you" Margin="0,5,0,10" FontSize="13"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Wait until all databases wi'll be synchronized for you" Margin="0,5,0,10" FontSize="13"/>
 
                     <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
-                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Synchronize" ToolTipService.Placement="Bottom"
+                        CornerRadius="5" Background="{StaticResource colorWhite}" ToolTipService.ToolTip="Synchronize" ToolTipService.Placement="Bottom"
                         Command="{Binding SynchronizeCommand}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8C1;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE895;"/>
                     </Button>
 
                 </Grid>

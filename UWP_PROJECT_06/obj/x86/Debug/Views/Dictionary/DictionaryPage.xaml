@@ -68,7 +68,7 @@
 
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Click">
-                        <core:InvokeCommandAction x:ConnectionId='35' Command="{Binding ScreenshotCommand}"                                     />
+                        <core:InvokeCommandAction x:ConnectionId='37' Command="{Binding ScreenshotCommand}"                                     />
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
 
@@ -106,12 +106,12 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <AutoSuggestBox x:ConnectionId='20' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}"
-                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10"                            
+                    <AutoSuggestBox x:ConnectionId='22' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}"
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10"                          
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
 
                         <AutoSuggestBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='33' Modifiers="Menu" Key="W"                        />
+                            <KeyboardAccelerator x:ConnectionId='35' Modifiers="Menu" Key="W"                        />
                         </AutoSuggestBox.KeyboardAccelerators>
                         
                         <AutoSuggestBox.Resources>
@@ -128,36 +128,36 @@
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
-                                <core:InvokeCommandAction x:ConnectionId='34' Command="{Binding TextChangedCommand}"                                        />
+                                <core:InvokeCommandAction x:ConnectionId='36' Command="{Binding TextChangedCommand}"                                        />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </AutoSuggestBox>
 
-                    <ComboBox x:ConnectionId='21' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                    <ComboBox x:ConnectionId='23' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
                         <ComboBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='31' Modifiers="Menu" Key="L"                           />
+                            <KeyboardAccelerator x:ConnectionId='33' Modifiers="Menu" Key="L"                           />
                         </ComboBox.KeyboardAccelerators>
                         
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction x:ConnectionId='32' Command="{Binding LanguageSelectedCommand}"                                              />
+                                <core:InvokeCommandAction x:ConnectionId='34' Command="{Binding LanguageSelectedCommand}"                                              />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
                     </ComboBox>
 
-                    <ListView x:ConnectionId='22' x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,20,0" 
+                    <ListView x:ConnectionId='24' x:Name="WordsList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,0,20,0" 
                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
                               ItemsSource="{Binding Source={StaticResource WordsGroups}}"
                               SelectedItem="{Binding SelectedWord, Mode=TwoWay}">
 
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction x:ConnectionId='23' Command="{Binding WordSelectedCommand}"                                      />
+                                <core:InvokeCommandAction x:ConnectionId='25' Command="{Binding WordSelectedCommand}"                                      />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
@@ -286,9 +286,7 @@
                     </Grid.ColumnDefinitions>
 
                     <AutoSuggestBox x:ConnectionId='7' x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center" 
-                         Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
-                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+                                    VerticalContentAlignment="Center"                                  Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
                         <AutoSuggestBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -301,9 +299,13 @@
 
                         </AutoSuggestBox.Resources>
 
+                        <AutoSuggestBox.KeyboardAccelerators>
+                            <KeyboardAccelerator x:ConnectionId='20' Modifiers="Menu,Control" Key="W"                               />
+                        </AutoSuggestBox.KeyboardAccelerators>
+                        
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
-                                <core:InvokeCommandAction x:ConnectionId='19' Command="{Binding UnknownWordTextChangedCommand}"                                                    />
+                                <core:InvokeCommandAction x:ConnectionId='21' Command="{Binding UnknownWordTextChangedCommand}"                                                    />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 
@@ -313,9 +315,13 @@
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
 
+                        <ComboBox.KeyboardAccelerators>
+                            <KeyboardAccelerator x:ConnectionId='18' Modifiers="Menu,Control" Key="L"                                  />
+                        </ComboBox.KeyboardAccelerators>
+                        
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
-                                <core:InvokeCommandAction x:ConnectionId='18' Command="{Binding UnknownWordLanguageSelectedCommand}"                                                          />
+                                <core:InvokeCommandAction x:ConnectionId='19' Command="{Binding UnknownWordLanguageSelectedCommand}"                                                          />
                             </core:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 

@@ -238,6 +238,8 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                                      pixels);
                 await encoder.FlushAsync();
             }
+
+            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = file.Path, Date = DateTime.UtcNow });
         }
         private async Task Delete(object arg)
         {

@@ -327,7 +327,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             {
                 SourceEditPageViewModel viewModel = LastOpenedSourceEditCard.DataContext as SourceEditPageViewModel;
 
-                if (viewModel != null)
+                if (viewModel == null)
                 {
                     message = new MessageDialog("Action is not availiable.", "Woops...");
                     await message.ShowAsync();
@@ -507,7 +507,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             IsAddingMode = false;
             IsUnknownSourceSelected = IsOnlineDictionaryActive && (SelectedUnknownSourceId != 0);
 
-            if ((SearchSourceText == String.Empty && LastWebSearchRequest.Source == null) || (IsOnlineDictionaryActive && SearchSourceText == String.Empty))
+            if ((SearchUnknownSourceText == String.Empty && SearchSourceText == String.Empty && LastWebSearchRequest.Source == null) || (IsOnlineDictionaryActive && SearchSourceText == String.Empty))
             {
                 FrameContent = new MarkdownTextBlock()
                 {
@@ -525,11 +525,15 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 return;
             }
 
+            if (SearchUnknownSourceText != String.Empty && SearchSourceText == String.Empty)
+                SearchSourceText = SearchUnknownSourceText;
+
             if (SearchSourceText != String.Empty)
             {
                 LastWebSearchRequest.Source = new Uri(@"https://www.google.com/search?q=" + SearchSourceText + "+это");
                 CurrentBrowserWord = SearchSourceText;
-                SearchSourceText = "";
+                SearchSourceText = String.Empty;
+                SearchUnknownSourceText = String.Empty;
                 SelectedUnknownSourceId = 0;
             }
 
@@ -736,28 +740,31 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 quote.OriginalQuote = quote.OriginalQuote.Trim();
                 quote.TranslatedQuote = quote.TranslatedQuote.Trim();
 
-                if (quote.QuoteBegin == String.Empty)
+                if (quote.QuoteBegin == String.Empty && quote.QuoteEnd == String.Empty && quote.OriginalQuote == String.Empty && quote.TranslatedQuote == String.Empty)
+                    continue;
+
+                if (quote.QuoteBegin == String.Empty && quote.QuoteEnd != String.Empty && quote.OriginalQuote != String.Empty && quote.TranslatedQuote != String.Empty)
                 {
                     message = new MessageDialog("Quote begin must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (quote.QuoteEnd == String.Empty)
+                if (quote.QuoteBegin != String.Empty && quote.QuoteEnd == String.Empty && quote.OriginalQuote != String.Empty && quote.TranslatedQuote != String.Empty)
                 {
                     message = new MessageDialog("Quote end must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (quote.OriginalQuote == String.Empty)
+                if (quote.QuoteBegin != String.Empty && quote.QuoteEnd != String.Empty && quote.OriginalQuote == String.Empty && quote.TranslatedQuote != String.Empty)
                 {
                     message = new MessageDialog("Quote must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (quote.TranslatedQuote == String.Empty)
+                if (quote.QuoteBegin != String.Empty && quote.QuoteEnd != String.Empty && quote.OriginalQuote != String.Empty && quote.TranslatedQuote == String.Empty)
                 {
                     message = new MessageDialog("Translation must contain at least one character.", "Woops..");
                     await message.ShowAsync();
@@ -791,21 +798,23 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 note.Title = note.Title.Trim();
                 note.Note1 = note.Note1.Trim();
 
-                if (note.Stamp == String.Empty)
+                if (note.Stamp == String.Empty && note.Title == String.Empty && note.Note1 == String.Empty)
+                    continue;
+                if (note.Stamp == String.Empty && note.Title != String.Empty && note.Note1 != String.Empty)
                 {
                     message = new MessageDialog("Note stamp must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (note.Title == String.Empty)
+                if (note.Stamp != String.Empty && note.Title == String.Empty && note.Note1 != String.Empty)
                 {
                     message = new MessageDialog("Note title must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (note.Note1 == String.Empty)
+                if (note.Stamp != String.Empty && note.Title != String.Empty && note.Note1 == String.Empty)
                 {
                     message = new MessageDialog("Note content must contain at least one character.", "Woops..");
                     await message.ShowAsync();
@@ -833,15 +842,18 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             {
                 extra.Key = extra.Key.Trim();
                 extra.Value = extra.Value.Trim();
-
-                if (extra.Key == String.Empty)
+                
+                if (extra.Key == String.Empty && extra.Value == String.Empty)
+                    continue;
+                
+                if (extra.Key == String.Empty && extra.Value != String.Empty)
                 {
                     message = new MessageDialog("Extra key must contain at least one character.", "Woops..");
                     await message.ShowAsync();
 
                     return;
                 }
-                if (extra.Value == String.Empty)
+                if (extra.Key != String.Empty && extra.Value == String.Empty)
                 {
                     message = new MessageDialog("Extra value must contain at least one character.", "Woops..");
                     await message.ShowAsync();

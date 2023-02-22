@@ -346,7 +346,7 @@ namespace UWP_PROJECT_06.Services
             document.Save(settingsPath);
         }
 
-        public async static Task<List<HistoryItem>> ReadHistory()
+        public async static Task<List<HistoryItem>> ReadDictionaryHistory()
         {
             XmlDocument document = new XmlDocument();
 
@@ -382,7 +382,7 @@ namespace UWP_PROJECT_06.Services
 
                 result.Add(historyItem);
             }
-            
+
             return result;
         }
         public async static Task WriteDictionaryHistory(string action, string fullPath)
@@ -393,7 +393,7 @@ namespace UWP_PROJECT_06.Services
             var root = doc.GetElementsByTagName("history");
 
             Windows.Data.Xml.Dom.XmlElement item = doc.CreateElement("historyitem");
-            
+
             Windows.Data.Xml.Dom.XmlElement fullPathElement = doc.CreateElement("fullpath");
             fullPathElement.InnerText = fullPath;
 
@@ -410,6 +410,15 @@ namespace UWP_PROJECT_06.Services
 
             await doc.SaveToFileAsync(file);
         }
-        
+
+        public async static Task WriteHistory(HistoryItem item) 
+        {
+            HistoryService.CreateHistoryItem(item);
+        }
+        public async static Task<List<HistoryItem>> ReadHistory()
+        {
+            return HistoryService.ReadHistoryItems();
+        }
+
     }
 }

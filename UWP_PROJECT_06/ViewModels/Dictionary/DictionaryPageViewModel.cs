@@ -255,7 +255,7 @@ namespace UWP_PROJECT_06.ViewModels
                                      pixels);
                 await encoder.FlushAsync();
             }
-
+            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = file.Path, Date = DateTime.UtcNow });
             cardGrid.Width = w;
             cardGrid.Height = h;
         }
@@ -576,7 +576,7 @@ namespace UWP_PROJECT_06.ViewModels
             IsAddingMode = false;
             IsUnknownWordSelected = IsOnlineDictionaryActive && (SelectedUnknownWordId != 0);
 
-            if ((AutoSuggestBoxText == String.Empty && LastWebSearchRequest.Source == null) || (IsOnlineDictionaryActive && AutoSuggestBoxText == String.Empty))
+            if ((AutoSuggestBoxTextUnknownWord == String.Empty && AutoSuggestBoxText == String.Empty && LastWebSearchRequest.Source == null) || (IsOnlineDictionaryActive && AutoSuggestBoxText == String.Empty))
             {
                 FrameContent = new MarkdownTextBlock() 
                 { 
@@ -593,6 +593,9 @@ namespace UWP_PROJECT_06.ViewModels
 
                 return;
             }
+
+            if (AutoSuggestBoxText == String.Empty && AutoSuggestBoxTextUnknownWord != String.Empty)
+                AutoSuggestBoxText = AutoSuggestBoxTextUnknownWord;
 
             FrameContent = LastWebSearchRequest;
             IsOnlineDictionaryActive = true;
@@ -614,6 +617,7 @@ namespace UWP_PROJECT_06.ViewModels
             LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
             CurrentBrowserWord = AutoSuggestBoxText;
             AutoSuggestBoxText = "";
+            AutoSuggestBoxTextUnknownWord = "";
             SelectedUnknownWordId = 0;
         }
         private async Task AddWord()

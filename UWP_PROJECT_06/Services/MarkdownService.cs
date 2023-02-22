@@ -36,7 +36,7 @@ namespace UWP_PROJECT_06.Services
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
                 var path = System.IO.Path.Combine(folder.Path, word.Word1 + ".md");
-                await SettingsService.WriteDictionaryHistory("Read", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Read", FullPath = path, Date = DateTime.UtcNow });
 
                 return await Windows.Storage.FileIO.ReadTextAsync(await folder.GetFileAsync(word.Word1 + ".md"));
             }
@@ -64,12 +64,12 @@ namespace UWP_PROJECT_06.Services
             if (await folder.FileExistsAsync(word.Word1 + ".md"))
             {
                 var path = System.IO.Path.Combine(folder.Path, word.Word1 + ".md");
-                await SettingsService.WriteDictionaryHistory("Updated", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Updated", FullPath = path, Date = DateTime.UtcNow });
             }
             else
             {
                 var path = System.IO.Path.Combine(folder.Path, word.Word1 + ".md");
-                await SettingsService.WriteDictionaryHistory("Created", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = path, Date = DateTime.UtcNow });
             }
 
             StorageFile file = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.ReplaceExisting);
@@ -168,12 +168,12 @@ namespace UWP_PROJECT_06.Services
                 if (await folder.FileExistsAsync(word.Word1 + ".md"))
                 {
                     var path = System.IO.Path.Combine(folder.Path, word.Word1 + ".md");
-                    await SettingsService.WriteDictionaryHistory("Updated", path);
+                    await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Updated", FullPath = path, Date = DateTime.UtcNow });
                 }
                 else
                 {
                     var path = System.IO.Path.Combine(folder.Path, word.Word1 + ".md");
-                    await SettingsService.WriteDictionaryHistory("Created", path);
+                    await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = path, Date = DateTime.UtcNow });
                 }
 
                 StorageFile filePlural = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.ReplaceExisting);
@@ -246,7 +246,7 @@ namespace UWP_PROJECT_06.Services
                 fileInnerText = await Windows.Storage.FileIO.ReadTextAsync(oldFile);
 
                 var path = oldFile.Path;
-                await SettingsService.WriteDictionaryHistory("Deleted", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Deleted", FullPath = path, Date = DateTime.UtcNow });
 
                 #region Delete
 
@@ -284,7 +284,7 @@ namespace UWP_PROJECT_06.Services
             await Windows.Storage.FileIO.WriteTextAsync(newFile, fileInnerText);
 
             var FullPath = newFile.Path;
-            await SettingsService.WriteDictionaryHistory("Created", FullPath);
+            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = FullPath, Date = DateTime.UtcNow });
 
             #endregion
         }
@@ -311,7 +311,7 @@ namespace UWP_PROJECT_06.Services
                 await file.DeleteAsync();
 
                 string path = file.Path;
-                await SettingsService.WriteDictionaryHistory("Deleted", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Deleted", FullPath = path, Date = DateTime.UtcNow });
             }
             else
             {
@@ -371,7 +371,7 @@ namespace UWP_PROJECT_06.Services
             if (await folder.FileExistsAsync(source.SourceName + ".md"))
             {
                 var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
-                await SettingsService.WriteDictionaryHistory("Read", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Read", FullPath = path, Date = DateTime.UtcNow });
 
                 return await Windows.Storage.FileIO.ReadTextAsync(await folder.GetFileAsync(source.SourceName + ".md"));
             }
@@ -400,12 +400,12 @@ namespace UWP_PROJECT_06.Services
             if (await folder.FileExistsAsync(source.SourceName + ".md"))
             {
                 var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
-                await SettingsService.WriteDictionaryHistory("Updated", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Updated", FullPath = path, Date = DateTime.UtcNow });
             }
             else
             {
                 var path = System.IO.Path.Combine(folder.Path, source.SourceName + ".md");
-                await SettingsService.WriteDictionaryHistory("Created", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = path, Date = DateTime.UtcNow });
             }
 
             StorageFile file = await folder.CreateFileAsync(source.SourceName + ".md", CreationCollisionOption.ReplaceExisting);
@@ -455,38 +455,18 @@ namespace UWP_PROJECT_06.Services
             output.AppendLine(String.Format("### Цитаты"));
             output.AppendLine(String.Format(""));
 
-            Regex quoteString1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)");
-            Regex quoteString2 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
-            Regex quoteString3 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)[\s:]([\s]*)[0-9][0-9]([\s]*)");
-
-            Regex quoteString4 = new Regex(@"([\s]*)[pP]([\s]*)([0-9]+)([\s]+)([lL]*)([\s]*)([0-9]+)([\s]*)");
-            Regex quoteString5 = new Regex(@"([\s]*)[pP]([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)[\s:]([\s]*)([lL]*)([\s]*)[\s_]([\s]*)([0-9]+)([\s]*)");
-
             foreach (Quote quote in quotes)
             {
-                #region Quote begin
-
                 quote.QuoteBegin = MarkdownService.CheckQuoteStamp(quote.QuoteBegin);
-
-                #endregion
-                #region Quote end
-
                 quote.QuoteEnd = MarkdownService.CheckQuoteStamp(quote.QuoteEnd);
-
-                #endregion
-                #region Original quote
-
+                
                 quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\r\r");
                 quote.OriginalQuote = quote.OriginalQuote.Replace("\r\r","\r>");
-
-                #endregion
-                #region Original quote
-
+                
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\r\r");
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("\r\r", "\r>");
 
-                #endregion
-
+                
                 output.AppendLine(String.Format(">{0}", quote.OriginalQuote));
                 output.AppendLine(String.Format(">"));
                 output.AppendLine(String.Format(">{0}", quote.TranslatedQuote));
@@ -524,7 +504,7 @@ namespace UWP_PROJECT_06.Services
                 fileInnerText = await Windows.Storage.FileIO.ReadTextAsync(oldFile);
 
                 var path = oldFile.Path;
-                await SettingsService.WriteDictionaryHistory("Deleted", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Deleted", FullPath = path, Date = DateTime.UtcNow });
 
                 #region Delete
 
@@ -563,7 +543,7 @@ namespace UWP_PROJECT_06.Services
             await Windows.Storage.FileIO.WriteTextAsync(newFile, fileInnerText);
 
             var FullPath = newFile.Path;
-            await SettingsService.WriteDictionaryHistory("Created", FullPath);
+            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Creaed", FullPath = FullPath, Date = DateTime.UtcNow });
 
             #endregion
         }
@@ -592,7 +572,7 @@ namespace UWP_PROJECT_06.Services
                 await file.DeleteAsync();
 
                 string path = file.Path;
-                await SettingsService.WriteDictionaryHistory("Deleted", path);
+                await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Deleted", FullPath = path, Date = DateTime.UtcNow });
             }
             else
             {
@@ -663,7 +643,7 @@ namespace UWP_PROJECT_06.Services
         }
         public static string CheckSource(string source)
         {
-            return source.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ");
+            return source.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ").Trim().ToUpper();
         }
 
         public static string CheckQuoteStamp(string quoteStamp)
@@ -702,7 +682,6 @@ namespace UWP_PROJECT_06.Services
 
             return quoteStamp;
         }
-
         public static string CheckNoteStamp(string noteStamp)
         {
             Regex noteRegex1 = new Regex(@"([\s]*)[0-9][0-9]([\s]*)[\s-]([\s]*)[0-9][0-9]([\s]*)");

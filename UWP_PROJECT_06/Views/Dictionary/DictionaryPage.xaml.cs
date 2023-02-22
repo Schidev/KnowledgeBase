@@ -33,10 +33,21 @@ namespace UWP_PROJECT_06.Views
             this.InitializeComponent();
         }
 
-        private void Autosuggest_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void Autosuggest_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
+                var t = (AutoSuggestBox)sender;
+                var data = t.DataContext as DictionaryPageViewModel;
+                data.SearchOnlineCommand.ExecuteAsync();
+            }
+        }
+
+        private void AutosuggestUnknown_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Autosuggest.Text = String.Empty;
                 var t = (AutoSuggestBox)sender;
                 var data = t.DataContext as DictionaryPageViewModel;
                 data.SearchOnlineCommand.ExecuteAsync();
@@ -48,9 +59,18 @@ namespace UWP_PROJECT_06.Views
             Autosuggest.Focus(FocusState.Programmatic);
         }
 
+        void FocusOnUnknownSearch(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            AutosuggestUnknownWords.Focus(FocusState.Programmatic);
+        }
+
         void FocusOnLanguages(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             LanguagesComboBox.Focus(FocusState.Programmatic);
+        }
+        void FocusOnLanguagesUnknown(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            LanguagesComboBoxUnknownWords.Focus(FocusState.Programmatic);
         }
     }
 }

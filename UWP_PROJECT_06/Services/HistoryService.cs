@@ -44,7 +44,7 @@ namespace UWP_PROJECT_06.Services
                     sqliteCommand.ExecuteReader();
                 }
 
-                // Create Words table and fill it
+                // Create Words table
 
                 commandText = "CREATE TABLE IF NOT EXISTS UnknownWords (Id INTEGER NOT NULL, Word TEXT NOT NULL, Language INTEGER NOT NULL, LastModifiedOn DATETIME NOT NULL, CONSTRAINT FK_Words_Languages FOREIGN KEY(Language) REFERENCES Languages(Id), PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
@@ -70,12 +70,19 @@ namespace UWP_PROJECT_06.Services
                     sqliteCommand.ExecuteReader();
                 }
 
-                // Create Sources table and fill it
+                // Create Sources table
 
                 commandText = "CREATE TABLE IF NOT EXISTS UnknownSources (Id INTEGER NOT NULL, Source TEXT NOT NULL, SourceType INTEGER NOT NULL, LastModifiedOn DATETIME NOT NULL, CONSTRAINT FK_Sources_SourceTypes FOREIGN KEY(SourceType) REFERENCES SourceTypes(Id), PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
+                ////////////////////////////////////////////////
+
+                // Create History table
+
+                commandText = "CREATE TABLE IF NOT EXISTS History (Id INTEGER NOT NULL, Action TEXT, FullPath TEXT, Date DATETIME, PRIMARY KEY (Id AUTOINCREMENT));";
+                sqliteCommand = new SqliteCommand(commandText, conn);
+                sqliteCommand.ExecuteReader();
 
                 conn.Close();
             }
@@ -328,6 +335,128 @@ namespace UWP_PROJECT_06.Services
 
         #endregion
 
+        #region UnknownWords
+        public static void CreateHistoryItem(HistoryItem item)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO History VALUES (NULL, @Action, @FullPath, @Date);";
+                sqliteCommand.Parameters.AddWithValue("@Action", item.Action);
+                sqliteCommand.Parameters.AddWithValue("@FullPath", item.FullPath);
+                sqliteCommand.Parameters.AddWithValue("@Date", item.Date);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static HistoryItem ReadHistoryItem(int id)
+        {
+            HistoryItem item = new HistoryItem();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, Action, FullPath, Date FROM History WHERE Id = {id};";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    item = new HistoryItem()
+                    {
+                        Id = query.GetInt32(0),
+                        Action = query.GetString(1),
+                        FullPath = query.GetString(2),
+                        Date = query.GetDateTime(3)
+                    };
+                }
+
+                conn.Close();
+            }
+
+            return item;
+        }
+        public static List<HistoryItem> ReadHistoryItems()
+        {
+            List<HistoryItem> items = new List<HistoryItem>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, Action, FullPath, Date FROM History;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    items.Add(new HistoryItem()
+                    {
+                        Id = query.GetInt32(0),
+                        Action = query.GetString(1),
+                        FullPath = query.GetString(2),
+                        Date = query.GetDateTime(3)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return items;
+        }
+        public static void UpdateHistoryItem(HistoryItem item)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "UPDATE History SET Action = @Action, FullPath = @FullPath, Date = @Date WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", item.Id);
+                sqliteCommand.Parameters.AddWithValue("@Word", item.Action);
+                sqliteCommand.Parameters.AddWithValue("@Language", item.FullPath);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", item.Date);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteHistoryItem(int id)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "DELETE FROM History WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
+        #endregion
 
     }
 }

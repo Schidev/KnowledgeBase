@@ -39,7 +39,6 @@
                     </controls:MenuItem.Header>
 
                     <MenuFlyoutSubItem Text="New" Margin="0">
-                        <MenuFlyoutItem Text="Project"/>
                         <MenuFlyoutItem Text="New tab" Command="{Binding AddTabCommand}" CommandParameter="{x:Bind tabView}">
                             
                             <MenuFlyoutItem.KeyboardAccelerators>
@@ -49,23 +48,25 @@
                         </MenuFlyoutItem>
                     </MenuFlyoutSubItem>
 
+                    <MenuFlyoutSeparator/>
+
                     <MenuFlyoutSubItem Text="Open" Margin="0">
                         <MenuFlyoutItem Text="Open dictionary" Command="{Binding OpenDictionaryPageCommand}" CommandParameter="{x:Bind tabView}">
-                            
+
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu" Key="Number1"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
 
                         </MenuFlyoutItem>
                         <MenuFlyoutItem Text="Open notes">
-                            
+
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu" Key="Number2"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
 
                         </MenuFlyoutItem>
                         <MenuFlyoutItem Text="Open right pane" Command="{Binding OpenCloseExtraPaneCommand}" CommandParameter="{x:Bind rightPane}">
-                            
+
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Modifiers="Menu,Shift" Key="R"/>
                             </MenuFlyoutItem.KeyboardAccelerators>
@@ -78,13 +79,6 @@
 
                         </MenuFlyoutItem>
                     </MenuFlyoutSubItem>
-
-                    <MenuFlyoutItem Icon="Save" Text="Save"/>
-
-                    <MenuFlyoutSeparator/>
-
-                    <MenuFlyoutItem Text="Exit" Margin="0"/>
-
                 </controls:MenuItem>
             </controls:Menu>
 
@@ -178,7 +172,7 @@
 
                 <!-- Video List Button -->
                 <Button Grid.Row="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
-                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open videos" ToolTipService.Placement="Right"
+                        CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open notes" ToolTipService.Placement="Right"
                         Command="{Binding OpenNotesPageCommand}" CommandParameter="{x:Bind tabView}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF71E;" />
 
@@ -189,7 +183,7 @@
                 </Button>
 
                 <!-- Films List Button -->
-                <Button Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
+                <!--<Button Grid.Row="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
                         CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open word page?" ToolTipService.Placement="Right">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE786;"/>
 
@@ -199,26 +193,26 @@
 
                 </Button>
 
-                <!-- Bookmarks Button -->
+                --><!-- Bookmarks Button --><!--
                 <Button Grid.Row="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" 
                         CornerRadius="5" Background="{StaticResource SideMenuBackground}" ToolTipService.ToolTip="Open bookmarks" ToolTipService.Placement="Right">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE8A4;"/>
                 </Button>
 
-                <!-- GTD Button -->
+                --><!-- GTD Button --><!--
                 <Button Grid.Row="4" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xF003;"/>
                 </Button>
 
-                <!-- GTD? Button -->
+                --><!-- GTD? Button --><!--
                 <Button Grid.Row="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE7C4;"/>
                 </Button>
 
-                <!-- Space Repetition Button -->
+                --><!-- Space Repetition Button --><!--
                 <Button Grid.Row="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE787;"/>
-                </Button>
+                </Button>-->
 
                 <Border Grid.Row="7" BorderThickness="0">
 

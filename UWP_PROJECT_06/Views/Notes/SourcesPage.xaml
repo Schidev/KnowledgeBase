@@ -295,9 +295,15 @@
                             </Grid.ColumnDefinitions>
 
                         <AutoSuggestBox x:Name="AutosuggestUnknownSource" Grid.Row="0" Grid.Column="0" Text="{Binding SearchUnknownSourceText, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" KeyUp="AutosuggestUnknown_KeyDown"
                                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
-                                <AutoSuggestBox.Resources>
+
+                            <AutoSuggestBox.KeyboardAccelerators>
+                                <KeyboardAccelerator Modifiers="Menu, Control" Key="W" Invoked="FocusOnUnknownSearch"/>
+                            </AutoSuggestBox.KeyboardAccelerators>
+
+
+                            <AutoSuggestBox.Resources>
                                     <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                                     <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
                                     <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>

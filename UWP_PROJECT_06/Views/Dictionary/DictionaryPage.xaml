@@ -107,7 +107,7 @@
 
 
                     <AutoSuggestBox x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}"
-                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" KeyUp="Autosuggest_KeyDown"
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" KeyUp="Autosuggest_KeyUp"
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
 
                         <AutoSuggestBox.KeyboardAccelerators>
@@ -286,9 +286,7 @@
                     </Grid.ColumnDefinitions>
 
                     <AutoSuggestBox x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center" 
-                         Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" 
-                         BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+                                    VerticalContentAlignment="Center" KeyUp="AutosuggestUnknown_KeyUp" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
                         <AutoSuggestBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -301,6 +299,10 @@
 
                         </AutoSuggestBox.Resources>
 
+                        <AutoSuggestBox.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu,Control" Key="W" Invoked="FocusOnUnknownSearch"/>
+                        </AutoSuggestBox.KeyboardAccelerators>
+                        
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="TextChanged">
                                 <core:InvokeCommandAction Command="{Binding UnknownWordTextChangedCommand}" CommandParameter="{x:Bind AutosuggestUnknownWords}"/>
@@ -313,6 +315,10 @@
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
 
+                        <ComboBox.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu,Control" Key="L" Invoked="FocusOnLanguagesUnknown"/>
+                        </ComboBox.KeyboardAccelerators>
+                        
                         <i:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="SelectionChanged">
                                 <core:InvokeCommandAction Command="{Binding UnknownWordLanguageSelectedCommand}" CommandParameter="{x:Bind LanguagesComboBoxUnknownWords}"/>

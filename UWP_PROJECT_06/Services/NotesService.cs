@@ -89,7 +89,7 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink) VALUES ('SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN')";
+                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink) VALUES ('VIDEO_SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }

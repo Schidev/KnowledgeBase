@@ -39,15 +39,34 @@ namespace UWP_PROJECT_06.Views.Notes
                 data.SearchOnlineCommand.ExecuteAsync();
             }
         }
+        private void AutosuggestUnknown_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Autosuggest.Text = String.Empty;
+                var t = (AutoSuggestBox)sender;
+                var data = t.DataContext as SourcesPageViewModel;
+                data.SearchOnlineCommand.ExecuteAsync();
+            }
+        }
 
         void FocusOnSearch(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             Autosuggest.Focus(FocusState.Programmatic);
         }
+        void FocusOnUnknownSearch(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            AutosuggestUnknownSource.Focus(FocusState.Programmatic);
+        }
 
         void FocusOnLanguages(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             SourceTypesComboBox.Focus(FocusState.Programmatic);
+        }
+
+        void FocusOnLanguagesUnknown(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            UnknownSourceTypes.Focus(FocusState.Programmatic);
         }
 
     }
