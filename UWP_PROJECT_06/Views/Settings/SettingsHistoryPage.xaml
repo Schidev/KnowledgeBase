@@ -51,7 +51,7 @@
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Words that are used to highlight different parts of speech in a dictionary." Margin="0,5,0,10" FontSize="13"/>
 
                     <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                        Command="{Binding ReloadCommand}" ToolTipService.ToolTip="Refresh">
+                        Command="{Binding ReloadCommand}" ToolTipService.ToolTip="Refresh&#x0a;Ctrl+R">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE72C;"/>
 
                         <Button.KeyboardAccelerators>

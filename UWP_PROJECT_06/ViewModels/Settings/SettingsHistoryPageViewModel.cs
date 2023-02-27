@@ -88,8 +88,8 @@ namespace UWP_PROJECT_06.ViewModels.Settings
                 dataPackage.SetText(historyItem.FullPath);
                 Clipboard.SetContent(dataPackage);
 
-                var t = textBlock.Resources["CopiedToClipboard"] as Storyboard;
-                t.Begin();
+                Storyboard animation = textBlock.Resources["CopiedToClipboard"] as Storyboard;
+                animation.Begin();
             }
         }
     }

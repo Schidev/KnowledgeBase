@@ -16,6 +16,7 @@ using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -53,8 +54,33 @@ namespace UWP_PROJECT_06.ViewModels
         public ObservableRangeCollection<Grouping<string, UnknownWord>> UnknownWordsGroups { get; set; }
         public ObservableRangeCollection<string> Languages { get; set; }
 
-        #region Panel commands
+        #region Hotkeys
+
+        public string MenuBackHotkeyName { get => "MenuBack"; }
+        public string MenuForwardHotkeyName { get => "MenuForward"; }
+        public string MenuMoreHotkeyName { get => "MenuMore"; }
         
+        public string FocusOnPrimarySearchHotkeyName { get => "FocusOnPrimarySearch"; }
+        public string FocusOnSecondarySearchHotkeyName { get => "FocusOnSecondarySearch"; }
+        public string FocusOnPrimaryLanguagePickerHotkeyName { get => "FocusOnPrimaryLanguagePicker"; }
+        public string FocusOnSecondaryLanguagePickerHotkeyName { get => "FocusOnSecondaryLanguagePicker"; }
+        
+        public string TakeAScreenshotHotkeyName { get => "TakeAScreenshot"; }
+        public string ChangeModeHotkeyName { get => "ChangeMode"; }
+        public string OpenInBrowserHotkeyName { get => "OpenInBrowser"; }
+        public string AddNewCardHotkeyName { get => "AddNewCard"; }
+        public string SaveCardHotkeyName { get => "SaveCard"; }
+        
+        public string CardBackHotkeyName { get => "CardBack"; }
+        public string CardForwardHotkeyName { get => "CardForward"; }
+        public string CardRefreshHotkeyName { get => "CardRefresh"; }
+        public string CardDeleteHotkeyName { get => "CardDelete"; }
+        public string CardClearHotkeyName { get => "CardClear"; }
+
+        #endregion
+
+        #region Panel commands
+
         public AsyncCommand<object> ScreenshotCommand { get; }
 
         #endregion
@@ -121,7 +147,7 @@ namespace UWP_PROJECT_06.ViewModels
             LoadUnknownWordsGroups();
             
             ScreenshotCommand = new AsyncCommand<object>(Screenshot);
-            
+
             TextChangedCommand = new AsyncCommand<object>(TextChanged);
             LanguageSelectedCommand = new AsyncCommand<object>(LanguageSelected);
             UnknownWordTextChangedCommand = new AsyncCommand<object>(UnknownWordTextChanged);
@@ -614,7 +640,12 @@ namespace UWP_PROJECT_06.ViewModels
                 @"https://dictionary.cambridge.org/dictionary/spanish-english/" + MarkdownService.CheckText(AutoSuggestBoxText)
             };
 
-            LastWebSearchRequest.Source = new Uri(Uris[comboBoxSelectedIndex]);
+            int searchIndex = ComboBoxSelectedIndex;
+
+            if (ComboBoxSelectedIndex == 0 && ComboBoxSelectedIndexUnknownWord != 0)
+                searchIndex = ComboBoxSelectedIndexUnknownWord;
+
+            LastWebSearchRequest.Source = new Uri(Uris[searchIndex]);
             CurrentBrowserWord = AutoSuggestBoxText;
             AutoSuggestBoxText = "";
             AutoSuggestBoxTextUnknownWord = "";

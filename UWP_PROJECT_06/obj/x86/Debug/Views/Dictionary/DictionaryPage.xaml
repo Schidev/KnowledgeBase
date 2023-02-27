@@ -32,9 +32,13 @@
         <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
         <converters:ForegroundButtonConverter x:Key="ForegroundButtonConverter" />
         <converters:ReadingModeIconConverter x:Key="ReadingModeIconConverter" />
-
+        
         <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter" />
-    
+
+        <converters:SettingsHotkeysTipConverter x:Key="SettingsHotkeysTipConverter" />
+        <converters:SettingsHotkeysModifiersConverter x:Key="SettingsHotkeysModifiersConverter" />
+        <converters:SettingsHotkeysKeyConverter x:Key="SettingsHotkeysKeyConverter" />
+
     </Page.Resources>
     
     <Grid>
@@ -53,24 +57,38 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+            <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                 <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
+                
             </Button>
 
-            <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+            <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                 <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
+                
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
+            
             </Button>
             
             <TextBlock Grid.Column="2" Text="DICTIONARY" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
+            <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                 <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
 
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <core:InvokeCommandAction x:ConnectionId='37' Command="{Binding ScreenshotCommand}"                                     />
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
 
             </Button>
 
@@ -107,11 +125,15 @@
 
 
                     <AutoSuggestBox x:ConnectionId='22' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxText, Mode=TwoWay}"
+                                    PlaceholderText="Tap to start searching..."
                                     VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10"                          
+                                    ToolTipService.ToolTip="{Binding FocusOnPrimarySearchHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
                                     BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
 
                         <AutoSuggestBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='35' Modifiers="Menu" Key="W"                        />
+                            <KeyboardAccelerator x:ConnectionId='35' Modifiers="{Binding FocusOnPrimarySearchHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding FocusOnPrimarySearchHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}" 
+                                                                        />
                         </AutoSuggestBox.KeyboardAccelerators>
                         
                         <AutoSuggestBox.Resources>
@@ -136,10 +158,13 @@
 
                     <ComboBox x:ConnectionId='23' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
+                              ToolTipService.ToolTip="{Binding FocusOnPrimaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndex, Mode=TwoWay}">
 
                         <ComboBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='33' Modifiers="Menu" Key="L"                           />
+                            <KeyboardAccelerator x:ConnectionId='33' Modifiers="{Binding FocusOnPrimaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding FocusOnPrimaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}" 
+                                                                           />
                         </ComboBox.KeyboardAccelerators>
                         
                         <i:Interaction.Behaviors>
@@ -286,7 +311,10 @@
                     </Grid.ColumnDefinitions>
 
                     <AutoSuggestBox x:ConnectionId='7' x:Name="AutosuggestUnknownWords" Grid.Row="0" Grid.Column="0" Text="{Binding AutoSuggestBoxTextUnknownWord, Mode=TwoWay}" 
-                                    VerticalContentAlignment="Center"                                  Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+
+                                    VerticalContentAlignment="Center"                                  Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10"
+                                    ToolTipService.ToolTip="{Binding FocusOnSecondarySearchHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                                    BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
                         <AutoSuggestBox.Resources>
                             <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
                             <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
@@ -300,7 +328,9 @@
                         </AutoSuggestBox.Resources>
 
                         <AutoSuggestBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='20' Modifiers="Menu,Control" Key="W"                               />
+                            <KeyboardAccelerator x:ConnectionId='20' Modifiers="{Binding FocusOnSecondarySearchHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding FocusOnSecondarySearchHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}" 
+                                                                               />
                         </AutoSuggestBox.KeyboardAccelerators>
                         
                         <i:Interaction.Behaviors>
@@ -313,10 +343,13 @@
 
                     <ComboBox x:ConnectionId='8' Grid.Row="0" Grid.Column="1" x:Name="LanguagesComboBoxUnknownWords" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
                               Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
+                              ToolTipService.ToolTip="{Binding FocusOnSecondaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
                               ItemsSource="{Binding Languages}" SelectedIndex="{Binding ComboBoxSelectedIndexUnknownWord, Mode=TwoWay}">
 
                         <ComboBox.KeyboardAccelerators>
-                            <KeyboardAccelerator x:ConnectionId='18' Modifiers="Menu,Control" Key="L"                                  />
+                            <KeyboardAccelerator x:ConnectionId='18' Modifiers="{Binding FocusOnSecondaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                                 Key="{Binding FocusOnSecondaryLanguagePickerHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}" 
+                                                                                  />
                         </ComboBox.KeyboardAccelerators>
                         
                         <i:Interaction.Behaviors>
@@ -474,83 +507,127 @@
 
 
                     <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ClearCommand}" Visibility="{Binding IsWritingMode}"  AccessKey="Down">
+                            Command="{Binding ClearCommand}" Visibility="{Binding IsWritingMode}"
+                            ToolTipService.ToolTip="{Binding CardClearHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
                         
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Menu,Shift" Key="D"/>
+                            <KeyboardAccelerator Modifiers="{Binding CardClearHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding CardClearHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
 
                     <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardBackButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding CardBackButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}"
+                            ToolTipService.ToolTip="{Binding CardBackHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
 
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding CardBackHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding CardBackHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+                        
                     </Button>
 
                     <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardForwardButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding CardForwardButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}"
+                            ToolTipService.ToolTip="{Binding CardForwardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding CardForwardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding CardForwardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
                     
                     <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding CardRefreshButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}">
+                            Command="{Binding CardRefreshButtonPressedCommand}" Visibility="{Binding IsOnlineDictionaryActive}"
+                            ToolTipService.ToolTip="{Binding CardRefreshHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE72C;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding CardRefreshHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding CardRefreshHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <Button Grid.Column="4" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding DeleteUnknownWordCommand}" Visibility="{Binding IsUnknownWordSelected, Mode=TwoWay}">
+                            Command="{Binding DeleteUnknownWordCommand}" Visibility="{Binding IsUnknownWordSelected, Mode=TwoWay}"
+                            ToolTipService.ToolTip="{Binding CardDeleteHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding CardDeleteHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                                 Key="{Binding CardDeleteHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <TextBlock Grid.Column="5" Text="{Binding SelectedWordString, Mode=TwoWay}" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
 
                     <Button x:ConnectionId='6' Grid.Column="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ScreenshotCommand}"                                     >
+                            Command="{Binding ScreenshotCommand}"                                     
+                            ToolTipService.ToolTip="{Binding TakeAScreenshotHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE722;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding TakeAScreenshotHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding TakeAScreenshotHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
                     </Button>
 
                     <!-- Btn Open Reading/Writing Mode-->
                     <Button Grid.Column="7" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding ChangeModeCommand}" AccessKey="R">
+                            Command="{Binding ChangeModeCommand}"
+                            ToolTipService.ToolTip="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="{Binding IsWritingMode, Converter={StaticResource ReadingModeIconConverter}}"  Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Menu" Key="R"/>
+                            <KeyboardAccelerator Modifiers="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
 
                     <!-- Open in browser-->
                     <Button Grid.Column="8" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding SearchOnlineCommand}">
+                            Command="{Binding SearchOnlineCommand}"
+                            ToolTipService.ToolTip="{Binding OpenInBrowserHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE774;" Foreground="{Binding IsOnlineDictionaryActive, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Menu" Key="B"/>
+                            <KeyboardAccelerator Modifiers="{Binding OpenInBrowserHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding OpenInBrowserHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
 
                     <!-- Add new word -->
                     <Button Grid.Column="9" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding AddWordCommand}" AccessKey="N">
+                            Command="{Binding AddWordCommand}"
+                            ToolTipService.ToolTip="{Binding AddNewCardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8E5;" Foreground="{Binding IsAddingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Menu" Key="N"/>
+                            <KeyboardAccelerator Modifiers="{Binding AddNewCardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding AddNewCardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>
 
                     <!-- Save in unknown words-->
                     <Button Grid.Column="10" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
-                            Command="{Binding SaveCommand}">
+                            Command="{Binding SaveCommand}"
+                            ToolTipService.ToolTip="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
 
                         <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Menu" Key="S"/>
+                            <KeyboardAccelerator Modifiers="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
                         </Button.KeyboardAccelerators>
 
                     </Button>

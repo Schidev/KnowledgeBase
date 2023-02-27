@@ -135,6 +135,7 @@
     <Compile Include="Models\Dictionary\Word.cs" />
     <Compile Include="Models\Dictionary\WordExtra.cs" />
     <Compile Include="Models\History\HistoryItem.cs" />
+    <Compile Include="Models\History\Hotkey.cs" />
     <Compile Include="Models\History\Pair.cs" />
     <Compile Include="Models\History\UnknownSource.cs" />
     <Compile Include="Models\History\UnknownWord.cs" />
@@ -158,6 +159,11 @@
     <Compile Include="Services\Converters\SettingsHistoryActionIconConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryDateConverter.cs" />
     <Compile Include="Services\Converters\SettingsHistoryFullPathConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHotkeyButtonSaveBackgroundConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHotkeysButtonBackgroundConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHotkeysKeyConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHotkeysModifiersConverter.cs" />
+    <Compile Include="Services\Converters\SettingsHotkeysTipConverter.cs" />
     <Compile Include="Services\Converters\SourceIdToNameConverter.cs" />
     <Compile Include="Services\Converters\SourceIsDownloadedConverter.cs" />
     <Compile Include="Services\Converters\SourceStateConverter.cs" />
@@ -183,6 +189,7 @@
     <Compile Include="ViewModels\Settings\SettingsDictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsFilesAndLinksPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsHistoryPageViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsHotkeysPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsRecoveryPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Dictionary\WordCardPageViewModel.cs" />

@@ -40,7 +40,10 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
         public ObservableRangeCollection<Quote> Quotes { get; set; } 
         public ObservableRangeCollection<Note> Notes { get; set; } 
-        public ObservableRangeCollection<SourceExtra> Extras { get; set; } 
+        public ObservableRangeCollection<SourceExtra> Extras { get; set; }
+
+
+        public string TakeAScreenshotHotkeyName { get => "TakeAScreenshot"; }
 
         public AsyncCommand<object> ScreenshotCommand { get; set; }
         public AsyncCommand<object> DeleteCommand { get; set; }

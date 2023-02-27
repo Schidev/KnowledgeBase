@@ -17,6 +17,8 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System.ServiceModel.Channels;
 using Windows.UI.Popups;
 using UWP_PROJECT_06.Models.Notes;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Controls;
 
 namespace UWP_PROJECT_06.Services
 {
@@ -108,7 +110,65 @@ namespace UWP_PROJECT_06.Services
                             writer.WriteEndElement();
 
                             writer.WriteStartElement("hotkeys");
-                            writer.WriteEndElement();
+                        
+                                List<Hotkey> hotkeys = new List<Hotkey>() 
+                        {
+                            new Hotkey { Name = "MenuBack", Modifiers = "Contol,Menu", Key = "Left", Tip = "Navigate Back (Ctrl+Alt+Left)" },
+                            new Hotkey { Name = "MenuForward", Modifiers = "Control,Menu", Key = "Right", Tip = "Navigate Forward (Ctrl+Alt+Right)" },
+                            new Hotkey { Name = "MenuMore", Modifiers = "Menu", Key = "F", Tip = "More options (Alt+F)" },
+                            new Hotkey { Name = "OpenMenuRightPanel", Modifiers = "Control,Menu,Shift", Key = "R", Tip = "Collapse (Ctrl+Alt+Shift+R)" },
+                            new Hotkey { Name = "OpenMenuLeftPanel", Modifiers = "Control,Menu,Shift", Key = "L", Tip = "Expand/Collapse (Ctrl+Alt+Shift+L)" },
+                            
+                            new Hotkey { Name = "FocusOnPrimarySearch", Modifiers = "Menu", Key = "W", Tip = "Focus (Alt+W)" },
+                            new Hotkey { Name = "FocusOnSecondarySearch", Modifiers = "Menu,Shift", Key = "W", Tip = "Focus (Alt+Shift+W)" },
+                            new Hotkey { Name = "FocusOnPrimaryLanguagePicker", Modifiers = "Menu", Key = "L", Tip = "Select (Alt+L)" },
+                            new Hotkey { Name = "FocusOnSecondaryLanguagePicker", Modifiers = "Menu,Shift", Key = "L", Tip = "Select (Alt+Shift+L)" },
+                            
+                            new Hotkey { Name = "TakeAScreenshot", Modifiers = "Menu", Key = "T", Tip = "Take a screenshot (Alt+T)" },
+                            new Hotkey { Name = "ChangeMode", Modifiers = "Menu", Key = "C", Tip = "Change mode (Alt+C)" },
+                            new Hotkey { Name = "OpenInBrowser", Modifiers = "Menu", Key = "B", Tip = "Open browser (Alt+B)" },
+                            new Hotkey { Name = "AddNewCard", Modifiers = "Menu", Key = "N", Tip = "Add new card (Alt+N)" },
+                            new Hotkey { Name = "SaveCard", Modifiers = "Menu", Key = "S", Tip = "Save changes (Alt+S)" },
+                            new Hotkey { Name = "CardBack", Modifiers = "Menu", Key = "Left", Tip = "Navigation back (Alt+Left)" },
+                            new Hotkey { Name = "CardForward", Modifiers = "Menu", Key = "Right", Tip = "Navigation forward (Alt+Right)" },
+                            new Hotkey { Name = "CardRefresh", Modifiers = "Menu", Key = "R", Tip = "Refresh (Alt+R)" },
+                            new Hotkey { Name = "CardDelete", Modifiers = "Contol,Menu,Shift", Key = "D", Tip = "Delete (Ctrl+Alt+Shift+D)" },
+                            new Hotkey { Name = "CardClear", Modifiers = "Contol,Menu,Shift", Key = "C", Tip = "Clear all fields (Ctrl+Alt+Shift+C)" },
+
+                            new Hotkey { Name = "OpenDictionary", Modifiers = "Menu", Key = "Number1", Tip = "Open dictionary (Alt+1)" },
+                            new Hotkey { Name = "OpenNotes", Modifiers = "Menu", Key = "Number2", Tip = "Open notes (Alt+2)" },
+                            new Hotkey { Name = "OpenSettings", Modifiers = "Menu", Key = "Number0", Tip = "Open settings (Alt+0)" },
+                            new Hotkey { Name = "OpenHistory", Modifiers = "Control", Key = "H", Tip = "Open history (Ctrl+H)" },
+
+                            new Hotkey { Name = "AddNewTab", Modifiers = "Control", Key = "T", Tip = "New tab (Ctrl+T)" },
+                            new Hotkey { Name = "OpenRecentlyClosedTab", Modifiers = "Control,Shift", Key = "T", Tip = "Open recently closed tab (Ctrl+Shift+T)" },
+                            new Hotkey { Name = "CloseCurrentTab", Modifiers = "Control", Key = "W", Tip = "Close current tab (Ctrl+W)" },
+                            new Hotkey { Name = "NextTab", Modifiers = "Control", Key = "Tab", Tip = "Next tab (Ctrl+Tab)" },
+                            new Hotkey { Name = "PreviousTab", Modifiers = "Control,Shift", Key = "Tab", Tip = "Previous tab (Ctrl+Shift+Tab)" },
+                            
+                            new Hotkey { Name = "OpenFirstTab", Modifiers = "Control", Key = "Number1", Tip = "Navigation first tab (Ctrl+1)" },
+                            new Hotkey { Name = "OpenSecondTab", Modifiers = "Control", Key = "Number2", Tip = "Navigation second tab (Ctrl+2)" },
+                            new Hotkey { Name = "OpenThirdTab", Modifiers = "Control", Key = "Number3", Tip = "Navigation third tab (Ctrl+3)" },
+                            new Hotkey { Name = "OpenFourthTab", Modifiers = "Control", Key = "Number4", Tip = "Navigation forth tab (Ctrl+4)" },
+                            new Hotkey { Name = "OpenFifthTab", Modifiers = "Control", Key = "Number5", Tip = "Navigation fifth tab (Ctrl+5)" },
+                            new Hotkey { Name = "OpenSixthTab", Modifiers = "Control", Key = "Number6", Tip = "Navigation sixth tab (Ctrl+6)" },
+                            new Hotkey { Name = "OpenSeventhTab", Modifiers = "Control", Key = "Number7", Tip = "Navigation seventh tab (Ctrl+7)" },
+                            new Hotkey { Name = "OpenEighthTab", Modifiers = "Control", Key = "Number8", Tip = "Navigation eight tab (Ctrl+8)" },
+                            
+                            new Hotkey { Name = "OpenLastTab", Modifiers = "Control", Key = "Number9", Tip = "Navigation last tab (Ctrl+9)" }
+                        };
+
+                                foreach (Hotkey hotkey in hotkeys)
+                                {
+                                    writer.WriteStartElement("hotkey");
+                                    writer.WriteAttributeString("Name", hotkey.Name);
+                                    writer.WriteAttributeString("Modifiers", hotkey.Modifiers);
+                                    writer.WriteAttributeString("Key", hotkey.Key);
+                                    writer.WriteString(hotkey.Tip);
+                                    writer.WriteEndElement();
+                                }
+
+                                writer.WriteEndElement();
 
                             writer.WriteStartElement("colors");
 
@@ -289,7 +349,6 @@ namespace UWP_PROJECT_06.Services
             document.Save(settingsPath);
         }
 
-        
 
         public async static Task<string> ReadColor(int partOfSpeechId)
         {
@@ -346,6 +405,124 @@ namespace UWP_PROJECT_06.Services
             document.Save(settingsPath);
         }
 
+        public async static Task<string> ReadHotkey(string hotkeyName, string attributeName = "")
+        {
+            XmlDocument document = new XmlDocument();
+
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+
+            document.Load(settingsPath);
+            
+            XmlNode root = document.DocumentElement;
+            XmlNode currentNode = root.ChildNodes.Count != 0 ? root.ChildNodes.Item(0) : null;
+
+            if (currentNode == null)
+                return null;
+
+            while (currentNode.LocalName != "hotkeys")
+                currentNode = currentNode.NextSibling;
+
+            foreach (XmlNode node in currentNode.ChildNodes)
+            {
+                if (node.Attributes["Name"].Value != hotkeyName)
+                    continue;
+             
+                if (attributeName == "")
+                    return node.InnerText;
+
+                return node.Attributes[attributeName].Value;
+            }
+            
+            return null;
+        }
+        public async static Task<IEnumerable<Hotkey>> ReadHotkeys()
+        {
+            var hotkeys = new List<Hotkey>();
+            XmlDocument document = new XmlDocument();
+
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+
+            document.Load(settingsPath);
+
+            XmlNode root = document.DocumentElement;
+            XmlNode currentNode = root.ChildNodes.Count != 0 ? root.ChildNodes.Item(0) : null;
+
+            if (currentNode == null)
+                return null;
+
+            while (currentNode.LocalName != "hotkeys")
+                currentNode = currentNode.NextSibling;
+
+            foreach (XmlNode node in currentNode.ChildNodes)
+            {
+                hotkeys.Add(new Hotkey()
+                {
+                    Name = node.Attributes["Name"].Value,
+                    Modifiers = node.Attributes["Modifiers"].Value,
+                    Key = node.Attributes["Key"].Value,
+                    Tip = node.InnerText
+                });
+            }
+
+            return hotkeys;
+        }
+
+        public async static Task UpdateHotkey(string hotkeyName, string modifiers = "None", string key = "None")
+        {
+            XmlDocument document = new XmlDocument();
+
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+
+            document.Load(settingsPath);
+
+            XmlNode root = document.DocumentElement;
+            XmlNode currentNode = root.ChildNodes.Count != 0 ? root.ChildNodes.Item(0) : null;
+
+            if (currentNode == null)
+                return;
+
+            string _key = key;
+            for (int i = 0; i < 10; i++)
+            {
+                if (key == i.ToString())
+                {
+                    _key = String.Format("Number{0}", i);
+                    break;
+                }
+            }
+            
+            while (currentNode.LocalName != "hotkeys")
+                currentNode = currentNode.NextSibling;
+
+            foreach (XmlNode node in currentNode.ChildNodes)
+            {
+                if (node.Attributes["Name"].Value != hotkeyName)
+                {
+                    node.InnerText = node.InnerText;
+                    continue;
+                }
+                node.Attributes["Modifiers"].Value = modifiers;
+                node.Attributes["Key"].Value = _key;
+
+                node.InnerText = String.Format("{0}",
+                        node.InnerText.Split(" (")[0]);
+
+                node.InnerText += modifiers == "None" && key == "None"
+                    ? ""
+                    : String.Format(" ({0}{1}{2}{3})",
+                        modifiers.Contains("Ctrl") || modifiers.Contains("Control") ? "Ctrl+" : "",
+                        modifiers.Contains("Alt") || modifiers.Contains("Menu") ? "Alt+" : "",
+                        modifiers.Contains("Shift") || modifiers.Contains("Shift") ? "Shift+" : "",
+                        key);
+            }
+
+            document.Save(settingsPath);
+        }
+       
+        
         public async static Task<List<HistoryItem>> ReadDictionaryHistory()
         {
             XmlDocument document = new XmlDocument();

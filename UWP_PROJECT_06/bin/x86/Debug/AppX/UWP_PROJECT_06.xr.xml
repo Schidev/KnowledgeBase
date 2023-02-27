@@ -16,6 +16,19 @@
     <RootPropertyPathName Name="Title" />
     <RootPropertyPathName Name="Value" />
     <RootPropertyPathName Name="Key" />
+    <RootPropertyPathName Name="IsPressed" />
+    <RootPropertyPathName Name="FocusCommand" />
+    <RootPropertyPathName Name="ClearCommand" />
+    <RootPropertyPathName Name="Text" />
+    <RootPropertyPathName Name="PressCommand" />
+    <RootPropertyPathName Name="MessageText" />
+    <RootPropertyPathName Name="IsShiftSelected" />
+    <RootPropertyPathName Name="ShiftSelectedCommand" />
+    <RootPropertyPathName Name="IsMenuSelected" />
+    <RootPropertyPathName Name="MenuSelectedCommand" />
+    <RootPropertyPathName Name="IsControlSelected" />
+    <RootPropertyPathName Name="ControlSelectedCommand" />
+    <RootPropertyPathName Name="Tip" />
     <RootPropertyPathName Name="CopyPathCommand" />
     <RootPropertyPathName Name="Date" />
     <RootPropertyPathName Name="FullPath" />
@@ -23,40 +36,69 @@
     <RootPropertyPathName Name="ExtraText" />
     <RootPropertyPathName Name="RightExtendedPanelVisibility" />
     <RootPropertyPathName Name="OpenCloseExtraPaneCommand" />
-    <RootPropertyPathName Name="AddTabCommand" />
+    <RootPropertyPathName Name="ExpandRightPanelHotkeyName" />
+    <RootPropertyPathName Name="AddNewTabCommand" />
+    <RootPropertyPathName Name="OpenLastTabHotkeyName" />
+    <RootPropertyPathName Name="OpenEighthTabHotkeyName" />
+    <RootPropertyPathName Name="OpenSeventhTabHotkeyName" />
+    <RootPropertyPathName Name="OpenSixthTabHotkeyName" />
+    <RootPropertyPathName Name="OpenFifthTabHotkeyName" />
+    <RootPropertyPathName Name="OpenFourthTabHotkeyName" />
+    <RootPropertyPathName Name="OpenThirdTabHotkeyName" />
+    <RootPropertyPathName Name="OpenSecondTabHotkeyName" />
+    <RootPropertyPathName Name="OpenFirstTabHotkeyName" />
+    <RootPropertyPathName Name="OpenRecentlyClosedTabHotkeyName" />
+    <RootPropertyPathName Name="PreviousTabHotkeyName" />
+    <RootPropertyPathName Name="NextTabHotkeyName" />
+    <RootPropertyPathName Name="AddNewTabHotkeyName" />
+    <RootPropertyPathName Name="CloseCurrentTabHotkeyName" />
     <RootPropertyPathName Name="LeftExtendedPanelVisibility" />
+    <RootPropertyPathName Name="OpenSettingsHotkeyName" />
     <RootPropertyPathName Name="OpenSettingsPageCommand" />
+    <RootPropertyPathName Name="OpenNotesHotkeyName" />
     <RootPropertyPathName Name="OpenNotesPageCommand" />
+    <RootPropertyPathName Name="OpenDictionaryHotkeyName" />
     <RootPropertyPathName Name="OpenDictionaryPageCommand" />
-    <RootPropertyPathName Name="OpenDictionaryModifiers" />
-    <RootPropertyPathName Name="OpenDictionaryKey" />
+    <RootPropertyPathName Name="ExpandLeftPanelHotkeyName" />
+    <RootPropertyPathName Name="AddTabCommand" />
     <RootPropertyPathName Name="UnknownWordsGroups" />
     <RootPropertyPathName Name="WordsGroups" />
     <RootPropertyPathName Name="SaveCommand" />
+    <RootPropertyPathName Name="SaveCardHotkeyName" />
     <RootPropertyPathName Name="AddWordCommand" />
+    <RootPropertyPathName Name="AddNewCardHotkeyName" />
     <RootPropertyPathName Name="IsAddingMode" />
     <RootPropertyPathName Name="SearchOnlineCommand" />
+    <RootPropertyPathName Name="OpenInBrowserHotkeyName" />
     <RootPropertyPathName Name="IsOnlineDictionaryActive" />
     <RootPropertyPathName Name="ChangeModeCommand" />
+    <RootPropertyPathName Name="ChangeModeHotkeyName" />
     <RootPropertyPathName Name="IsWritingMode" />
     <RootPropertyPathName Name="IsReadingMode" />
+    <RootPropertyPathName Name="TakeAScreenshotHotkeyName" />
     <RootPropertyPathName Name="SelectedWordString" />
     <RootPropertyPathName Name="DeleteUnknownWordCommand" />
     <RootPropertyPathName Name="IsUnknownWordSelected" />
+    <RootPropertyPathName Name="CardDeleteHotkeyName" />
     <RootPropertyPathName Name="CardRefreshButtonPressedCommand" />
+    <RootPropertyPathName Name="CardRefreshHotkeyName" />
     <RootPropertyPathName Name="CardForwardButtonPressedCommand" />
+    <RootPropertyPathName Name="CardForwardHotkeyName" />
     <RootPropertyPathName Name="CardBackButtonPressedCommand" />
-    <RootPropertyPathName Name="ClearCommand" />
+    <RootPropertyPathName Name="CardBackHotkeyName" />
+    <RootPropertyPathName Name="CardClearHotkeyName" />
     <RootPropertyPathName Name="FrameContent" />
     <RootPropertyPathName Name="SelectedWordUnknownWord" />
     <RootPropertyPathName Name="UnknownWordSelectedCommand" />
     <RootPropertyPathName Name="LastModifiedOn" />
     <RootPropertyPathName Name="Language" />
     <RootPropertyPathName Name="Word" />
+    <RootPropertyPathName Name="FocusOnSecondaryLanguagePickerHotkeyName" />
     <RootPropertyPathName Name="Languages" />
     <RootPropertyPathName Name="ComboBoxSelectedIndexUnknownWord" />
     <RootPropertyPathName Name="UnknownWordLanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxTextUnknownWord" />
+    <RootPropertyPathName Name="FocusOnSecondarySearchHotkeyName" />
     <RootPropertyPathName Name="UnknownWordTextChangedCommand" />
     <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="WordSelectedCommand" />
@@ -64,10 +106,15 @@
     <RootPropertyPathName Name="Status" />
     <RootPropertyPathName Name="Word1" />
     <RootPropertyPathName Name="PartOfSpeech" />
+    <RootPropertyPathName Name="FocusOnPrimaryLanguagePickerHotkeyName" />
     <RootPropertyPathName Name="ComboBoxSelectedIndex" />
     <RootPropertyPathName Name="LanguageSelectedCommand" />
     <RootPropertyPathName Name="AutoSuggestBoxText" />
+    <RootPropertyPathName Name="FocusOnPrimarySearchHotkeyName" />
     <RootPropertyPathName Name="TextChangedCommand" />
+    <RootPropertyPathName Name="MenuMoreHotkeyName" />
+    <RootPropertyPathName Name="MenuForwardHotkeyName" />
+    <RootPropertyPathName Name="MenuBackHotkeyName" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentSource" />
     <RootPropertyPathName Name="SourceName" />
@@ -118,6 +165,7 @@
     <RootPropertyPathName Name="History" />
     <RootPropertyPathName Name="SelectedItem" />
     <RootPropertyPathName Name="ReloadCommand" />
+    <RootPropertyPathName Name="Hotkeys" />
     <RootPropertyPathName Name="CurrentContent" />
     <RootPropertyPathName Name="IsSettingsRecoveryOpen" />
     <RootPropertyPathName Name="SelectCommand" />
@@ -202,12 +250,11 @@
       <RootProperty Name="CommandParameter" />
       <RootProperty Name="Content" />
       <RootProperty Name="DataContext" />
+      <RootProperty Name="Visibility" />
+      <RootProperty Name="Foreground" />
       <RootProperty Name="KeyboardAccelerators" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="BorderBrush" />
-      <RootProperty Name="Foreground" />
-      <RootProperty Name="Visibility" />
-      <RootProperty Name="AccessKey" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="HorizontalContentAlignment" />
@@ -245,6 +292,7 @@
       <RootProperty Name="Children" />
       <RootProperty Name="ColumnDefinitions" />
       <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="DataContext" />
       <RootProperty Name="TabFocusNavigation" />
       <RootProperty Name="MinWidth" />
       <RootProperty Name="Visibility" />
@@ -327,6 +375,9 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Child" />
       <RootProperty Name="Background" />
+      <RootProperty Name="Visibility" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="CornerRadius" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ContentPresenter">
       <RootProperty Name="BorderBrush" />
@@ -341,6 +392,23 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Margin" />
       <RootProperty Name="Background" />
+    </RootType>
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHotkeysButtonBackgroundConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHotkeyButtonSaveBackgroundConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsBackgroundButtonConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsForegroundButtonConverter" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsHotkeysPageViewModel" />
+    <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
+      <RootMethod Name="GetBehaviors" />
+      <RootMethod Name="SetBehaviors" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
+      <RootProperty Name="EventName" />
+      <RootProperty Name="Actions" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.Interactions.Core.InvokeCommandAction">
+      <RootProperty Name="Command" />
+      <RootProperty Name="CommandParameter" />
     </RootType>
     <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryActionIconConverter" />
     <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHistoryActionForegroundConverter" />
@@ -387,11 +455,14 @@
     <RootType FullName="Windows.UI.Xaml.Controls.Page">
       <RootProperty Name="Background" />
       <RootProperty Name="DataContext" />
+      <RootProperty Name="Resources" />
       <RootProperty Name="Content" />
       <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="Resources" />
     </RootType>
     <RootType FullName="UWP_PROJECT_06.ViewModels.MainPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHotkeysTipConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHotkeysModifiersConverter" />
+    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsHotkeysKeyConverter" />
     <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
       <RootProperty Name="Visibility" />
       <RootProperty Name="Orientation" />
@@ -421,6 +492,7 @@
       <RootProperty Name="AddTabButtonCommand" />
       <RootProperty Name="AddTabButtonCommandParameter" />
       <RootProperty Name="Foreground" />
+      <RootProperty Name="KeyboardAccelerators" />
       <RootProperty Name="TabItems" />
       <RootEvent Name="TabCloseRequested" />
     </RootType>
@@ -457,15 +529,13 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Items" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutSeparator" />
     <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutItem">
-      <RootProperty Name="Icon" />
       <RootProperty Name="Text" />
-      <RootProperty Name="Margin" />
       <RootProperty Name="Command" />
       <RootProperty Name="CommandParameter" />
       <RootProperty Name="KeyboardAccelerators" />
     </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutSeparator" />
     <RootType FullName="UWP_PROJECT_06.MainPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.DictionaryPageViewModel" />
     <RootType FullName="Windows.UI.Xaml.Data.CollectionViewSource">
@@ -502,10 +572,6 @@
       <RootProperty Name="PlaceholderText" />
       <RootEvent Name="KeyUp" />
     </RootType>
-    <RootType FullName="Microsoft.Xaml.Interactivity.Interaction">
-      <RootMethod Name="GetBehaviors" />
-      <RootMethod Name="SetBehaviors" />
-    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ComboBox">
       <RootProperty Name="Margin" />
       <RootProperty Name="Padding" />
@@ -528,14 +594,6 @@
       <RootMethod Name="SetVerticalScrollBarVisibility" />
       <RootMethod Name="GetHorizontalScrollMode" />
       <RootMethod Name="SetHorizontalScrollMode" />
-    </RootType>
-    <RootType FullName="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior">
-      <RootProperty Name="EventName" />
-      <RootProperty Name="Actions" />
-    </RootType>
-    <RootType FullName="Microsoft.Xaml.Interactions.Core.InvokeCommandAction">
-      <RootProperty Name="Command" />
-      <RootProperty Name="CommandParameter" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.GroupStyle">
       <RootProperty Name="HeaderTemplate" />
@@ -574,8 +632,6 @@
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsHistoryPage" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsHotkeysPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.SettingsPageViewModel" />
-    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsBackgroundButtonConverter" />
-    <RootType FullName="UWP_PROJECT_06.Services.Converters.SettingsForegroundButtonConverter" />
     <RootType FullName="UWP_PROJECT_06.Views.SettingsPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsRecoveryPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsRecoveryPage" />

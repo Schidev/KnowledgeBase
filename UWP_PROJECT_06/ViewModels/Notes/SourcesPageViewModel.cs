@@ -45,6 +45,31 @@ namespace UWP_PROJECT_06.ViewModels.Notes
         WebView LastWebSearchRequest { get; set; }
 
 
+        #region Hotkeys
+
+        public string MenuBackHotkeyName { get => "MenuBack"; }
+        public string MenuForwardHotkeyName { get => "MenuForward"; }
+        public string MenuMoreHotkeyName { get => "MenuMore"; }
+
+        public string FocusOnPrimarySearchHotkeyName { get => "FocusOnPrimarySearch"; }
+        public string FocusOnSecondarySearchHotkeyName { get => "FocusOnSecondarySearch"; }
+        public string FocusOnPrimaryLanguagePickerHotkeyName { get => "FocusOnPrimaryLanguagePicker"; }
+        public string FocusOnSecondaryLanguagePickerHotkeyName { get => "FocusOnSecondaryLanguagePicker"; }
+
+        public string ChangeModeHotkeyName { get => "ChangeMode"; }
+        public string OpenInBrowserHotkeyName { get => "OpenInBrowser"; }
+        public string AddNewCardHotkeyName { get => "AddNewCard"; }
+        public string SaveCardHotkeyName { get => "SaveCard"; }
+
+        public string CardBackHotkeyName { get => "CardBack"; }
+        public string CardForwardHotkeyName { get => "CardForward"; }
+        public string CardRefreshHotkeyName { get => "CardRefresh"; }
+        public string CardDeleteHotkeyName { get => "CardDelete"; }
+        public string CardClearHotkeyName { get => "CardClear"; }
+
+        #endregion
+
+
         public ObservableCollection<Grouping<string, Source>> Sources { get; set; }
         public ObservableCollection<Grouping<string, UnknownSource>> UnknownSources { get; set; }
         public ObservableRangeCollection<string> SourceTypes { get; set; }
