@@ -15,7 +15,7 @@ namespace UWP_PROJECT_06.Services
     {
         static string FileName = "ProblemsDB";
 
-        public async static void InitializeDatabase()
+        public async static Task InitializeDatabase()
         {
             await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);

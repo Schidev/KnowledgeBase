@@ -58,8 +58,8 @@ namespace UWP_PROJECT_06.ViewModels
         {
             rightExtendedPanelVisibility = Visibility.Visible; // Into settings
             leftExtendedPanelVisibility = Visibility.Collapsed; // Ito settings
-            
-            InitializeServices();
+
+            SettingsService.Initialize();
 
             OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
@@ -71,12 +71,7 @@ namespace UWP_PROJECT_06.ViewModels
 
         private async Task InitializeServices()
         {
-            await SettingsService.Initialize();
-            DictionaryService.InitializeDatabase();
-            NotesService.InitializeDatabase();
-            ProblemsService.InitializeDatabase();
-            BookmarksService.InitializeDatabase();
-            HistoryService.InitializeDatabase();
+            
         }
 
         private async Task OpenNotesPage(object arg)

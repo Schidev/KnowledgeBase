@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
 using UWP_PROJECT_06.Models.Notes;
+using Windows.Media.Ocr;
 using Windows.Storage;
 using Windows.UI.Popups;
 using static SQLite.SQLite3;
@@ -24,12 +25,8 @@ namespace UWP_PROJECT_06.Services
             string folderName = await SettingsService.ReadPath("dictionary");
             folderName = System.IO.Path.Combine(vaultName, folderName);
 
-            if (word.Language == 1) folderName += @"\Rus\WORDS";
-            if (word.Language == 2) folderName += @"\Deu\WORDS";
-            if (word.Language == 3) folderName += @"\Eng\WORDS";
-            if (word.Language == 4) folderName += @"\Fra\WORDS";
-            if (word.Language == 5) folderName += @"\Ita\WORDS";
-            if (word.Language == 6) folderName += @"\Spa\WORDS";
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
+            folderName += String.Format("\\{0}\\WORDS", codes[word.Language - 1][0].ToString().ToUpper() + codes[word.Language - 1].Substring(1));
 
             StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
@@ -42,7 +39,7 @@ namespace UWP_PROJECT_06.Services
             }
 
             StorageFile file = await localFolder.CreateFileAsync("FILE_NOT_FOUND.md", CreationCollisionOption.ReplaceExisting);
-            
+
             await Windows.Storage.FileIO.WriteTextAsync(file, $"# File {word.Word1}.md does not exist or path is wrong\n{folder.Path}\\{word.Word1.Replace("_", "\\_")}.md");
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
@@ -52,12 +49,8 @@ namespace UWP_PROJECT_06.Services
             string folderName = await SettingsService.ReadPath("dictionary");
             folderName = System.IO.Path.Combine(vaultName, folderName);
 
-            if (word.Language == 1) folderName += @"\Rus\WORDS";
-            if (word.Language == 2) folderName += @"\Deu\WORDS";
-            if (word.Language == 3) folderName += @"\Eng\WORDS";
-            if (word.Language == 4) folderName += @"\Fra\WORDS";
-            if (word.Language == 5) folderName += @"\Ita\WORDS";
-            if (word.Language == 6) folderName += @"\Spa\WORDS";
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
+            folderName += String.Format("\\{0}\\WORDS", codes[word.Language - 1][0].ToString().ToUpper() + codes[word.Language - 1].Substring(1));
 
             StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
@@ -81,7 +74,7 @@ namespace UWP_PROJECT_06.Services
             for (int q = 0; q < extras.Length; q++)
                 extras[q] = "";
 
-            extras[0] = CheckWord(word.Word1); 
+            extras[0] = CheckWord(word.Word1);
 
             List<Grouping<int, WordExtra>> extrasGroups = new List<Grouping<int, WordExtra>>();
             List<int> linkTypes = new List<int>();
@@ -125,17 +118,17 @@ namespace UWP_PROJECT_06.Services
                                                         ? (extra.ExtraText == "" || extra.ExtraText == null ? "" : extra.ExtraText)
                                                         : DictionaryService.ReadWord(extra.LinkedWordId).Word1;
 
-                        string extraText = CheckWord(extraTextWithUnderscores).Replace("_"," ");
+                        string extraText = CheckWord(extraTextWithUnderscores).Replace("_", " ");
 
                         if (extra != group.Items.Last())
                         {
-                            extras[group.Key] += extraText == "" 
+                            extras[group.Key] += extraText == ""
                                               ? String.Format("{0}, ", extraTextWithUnderscores)
                                               : String.Format("[{0}]({1}.md), ", extraText, extraTextWithUnderscores);
                         }
                         else
                         {
-                            extras[group.Key] += extraText == "" 
+                            extras[group.Key] += extraText == ""
                                               ? String.Format("{0}", extraTextWithUnderscores)
                                               : String.Format("[{0}]({1}.md)", extraText, extraTextWithUnderscores);
                         }
@@ -206,12 +199,16 @@ namespace UWP_PROJECT_06.Services
                 output.AppendLine(String.Format("**{0}**{1}.", extras[5], extras[6]));
                 output.AppendLine(String.Format(""));
                 output.AppendLine(String.Format("**Примеры употребления:** {0}", extras[7]));
+
+                var languages = DictionaryService.ReadLanguages();
+
                 output.Append(word.Language == 1 ? "" : String.Format("\n**Перевод на русский:** {0}.", extras[8]));
                 output.Append(word.Language == 2 ? "" : String.Format("\n**Перевод на немецкий:** {0}.", extras[9]));
                 output.Append(word.Language == 3 ? "" : String.Format("\n**Перевод на английский:** {0}.", extras[10]));
+                output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
                 output.Append(word.Language == 5 ? "" : String.Format("\n**Перевод на итальянский:** {0}.", extras[11]));
                 output.Append(word.Language == 6 ? "" : String.Format("\n**Перевод на испанский:** {0}.", extras[12]));
-                output.Append(word.Language == 4 ? "" : String.Format("\n**Перевод на французский:** {0}.", extras[13]));
+                
 
                 await Windows.Storage.FileIO.WriteTextAsync(file, output.ToString());
             }
@@ -229,17 +226,14 @@ namespace UWP_PROJECT_06.Services
 
             string fullPath = folderName;
 
-            if (oldWord.Language == 1) fullPath += @"\Rus\WORDS";
-            if (oldWord.Language == 2) fullPath += @"\Deu\WORDS";
-            if (oldWord.Language == 3) fullPath += @"\Eng\WORDS";
-            if (oldWord.Language == 4) fullPath += @"\Fra\WORDS";
-            if (oldWord.Language == 5) fullPath += @"\Ita\WORDS";
-            if (oldWord.Language == 6) fullPath += @"\Spa\WORDS";
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
+            folderName += String.Format("\\{0}\\WORDS", codes[oldWord.Language - 1][0].ToString().ToUpper() + codes[oldWord.Language - 1].Substring(1));
+
 
             StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
 
             string fileInnerText = "";
-            
+
             if (await folder.FileExistsAsync(oldWord.Word1 + ".md"))
             {
                 StorageFile oldFile = await folder.CreateFileAsync(oldWord.Word1 + ".md", CreationCollisionOption.OpenIfExists);
@@ -254,7 +248,7 @@ namespace UWP_PROJECT_06.Services
 
                 #endregion
             }
-            else 
+            else
             {
                 MessageDialog message = new MessageDialog(String.Format("File {0}\\{1}.md doesn't exist.", folder.Path, oldWord.Word1), "Error in file path");
                 await message.ShowAsync();
@@ -269,12 +263,8 @@ namespace UWP_PROJECT_06.Services
             {
                 fullPath = folderName;
 
-                if (newWord.Language == 1) fullPath += @"\Rus\WORDS";
-                if (newWord.Language == 2) fullPath += @"\Deu\WORDS";
-                if (newWord.Language == 3) fullPath += @"\Eng\WORDS";
-                if (newWord.Language == 4) fullPath += @"\Fra\WORDS";
-                if (newWord.Language == 5) fullPath += @"\Ita\WORDS";
-                if (newWord.Language == 6) fullPath += @"\Spa\WORDS";
+                folderName += String.Format("\\{0}\\WORDS", codes[newWord.Language - 1][0].ToString().ToUpper() + codes[newWord.Language - 1].Substring(1));
+
 
                 folder = await localFolder.GetFolderAsync(fullPath);
             }
@@ -295,13 +285,9 @@ namespace UWP_PROJECT_06.Services
             string folderName = await SettingsService.ReadPath("dictionary");
             folderName = System.IO.Path.Combine(vaultName, folderName);
 
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
+            folderName += String.Format("\\{0}\\WORDS", codes[word.Language - 1][0].ToString().ToUpper() + codes[word.Language - 1].Substring(1));
 
-            if (word.Language == 1) folderName += @"\Rus\WORDS";
-            if (word.Language == 2) folderName += @"\Deu\WORDS";
-            if (word.Language == 3) folderName += @"\Eng\WORDS";
-            if (word.Language == 4) folderName += @"\Fra\WORDS";
-            if (word.Language == 5) folderName += @"\Ita\WORDS";
-            if (word.Language == 6) folderName += @"\Spa\WORDS";
 
             StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
@@ -319,7 +305,7 @@ namespace UWP_PROJECT_06.Services
                 await message.ShowAsync();
 
                 return;
-            } 
+            }
         }
         public async static Task<string> FindWordCardFullPath(Word word)
         {
@@ -330,12 +316,9 @@ namespace UWP_PROJECT_06.Services
 
             string fullPath = folderName;
 
-            if (word.Language == 1) fullPath += @"\Rus\WORDS";
-            if (word.Language == 2) fullPath += @"\Deu\WORDS";
-            if (word.Language == 3) fullPath += @"\Eng\WORDS";
-            if (word.Language == 4) fullPath += @"\Fra\WORDS";
-            if (word.Language == 5) fullPath += @"\Ita\WORDS";
-            if (word.Language == 6) fullPath += @"\Spa\WORDS";
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
+            folderName += String.Format("\\{0}\\WORDS", codes[word.Language - 1][0].ToString().ToUpper() + codes[word.Language - 1].Substring(1));
+
 
             StorageFolder folder = await localFolder.CreateFolderAsync(fullPath, CreationCollisionOption.OpenIfExists);
 
@@ -344,7 +327,7 @@ namespace UWP_PROJECT_06.Services
                 StorageFile oldFile = await folder.CreateFileAsync(word.Word1 + ".md", CreationCollisionOption.OpenIfExists);
                 return oldFile.Path;
             }
-            else 
+            else
             {
                 return word.Word1;
             }
@@ -390,10 +373,10 @@ namespace UWP_PROJECT_06.Services
             if (source.SourceType == 2) F = "sounds";
             if (source.SourceType == 3) F = "images";
             if (source.SourceType == 4) F = "documents";
-            
+
             string folderName = await SettingsService.ReadPath(F);
-            
-            
+
+
             folderName = System.IO.Path.Combine(vaultName, folderName);
             StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
@@ -429,7 +412,7 @@ namespace UWP_PROJECT_06.Services
             output.AppendLine(String.Format("**Временные метки:**"));
 
             int counter = 1;
-            
+
             foreach (Note note in notes)
             {
                 output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, MarkdownService.CheckQuoteStamp(note.Stamp), note.Title));
@@ -440,7 +423,7 @@ namespace UWP_PROJECT_06.Services
 
             foreach (SourceExtra extra in extras)
                 output.AppendLine(String.Format("**{0}:** {1}.", extra.Key, extra.Value));
-            
+
             output.AppendLine(String.Format(""));
             output.AppendLine(String.Format("### Заметки"));
             output.AppendLine(String.Format(""));
@@ -459,14 +442,14 @@ namespace UWP_PROJECT_06.Services
             {
                 quote.QuoteBegin = MarkdownService.CheckQuoteStamp(quote.QuoteBegin);
                 quote.QuoteEnd = MarkdownService.CheckQuoteStamp(quote.QuoteEnd);
-                
-                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>","\r\r");
-                quote.OriginalQuote = quote.OriginalQuote.Replace("\r\r","\r>");
-                
+
+                quote.OriginalQuote = quote.OriginalQuote.Replace("<br>", "\r\r");
+                quote.OriginalQuote = quote.OriginalQuote.Replace("\r\r", "\r>");
+
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\r\r");
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("\r\r", "\r>");
 
-                
+
                 output.AppendLine(String.Format(">{0}", quote.OriginalQuote));
                 output.AppendLine(String.Format(">"));
                 output.AppendLine(String.Format(">{0}", quote.TranslatedQuote));
@@ -590,7 +573,7 @@ namespace UWP_PROJECT_06.Services
             StorageFile file = await localFolder.CreateFileAsync("NO_CARDS_OPEN.md", CreationCollisionOption.OpenIfExists);
 
             await Windows.Storage.FileIO.WriteTextAsync(file, $"# NO CARDS OPEN\r\nStart typing to find the word that you are looking for.", Windows.Storage.Streams.UnicodeEncoding.Utf8);
-            
+
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
         public async static Task<string> ReadWebEmptyWord()
@@ -603,7 +586,7 @@ namespace UWP_PROJECT_06.Services
             return await Windows.Storage.FileIO.ReadTextAsync(file);
         }
 
-        
+
         public static string CheckText(string str)
         {
             str = str.ToLower();
@@ -622,7 +605,12 @@ namespace UWP_PROJECT_06.Services
             if (word == null)
                 return "";
 
-            if (word.Contains("_rus") || word.Contains("_deu") || word.Contains("_eng") || word.Contains("_fra") || word.Contains("_ita") || word.Contains("_spa"))
+            bool contains = false;
+
+            foreach (string code in DictionaryService.ReadLanguagesCodes())
+                contains = contains || word.Contains("_" + code);
+
+            if (contains)
             {
                 string result = "";
 
@@ -666,7 +654,7 @@ namespace UWP_PROJECT_06.Services
             {
                 var temp = Regex.Replace(quoteStamp, @"[\s:_-]+", " ").Trim().Split(' ');
 
-                 return String.Format("00:00:{0}", temp[0]);
+                return String.Format("00:00:{0}", temp[0]);
             }
             else if (quoteString1.IsMatch(quoteStamp) && quoteString2.IsMatch(quoteStamp) && !quoteString3.IsMatch(quoteStamp))
             {

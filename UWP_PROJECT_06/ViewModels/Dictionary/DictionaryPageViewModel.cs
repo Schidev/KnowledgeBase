@@ -764,7 +764,7 @@ namespace UWP_PROJECT_06.ViewModels
 
                 return;
             }
-            if (viewModel.LanguageSelectionComboBoxSelectedIndex == 0)
+            if (viewModel.LanguageSelectionComboBoxSelectedIndex == 0 || viewModel.LanguageSelectionComboBoxSelectedIndex > 6)
             {
                 message = new MessageDialog("You need to choose language from the offered.", "Woops...");
                 await message.ShowAsync();
@@ -823,16 +823,9 @@ namespace UWP_PROJECT_06.ViewModels
                     { 16, "det" },
                     { 17, "pref" },
                 };
-            var languagesDic = new Dictionary<int, string>()
-                {
-                    { 1, "rus" },
-                    { 2, "deu" },
-                    { 3, "eng" },
-                    { 4, "fra" },
-                    { 5, "ita" },
-                    { 6, "spa" },
-                };
-            
+            var languagesDic = DictionaryService.ReadLanguagesCodes();
+
+
             var tempWord = new Word()
             {
                 Id = viewModel.id,
@@ -844,7 +837,7 @@ namespace UWP_PROJECT_06.ViewModels
                 PartOfSpeech = viewModel.PartOfSpeechSelectionComboBoxSelectedIndex,
                 Word1 = String.Format("{0}_{1}_{2}", MarkdownService.CheckWord(viewModel.CurrentWord), 
                     partsOfSpeechDic[viewModel.PartOfSpeechSelectionComboBoxSelectedIndex], 
-                    languagesDic[viewModel.LanguageSelectionComboBoxSelectedIndex])
+                    languagesDic[viewModel.LanguageSelectionComboBoxSelectedIndex - 1])
             };
 
             if (IsAddingMode)
@@ -892,9 +885,15 @@ namespace UWP_PROJECT_06.ViewModels
                     if ((q <= 4) || (q >= 8))
                     {
                         string extraText = "";
+                        
                         if (extra.LinkedWordId == 0)
                         {
-                            extraText = extra.ExtraText.Contains("_rus") || extra.ExtraText.Contains("_deu") || extra.ExtraText.Contains("_eng") || extra.ExtraText.Contains("_fra") || extra.ExtraText.Contains("_ita") || extra.ExtraText.Contains("_spa")
+                            bool contains = false;
+
+                            foreach (string code in languagesDic)
+                                contains = contains || extra.ExtraText.Contains("_" + code);
+                            
+                            extraText = contains
                                 ? extra.ExtraText
                                 : String.Format("{0}_{1}_{2}", MarkdownService.CheckWord(extra.ExtraText), partsOfSpeechDic[tempWord.PartOfSpeech], languagesDic[tempWord.Language]);
 

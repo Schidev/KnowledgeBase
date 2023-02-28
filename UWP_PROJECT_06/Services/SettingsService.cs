@@ -28,6 +28,12 @@ namespace UWP_PROJECT_06.Services
 
         public async static Task Initialize()
         {
+            await DictionaryService.InitializeDatabase();
+            await NotesService.InitializeDatabase();
+            await ProblemsService.InitializeDatabase();
+            await BookmarksService.InitializeDatabase();
+            await HistoryService.InitializeDatabase();
+
             await CreateSettingsFile();
 
             string vaultName = await SettingsService.ReadPath("vault");
@@ -36,24 +42,13 @@ namespace UWP_PROJECT_06.Services
 
             StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
-            folderName = @"\Rus\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+            List<string> codes = DictionaryService.ReadLanguagesCodes();
 
-            folderName = @"\Deu\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
-
-            folderName = @"\Eng\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
-
-            folderName = @"\Fra\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
-
-            folderName = @"\Ita\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
-
-            folderName = @"\Spa\WORDS";
-            await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
-
+            for (int i = 0; i < codes.Count; i++)
+            {
+                folderName = String.Format("\\{0}\\WORDS", codes[i][0].ToString().ToUpper() + codes[i].Substring(1));
+                await folder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+            }
         }
 
         public async static Task CreateSettingsFile()
@@ -259,6 +254,43 @@ namespace UWP_PROJECT_06.Services
 
                         writer.WriteEndElement();
 
+                        ////////////////////////////////////////////////////////////
+
+                        writer.WriteStartElement("languages");
+
+                            writer.WriteStartElement("language");
+                            writer.WriteAttributeString("name", "Русский");
+                            writer.WriteString("русский");
+                            writer.WriteEndElement();
+
+                        writer.WriteStartElement("language");
+                        writer.WriteAttributeString("name", "Deutsch");
+                        writer.WriteString("немецкий");
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("language");
+                        writer.WriteAttributeString("name", "English");
+                        writer.WriteString("английский");
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("language");
+                        writer.WriteAttributeString("name", "Français");
+                        writer.WriteString("французкий");
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("language");
+                        writer.WriteAttributeString("name", "Italiano");
+                        writer.WriteString("итальянский");
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("language");
+                        writer.WriteAttributeString("name", "Español");
+                        writer.WriteString("испанский");
+                        writer.WriteEndElement();
+
+                        writer.WriteEndElement();
+                            
+                        ///////////////////////////////////////////////////////////
                         writer.WriteStartElement("history");
                         writer.WriteEndElement();
 

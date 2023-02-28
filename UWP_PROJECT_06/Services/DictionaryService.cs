@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using ColorCode;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace UWP_PROJECT_06.Services
     {
         static string FileName = "DictionaryDB";
 
-        public async static void InitializeDatabase()
+        public async static Task InitializeDatabase()
         {
             await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
@@ -29,7 +30,7 @@ namespace UWP_PROJECT_06.Services
 
                 // Create Languages table and fill it
 
-                commandText = "CREATE TABLE IF NOT EXISTS Languages ( Id INTEGER NOT NULL, Language TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Languages (Id INTEGER NOT NULL, Language TEXT NOT NULL UNIQUE, Code TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -39,11 +40,11 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Languages (Language) VALUES ('Русский'), ('Deutsch'), ('English'), ('Français'), ('Italiano'), ('Español')";
+                    commandText = "INSERT INTO Languages (Language, Code) VALUES ('Русский', 'rus'), ('Deutsch', 'deu'), ('English', 'eng'), ('Français', 'fra'), ('Italiano', 'ita'), ('Español', 'spa')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
-                
+
                 // Create Statuses table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS Statuses (Id INTEGER NOT NULL, Status TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
@@ -60,7 +61,7 @@ namespace UWP_PROJECT_06.Services
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
-                
+
                 // Create PartsOfSpeech table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS PartsOfSpeech (Id INTEGER NOT NULL, PartOfSpeech TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
@@ -77,7 +78,7 @@ namespace UWP_PROJECT_06.Services
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
-                
+
                 // Create LinkTypes table and fill it
 
                 commandText = "CREATE TABLE IF NOT EXISTS LinkTypes (Id INTEGER NOT NULL, LinkType TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
@@ -112,7 +113,7 @@ namespace UWP_PROJECT_06.Services
         }
 
         #region Words
-        
+
         public static void CreateWord(Word word)
         {
             string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
@@ -431,7 +432,7 @@ namespace UWP_PROJECT_06.Services
 
                 while (query.Read())
                     language = query.GetString(0);
-                
+
                 conn.Close();
             }
 
@@ -480,6 +481,28 @@ namespace UWP_PROJECT_06.Services
             }
 
             return languages;
+        }
+        public static List<string> ReadLanguagesCodes()
+        {
+            List<string> codes = new List<string>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Code FROM Languages;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    codes.Add(query.GetString(0));
+
+                conn.Close();
+            }
+
+            return codes;
         }
 
         #endregion

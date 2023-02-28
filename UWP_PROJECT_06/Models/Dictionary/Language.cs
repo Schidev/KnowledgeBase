@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UWP_PROJECT_06.Models.Dictionary
 {
-    internal class Language
+    public class Language
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -17,5 +17,7 @@ namespace UWP_PROJECT_06.Models.Dictionary
         [Required]
         [StringLength(100)]
         public string Language1 { get; set; }
+
+        public string Code { get; set; }
     }
 }
