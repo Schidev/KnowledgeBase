@@ -158,6 +158,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             List<Source> sources = new List<Source>();
             List<int> sourceTypes = new List<int>();
 
+            List<string> sourceTypesDic = NotesService.ReadSourceTypes();
             List<Source> received_sources = NotesService.ReadSources();
 
             foreach (Source source in received_sources)
@@ -165,7 +166,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 source.SourceName = MarkdownService.CheckSource(source.SourceName);
 
                 if (!MarkdownService.CheckText(source.SourceName).Contains(MarkdownService.CheckText(SearchSourceText))) continue;
-                if (selectedSourceType != 0 && source.SourceType != selectedSourceType) continue;
+                if (selectedSourceType != 0 && sourceTypesDic[selectedSourceType - 1] != NotesService.ReadSourceType(source.SourceType)) continue;
 
                 sources.Add(source);
 
@@ -189,12 +190,13 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             List<UnknownSource> sources = new List<UnknownSource>();
             List<int> sourceTypes = new List<int>();
 
+            List<string> sourceTypesDic = NotesService.ReadSourceTypes();
             List<UnknownSource> received_sources = HistoryService.ReadUnknownSources();
 
             foreach (UnknownSource source in received_sources)
             {
                 if (!MarkdownService.CheckText(source.Source).Contains(MarkdownService.CheckText(SearchUnknownSourceText))) continue;
-                if (SelectedSourceTypeUnknown != 0 && source.SourceType != SelectedSourceTypeUnknown) continue;
+                if (SelectedSourceTypeUnknown != 0 && sourceTypesDic[SelectedSourceTypeUnknown - 1] != NotesService.ReadSourceType(source.SourceType)) continue;
 
                 sources.Add(source);
 
@@ -722,22 +724,23 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 return;
             }
 
-            var SourceTypesDictionary = new Dictionary<int, string>() { { 1, "VIDEO" }, { 2, "SOUND" }, { 3, "IMAGE" }, { 4, "DOCUMENT" } };
+            var SourceTypesDictionary = NotesService.ReadSourceTypes();
 
             var tempSource = new Source()
             {
                 Id = viewModel.Id,
-                SourceName = String.Format("{0}_{1}", SourceTypesDictionary[viewModel.Source.SourceType], MarkdownService.CheckSource(viewModel.Source.SourceName).Replace(" ", "_")),
+                SourceName = String.Format("{0}_{1}", SourceTypesDictionary[viewModel.Source.SourceType - 1], MarkdownService.CheckSource(viewModel.Source.SourceName).Replace(" ", "_")),
                 Duration = viewModel.Source.Duration,
                 ActualTime = viewModel.Source.ActualTime,
                 State = viewModel.Source.State,
                 Theme = viewModel.Source.Theme,
-                SourceType = viewModel.Source.SourceType,
+                SourceType = (byte)NotesService.ReadSourceType(SourceTypesDictionary[viewModel.Source.SourceType - 1]),
                 IsDownloaded = viewModel.IsDownloaded,
                 Description = viewModel.Source.Description,
                 SourceLink = viewModel.Source.SourceLink
             };
 
+            
             if (IsAddingMode)
             {
                 NotesService.CreateSource(tempSource);

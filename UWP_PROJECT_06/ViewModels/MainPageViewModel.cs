@@ -59,19 +59,12 @@ namespace UWP_PROJECT_06.ViewModels
             rightExtendedPanelVisibility = Visibility.Visible; // Into settings
             leftExtendedPanelVisibility = Visibility.Collapsed; // Ito settings
 
-            SettingsService.Initialize();
-
             OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
 
             AddNewTabCommand = new AsyncCommand<object>(AddNewTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
-        }
-
-        private async Task InitializeServices()
-        {
-            
         }
 
         private async Task OpenNotesPage(object arg)

@@ -6,9 +6,202 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels.Settings"
     Background="{StaticResource colorWhite}">
 
+    <Page.DataContext>
+        <viewmodels:SettingsSourcesPageViewModel/>
+    </Page.DataContext>
+    
+    <Page.Resources>
+        <CollectionViewSource x:Name="SourceTypes" Source="{Binding SourceTypes, Mode=TwoWay}" IsSourceGrouped="False"/>
+        
+        <converters:SettingsHotkeysButtonBackgroundConverter x:Key="SettingsHotkeysButtonBackgroundConverter"/>
+        <converters:SettingsHotkeyButtonSaveBackgroundConverter x:Key="SettingsHotkeyButtonSaveBackgroundConverter"/>
+    </Page.Resources>
+
     <Grid>
-        <TextBlock Padding="100" Margin="100" FontSize="20" Foreground="Red" Text="Sources"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Padding="0,0,10,0">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Sources pathes" FontWeight="Bold" Margin="0,10,0,5" FontSize="15"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Change pathes for sources here." Margin="0,5,0,10" FontSize="13"/>
+
+                    <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                        Command="{Binding ReloadCommand}" ToolTipService.ToolTip="Refresh&#x0a;Ctrl+R">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE72C;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="R"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                </Grid>
+
+                <ListView x:Name="SourcesList" Style="{StaticResource SettingsSourceTypesListViewStyle}"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                          ItemsSource="{Binding Source={StaticResource SourceTypes}}">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0.5"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Default vault location for source:" FontWeight="Bold" Margin="0,10,0,5" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="2" x:Name="KeyTextBox" IsEnabled="False" Text="{Binding Key, Mode=TwoWay}" FontWeight="Bold" BorderThickness="0.5" Margin="5,10,0,5">
+                                    <TextBox.Resources>
+                                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+                                    </TextBox.Resources>
+                                </TextBox>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Vault folder for current device." Margin="0,5,0,10" VerticalAlignment="Center"/>
+
+                                <TextBox Grid.Row="1" Grid.Column="2" x:Name="PathTextBox" PlaceholderText="Tap to rename vault folder" Margin="0,10,0,10"
+                                         VerticalAlignment="Center" BorderThickness="0.5" BorderBrush="{StaticResource SplitterColor}"
+                                         Text="{Binding Value, Mode=TwoWay}">
+
+                                    <TextBox.Resources>
+                                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#434343"/>
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF"/>
+                                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+                                    </TextBox.Resources>
+
+                                </TextBox>
+
+                                <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="3">
+                                    <Grid.DataContext>
+                                        <viewmodels:SettingsSourcesPageViewModel/>
+                                    </Grid.DataContext>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" 
+                                            ToolTipService.ToolTip="Rename" 
+                                        Background="{Binding IsRenaming, Converter={StaticResource SettingsHotkeysButtonBackgroundConverter}}"
+                                            Foreground="{Binding IsRenaming, Converter={StaticResource SettingsHotkeyButtonSaveBackgroundConverter}}">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8AC;"/>
+
+                                        <i:Interaction.Behaviors>
+                                            <core:EventTriggerBehavior EventName="Click">
+                                                <core:InvokeCommandAction Command="{Binding RenameCommand}" CommandParameter="{Binding ElementName=KeyTextBox}"/>
+                                            </core:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+
+                                    </Button>
+
+                                    <Button Grid.Column="1"  Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" 
+                                            Background="{StaticResource colorWhite}" ToolTipService.ToolTip="Save">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74E;"/>
+
+                                        <i:Interaction.Behaviors>
+
+                                            <core:EventTriggerBehavior EventName="Click">
+                                                <core:InvokeCommandAction Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=PathTextBox}"/>
+                                            </core:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+
+                                    </Button>
+
+                                    <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" 
+                                            Background="{StaticResource colorWhite}" ToolTipService.ToolTip="Delete source type">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE74D;"/>
+
+                                        <i:Interaction.Behaviors>
+                                            <core:EventTriggerBehavior EventName="Click">
+                                                <core:InvokeCommandAction Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=PathTextBox}"/>
+                                            </core:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+
+                                    </Button>
+
+                                </Grid>
+
+
+                                <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Height="0.5" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5" HorizontalAlignment="Stretch"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                    <ListView.Resources>
+                        <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                        <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                    </ListView.Resources>
+
+                </ListView>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

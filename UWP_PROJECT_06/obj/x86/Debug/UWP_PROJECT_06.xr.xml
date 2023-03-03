@@ -177,6 +177,8 @@
     <RootPropertyPathName Name="IsSettingsFilesAndLinksOpen" />
     <RootPropertyPathName Name="IsSettingsAppearanceOpen" />
     <RootPropertyPathName Name="SynchronizeCommand" />
+    <RootPropertyPathName Name="IsRenaming" />
+    <RootPropertyPathName Name="RenameCommand" />
     <RootPropertyPathName Name="CurrentWord" />
     <RootPropertyPathName Name="IsFrench" />
     <RootPropertyPathName Name="IsItalian" />
@@ -349,6 +351,8 @@
       <RootProperty Name="IsSpellCheckEnabled" />
       <RootProperty Name="Foreground" />
       <RootProperty Name="CornerRadius" />
+      <RootProperty Name="IsEnabled" />
+      <RootProperty Name="FontWeight" />
       <RootProperty Name="MaxWidth" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
@@ -635,6 +639,7 @@
     <RootType FullName="UWP_PROJECT_06.Views.SettingsPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsRecoveryPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsRecoveryPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsSourcesPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsSourcesPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.WordCardPageViewModel" />

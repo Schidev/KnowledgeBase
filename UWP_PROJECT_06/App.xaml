@@ -573,6 +573,25 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="ListView" x:Key="SettingsSourceTypesListViewStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style TargetType="ListView" x:Key="SourcesExtrasListViewStyle">
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>

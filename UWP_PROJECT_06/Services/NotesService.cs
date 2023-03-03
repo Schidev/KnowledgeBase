@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using UWP_PROJECT_06.Models.Dictionary;
@@ -73,13 +74,13 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO SourceTypes (SourceType) VALUES ('VIDEO'), ('SOUND'), ('IMAGE'), ('DOCUMENT')";
+                    commandText = "INSERT INTO SourceTypes (SourceType) VALUES ('UNKNOWN'), ('VIDEO'), ('SOUND'), ('IMAGE'), ('DOCUMENT')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
                 // Create Sources table
 
-                commandText = "CREATE TABLE IF NOT EXISTS Sources (Id INTEGER NOT NULL, SourceName TEXT NOT NULL, Duration INTEGER NOT NULL, ActualTime INTEGER NOT NULL, State TINYINT NOT NULL,  Theme TINYINT NOT NULL, SourceType TINYINT NOT NULL, IsDownloaded BOOLEAN NOT NULL, Description TEXT NOT NULL, SourceLink TEXT NOT NULL, FOREIGN KEY(Theme) REFERENCES Themes (Id), FOREIGN KEY(SourceType) REFERENCES SourceTypes (Id), FOREIGN KEY(State) REFERENCES States (Id), PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Sources (Id INTEGER NOT NULL, SourceName TEXT NOT NULL, Duration INTEGER NOT NULL, ActualTime INTEGER NOT NULL, State TINYINT NOT NULL,  Theme TINYINT NOT NULL, SourceType TINYINT NOT NULL, IsDownloaded BOOLEAN NOT NULL, Description TEXT NOT NULL, SourceLink TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -89,7 +90,7 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink) VALUES ('VIDEO_SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN')";
+                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink) VALUES ('UNKNOWN_SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN')";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
@@ -227,6 +228,42 @@ namespace UWP_PROJECT_06.Services
                 conn.Open();
 
                 string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    sources.Add(new Source()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceName = query.GetString(1),
+                        Duration = query.GetInt32(2),
+                        ActualTime = query.GetInt32(3),
+                        State = query.GetByte(4),
+                        Theme = query.GetByte(5),
+                        SourceType = query.GetByte(6),
+                        IsDownloaded = query.GetBoolean(7),
+                        Description = query.GetString(8),
+                        SourceLink = query.GetString(9)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return sources;
+        }
+        public static List<Source> ReadSources(byte sourceTypeId)
+        {
+            List<Source> sources = new List<Source>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources WHERE SourceType = {sourceTypeId};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -800,6 +837,25 @@ namespace UWP_PROJECT_06.Services
 
         #region Source types
 
+        public static void CreateSourceType(SourceType sourceType)
+        {
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                sqliteCommand.CommandText = "INSERT INTO SourceTypes VALUES (NULL, @SourceType);";
+
+                sqliteCommand.Parameters.AddWithValue("@SourceType", sourceType.SourceType1);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
         public static string ReadSourceType(int id)
         {
             string sourceType = "";
@@ -824,6 +880,29 @@ namespace UWP_PROJECT_06.Services
 
             return sourceType;
         }
+        public static int ReadSourceType(string sourceType)
+        {
+            int id = 0;
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id FROM SourceTypes WHERE SourceType = '{sourceType}';";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                    id = query.GetInt32(0);
+                
+                conn.Close();
+            }
+
+            return id;
+        }
+
         public static List<string> ReadSourceTypes()
         {
             List<string> sourceTypes = new List<string>();
@@ -848,6 +927,67 @@ namespace UWP_PROJECT_06.Services
 
             return sourceTypes;
         }
+        public static void UpdateSourceType(SourceType sourceType)
+        {
+            if (sourceType.Id < 6)
+                return;
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                SourceType curSourceType = new SourceType { Id = sourceType.Id, SourceType1 = ReadSourceType(sourceType.Id)};
+                List<Source> sources = ReadSources(curSourceType.Id);
+                
+                foreach (Source source in sources)
+                {
+                    string[] temp = source.SourceName.Split("_");
+                    temp[0] = sourceType.SourceType1;
+                    source.SourceName = String.Join("_", temp);
+                    
+                    UpdateSource(source);
+                }
+
+                sqliteCommand.CommandText = "UPDATE SourceTypes SET SourceType = @SourceType WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", sourceType.Id);
+                sqliteCommand.Parameters.AddWithValue("@SourceType", sourceType.SourceType1);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+        public static void DeleteSourceType(int id)
+        {
+            if (id < 6)
+                return;
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                SqliteCommand sqliteCommand = new SqliteCommand();
+                sqliteCommand.Connection = conn;
+
+                List<Source> sources = ReadSources((byte)id);
+
+                foreach (Source source in sources)
+                    DeleteSource(source.Id);
+                
+                sqliteCommand.CommandText = "DELETE FROM SourceTypes WHERE Id = @Id;";
+                sqliteCommand.Parameters.AddWithValue("@Id", id);
+
+                sqliteCommand.ExecuteReader();
+
+                conn.Close();
+            }
+        }
+
 
         #endregion
 

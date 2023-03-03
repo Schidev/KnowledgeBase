@@ -82,29 +82,25 @@ namespace UWP_PROJECT_06.Services
                                 writer.WriteString("DICTIONARY");
                                 writer.WriteEndElement();
 
-                                writer.WriteStartElement("bookmarks");
-                                writer.WriteString("GTD\\BOOKMARKS");
-                                writer.WriteEndElement();
+                        writer.WriteStartElement("bookmarks");
+                        writer.WriteString("GTD\\BOOKMARKS");
+                        writer.WriteEndElement();
 
-                                writer.WriteStartElement("videos");
-                                writer.WriteString("VIDEOS");
-                                writer.WriteEndElement();
+                       
 
-                                writer.WriteStartElement("sounds");
-                                writer.WriteString("SOUNDS");
-                                writer.WriteEndElement();
+                        List<string> sources = NotesService.ReadSourceTypes();
 
-                                writer.WriteStartElement("images");
-                                writer.WriteString("IMAGES");
-                                writer.WriteEndElement();
-
-                                writer.WriteStartElement("documents");
-                                writer.WriteString("DOCUMENTS");
-                                writer.WriteEndElement();
-
+                        foreach (string source in sources)
+                        {
+                            writer.WriteStartElement(source.ToLower());
+                            writer.WriteString(source.ToUpper()  + "S");
                             writer.WriteEndElement();
+                        }
 
-                            writer.WriteStartElement("hotkeys");
+                        writer.WriteEndElement();
+
+
+                        writer.WriteStartElement("hotkeys");
                         
                                 List<Hotkey> hotkeys = new List<Hotkey>() 
                         {
@@ -303,7 +299,7 @@ namespace UWP_PROJECT_06.Services
                     }
                 }
 
-                await Windows.System.Launcher.LaunchFileAsync(storageFile);
+                //await Windows.System.Launcher.LaunchFileAsync(storageFile);
             }
             catch
             {
@@ -326,12 +322,48 @@ namespace UWP_PROJECT_06.Services
             MessageDialog msg = new MessageDialog(String.Format("Dictionary was synchronized for {0} second!", (int)(timer.ElapsedMilliseconds / 1000) ), "Notification.");
             await msg.ShowAsync();
         }
+        public async static Task ClearVault()
+        {
+            string vaultName = await SettingsService.ReadPath("vault");
+
+            List<string> types = NotesService.ReadSourceTypes();
+
+            for (int i = 0; i < types.Count; i++)
+            {
+                var t = await ReadPath(types[i].ToLower());
+                string folderName = System.IO.Path.Combine(vaultName, t);
+                var currentFolder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+
+                await currentFolder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            }
+        }
         public async static Task RecreateSourcesVoult()
         {
             foreach (Source source in NotesService.ReadSources())
                 await MarkdownService.WriteSource(source, NotesService.ReadQuotes(source.Id), NotesService.ReadNotes(source.Id), NotesService.ReadSourceExtras(source.Id));
         }
 
+        public async static Task CreatePath(string localName, string path)
+        {
+            var file = await ApplicationData.Current.LocalFolder.GetFileAsync(FileName);
+            var doc = await Windows.Data.Xml.Dom.XmlDocument.LoadFromFileAsync(file);
+
+            var root = doc.GetElementsByTagName("pathes");
+
+            Windows.Data.Xml.Dom.XmlElement item = doc.CreateElement(localName.ToLower());
+            item.InnerText = path;
+
+            root[0].AppendChild(item);
+            
+            await doc.SaveToFileAsync(file);
+        }
+        public async static Task UpdatePath(string oldLocalName, string newLocalName)
+        {
+            string path = await ReadPath(oldLocalName);
+            
+            await DeletePath(oldLocalName);
+            await CreatePath(newLocalName, path);
+        }
         public async static Task<string> ReadPath(string localName)
         {
             XmlDocument document = new XmlDocument();
@@ -377,6 +409,30 @@ namespace UWP_PROJECT_06.Services
             foreach (XmlNode node in currentNode.ChildNodes)
                 if (node.LocalName == localName)
                     node.InnerText = path;
+
+            document.Save(settingsPath);
+        }
+        public async static Task DeletePath(string localName)
+        {
+            XmlDocument document = new XmlDocument();
+
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
+            string settingsPath = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+
+            document.Load(settingsPath);
+
+            XmlNode root = document.DocumentElement;
+            XmlNode currentNode = root.ChildNodes.Count != 0 ? root.ChildNodes.Item(0) : null;
+
+            if (currentNode == null)
+                return;
+
+            while (currentNode.LocalName != "pathes")
+                currentNode = currentNode.NextSibling;
+
+            foreach (XmlNode node in currentNode.ChildNodes)
+                if (node.LocalName == localName)
+                    currentNode.RemoveChild(node);
 
             document.Save(settingsPath);
         }

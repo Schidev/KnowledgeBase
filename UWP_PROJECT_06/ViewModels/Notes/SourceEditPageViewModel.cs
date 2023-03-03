@@ -112,8 +112,8 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
             foreach (string sourceType in NotesService.ReadSourceTypes())
                 SourceTypes.Add(sourceType);
-
-            SelectedSourceType = source.Id == 0 ? 0 : source.SourceType;
+            
+            SelectedSourceType = source.Id == 0 ? 0 : SourceTypes.IndexOf(NotesService.ReadSourceType(source.SourceType));
 
             #endregion
             #region Quotes

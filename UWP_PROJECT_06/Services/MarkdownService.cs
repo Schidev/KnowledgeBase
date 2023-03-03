@@ -338,12 +338,10 @@ namespace UWP_PROJECT_06.Services
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             string vaultName = await SettingsService.ReadPath("vault");
-
-            var F = "";
-            if (source.SourceType == 1) F = "videos";
-            if (source.SourceType == 2) F = "sounds";
-            if (source.SourceType == 3) F = "images";
-            if (source.SourceType == 4) F = "documents";
+            
+            string F = "";
+            //List<string> types = NotesService.ReadSourceTypes();
+            F = String.Format("{0}", NotesService.ReadSourceType(source.SourceType).ToLower());
 
             string folderName = await SettingsService.ReadPath(F);
 
@@ -369,10 +367,8 @@ namespace UWP_PROJECT_06.Services
             string vaultName = await SettingsService.ReadPath("vault");
 
             var F = "";
-            if (source.SourceType == 1) F = "videos";
-            if (source.SourceType == 2) F = "sounds";
-            if (source.SourceType == 3) F = "images";
-            if (source.SourceType == 4) F = "documents";
+            //List<string> types = NotesService.ReadSourceTypes();
+            F = String.Format("{0}", NotesService.ReadSourceType(source.SourceType).ToLower());
 
             string folderName = await SettingsService.ReadPath(F);
 
@@ -415,7 +411,7 @@ namespace UWP_PROJECT_06.Services
 
             foreach (Note note in notes)
             {
-                output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, MarkdownService.CheckQuoteStamp(note.Stamp), note.Title));
+                output.AppendLine(String.Format("{0}. {1} - {2}.", counter++, MarkdownService.CheckNoteStamp(note.Stamp), note.Title));
             }
 
             output.AppendLine(String.Format(""));
@@ -466,10 +462,9 @@ namespace UWP_PROJECT_06.Services
             string vaultName = await SettingsService.ReadPath("vault");
 
             var F = "";
-            if (oldSource.SourceType == 1) F = "videos";
-            if (oldSource.SourceType == 2) F = "sounds";
-            if (oldSource.SourceType == 3) F = "images";
-            if (oldSource.SourceType == 4) F = "documents";
+            List<string> types = NotesService.ReadSourceTypes();
+            F = String.Format("{0}", NotesService.ReadSourceType(oldSource.SourceType).ToLower());
+
 
             string folderName = await SettingsService.ReadPath(F);
 
@@ -508,10 +503,7 @@ namespace UWP_PROJECT_06.Services
 
             if (oldSource.SourceType != newSource.SourceType)
             {
-                if (newSource.SourceType == 1) F = "videos";
-                if (newSource.SourceType == 2) F = "sounds";
-                if (newSource.SourceType == 3) F = "images";
-                if (newSource.SourceType == 4) F = "documents";
+                F = String.Format("{0}", NotesService.ReadSourceType(newSource.SourceType).ToLower());
 
                 folderName = await SettingsService.ReadPath(F);
 
@@ -526,7 +518,7 @@ namespace UWP_PROJECT_06.Services
             await Windows.Storage.FileIO.WriteTextAsync(newFile, fileInnerText);
 
             var FullPath = newFile.Path;
-            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Creaed", FullPath = FullPath, Date = DateTime.UtcNow });
+            await SettingsService.WriteHistory(new Models.History.HistoryItem { Action = "Created", FullPath = FullPath, Date = DateTime.UtcNow });
 
             #endregion
         }
@@ -536,16 +528,13 @@ namespace UWP_PROJECT_06.Services
             string vaultName = await SettingsService.ReadPath("vault");
 
             var F = "";
-            if (source.SourceType == 1) F = "videos";
-            if (source.SourceType == 2) F = "sounds";
-            if (source.SourceType == 3) F = "images";
-            if (source.SourceType == 4) F = "documents";
+            List<string> types = NotesService.ReadSourceTypes();
+            F = String.Format("{0}", NotesService.ReadSourceType(source.SourceType).ToLower());
+
 
             string folderName = await SettingsService.ReadPath(F);
 
             folderName = System.IO.Path.Combine(vaultName, folderName);
-
-
 
             StorageFolder folder = await localFolder.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
 
@@ -631,8 +620,23 @@ namespace UWP_PROJECT_06.Services
         }
         public static string CheckSource(string source)
         {
-            return source.Replace("VIDEO_", "").Replace("SOUND_", "").Replace("IMAGE_", "").Replace("DOCUMENT_", "").Replace("_", " ").Trim().ToUpper();
+            List<string> types = NotesService.ReadSourceTypes();
+
+            foreach (string type in types)
+                source = source.Replace(type + "_", "");
+            
+            return source.Replace("_", " ").Trim().ToUpper();
         }
+        public static string CheckSourceType(string str)
+        {
+            if (str == null) return str;
+
+            if (Regex.IsMatch(str, @"^[a-zA-Z]+$"))
+                return str;
+            
+            return null;
+        }
+
 
         public static string CheckQuoteStamp(string quoteStamp)
         {

@@ -191,6 +191,7 @@
     <Compile Include="ViewModels\Settings\SettingsHistoryPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsHotkeysPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsRecoveryPageViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsSourcesPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Dictionary\WordCardPageViewModel.cs" />
     <Compile Include="ViewModels\Dictionary\WordEditPageViewModel.cs" />

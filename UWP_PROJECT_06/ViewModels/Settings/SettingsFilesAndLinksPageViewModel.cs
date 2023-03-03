@@ -32,10 +32,10 @@ namespace UWP_PROJECT_06.ViewModels.Settings
             VaultPath = await SettingsService.ReadPath("vault");
             DictionaryPath = await SettingsService.ReadPath("dictionary");
             BookmarksPath = await SettingsService.ReadPath("bookmarks");
-            VideosPath = await SettingsService.ReadPath("videos");
-            SoundsPath = await SettingsService.ReadPath("sounds");
-            ImagesPath = await SettingsService.ReadPath("images");
-            DocumentsPath = await SettingsService.ReadPath("documents");
+            VideosPath = await SettingsService.ReadPath("video");
+            SoundsPath = await SettingsService.ReadPath("sound");
+            ImagesPath = await SettingsService.ReadPath("image");
+            DocumentsPath = await SettingsService.ReadPath("document");
         }
 
         async Task LostFocus()
