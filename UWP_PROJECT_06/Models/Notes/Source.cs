@@ -42,6 +42,8 @@ namespace UWP_PROJECT_06.Models.Notes
         [StringLength(1000)]
         public string SourceLink { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastModifiedOn { get; set; }
 
     }
 }

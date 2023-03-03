@@ -80,7 +80,7 @@ namespace UWP_PROJECT_06.Services
                 }
                 // Create Sources table
 
-                commandText = "CREATE TABLE IF NOT EXISTS Sources (Id INTEGER NOT NULL, SourceName TEXT NOT NULL, Duration INTEGER NOT NULL, ActualTime INTEGER NOT NULL, State TINYINT NOT NULL,  Theme TINYINT NOT NULL, SourceType TINYINT NOT NULL, IsDownloaded BOOLEAN NOT NULL, Description TEXT NOT NULL, SourceLink TEXT NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Sources (Id INTEGER NOT NULL, SourceName TEXT NOT NULL, Duration INTEGER NOT NULL, ActualTime INTEGER NOT NULL, State TINYINT NOT NULL,  Theme TINYINT NOT NULL, SourceType TINYINT NOT NULL, IsDownloaded BOOLEAN NOT NULL, Description TEXT NOT NULL, SourceLink TEXT NOT NULL, CreatedOn DATETIME NOT NULL, LastModifiedOn DATETIME NOT NULL, PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -90,14 +90,14 @@ namespace UWP_PROJECT_06.Services
 
                 if (!query.HasRows)
                 {
-                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink) VALUES ('UNKNOWN_SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN')";
+                    commandText = "INSERT INTO Sources (SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink, CreatedOn, LastModifiedOn) VALUES ('UNKNOWN_SOURCE_UNKNOWN', '0', '0', '1', '1', '1', '0', 'If you have quote but do not know from where, leave it here', 'SOURCE_UNKNOWN', DATETIME('now'), DATETIME('now'))";
                     sqliteCommand = new SqliteCommand(commandText, conn);
                     sqliteCommand.ExecuteReader();
                 }
 
                 // Create Notes table
 
-                commandText = "CREATE TABLE IF NOT EXISTS Notes ( Id INTEGER NOT NULL, SourceID INTEGER NOT NULL, Stamp TEXT NOT NULL, Title TEXT NOT NULL, Note TEXT NOT NULL, FOREIGN KEY(SourceID) REFERENCES Sources (Id), PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Notes ( Id INTEGER NOT NULL, SourceID INTEGER NOT NULL, Stamp TEXT NOT NULL, Title TEXT NOT NULL, Note TEXT NOT NULL, CreatedOn DATETIME NOT NULL, LastModifiedOn DATETIME NOT NULL, FOREIGN KEY(SourceID) REFERENCES Sources (Id), PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -109,7 +109,7 @@ namespace UWP_PROJECT_06.Services
 
                 // Create Quotes table
 
-                commandText = "CREATE TABLE IF NOT EXISTS Quotes (Id INTEGER NOT NULL, SourceID INTEGER NOT NULL, QuoteBegin TEXT NOT NULL, QuoteEnd TEXT NOT NULL, OriginalQuote TEXT NOT NULL, TranslatedQuote TEXT NOT NULL, FOREIGN KEY(SourceID) REFERENCES Sources(Id), PRIMARY KEY(Id AUTOINCREMENT));";
+                commandText = "CREATE TABLE IF NOT EXISTS Quotes (Id INTEGER NOT NULL, SourceID INTEGER NOT NULL, QuoteBegin TEXT NOT NULL, QuoteEnd TEXT NOT NULL, OriginalQuote TEXT NOT NULL, TranslatedQuote TEXT NOT NULL, CreatedOn DATETIME NOT NULL, LastModifiedOn DATETIME NOT NULL, FOREIGN KEY(SourceID) REFERENCES Sources(Id), PRIMARY KEY(Id AUTOINCREMENT));";
                 sqliteCommand = new SqliteCommand(commandText, conn);
                 sqliteCommand.ExecuteReader();
 
@@ -129,7 +129,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "INSERT INTO Sources VALUES (NULL, @SourceName, @Duration, @ActualTime, @State, @Theme, @SourceType, @IsDownloaded, @Description, @SourceLink);";
+                sqliteCommand.CommandText = "INSERT INTO Sources VALUES (NULL, @SourceName, @Duration, @ActualTime, @State, @Theme, @SourceType, @IsDownloaded, @Description, @SourceLink, @CreatedOn, @LastModifiedOn);";
                 
                 sqliteCommand.Parameters.AddWithValue("@SourceName", source.SourceName);
                 sqliteCommand.Parameters.AddWithValue("@Duration", source.Duration);
@@ -140,6 +140,8 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Parameters.AddWithValue("@IsDownloaded", source.IsDownloaded);
                 sqliteCommand.Parameters.AddWithValue("@Description", source.Description);
                 sqliteCommand.Parameters.AddWithValue("@SourceLink", source.SourceLink);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", source.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", source.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 
@@ -155,7 +157,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources WHERE Id = {id};";
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink, CreatedOn, LastModifiedOn FROM Sources WHERE Id = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -174,6 +176,8 @@ namespace UWP_PROJECT_06.Services
                         IsDownloaded = query.GetBoolean(7),
                         Description = query.GetString(8),
                         SourceLink = query.GetString(9),
+                        CreatedOn = query.GetDateTime(10),
+                        LastModifiedOn = query.GetDateTime(11)
                     };
                 }
 
@@ -191,7 +195,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources WHERE SourceName = \"{name}\";";
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink, CreatedOn, LastModifiedOn FROM Sources WHERE SourceName = \"{name}\";";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -210,6 +214,8 @@ namespace UWP_PROJECT_06.Services
                         IsDownloaded = query.GetBoolean(7),
                         Description = query.GetString(8),
                         SourceLink = query.GetString(9),
+                        CreatedOn = query.GetDateTime(10),
+                        LastModifiedOn = query.GetDateTime(11)
                     };
                 }
 
@@ -227,7 +233,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources;";
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink, CreatedOn, LastModifiedOn FROM Sources;";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -245,7 +251,9 @@ namespace UWP_PROJECT_06.Services
                         SourceType = query.GetByte(6),
                         IsDownloaded = query.GetBoolean(7),
                         Description = query.GetString(8),
-                        SourceLink = query.GetString(9)
+                        SourceLink = query.GetString(9),
+                        CreatedOn = query.GetDateTime(10),
+                        LastModifiedOn = query.GetDateTime(11)
                     });
                 }
 
@@ -263,7 +271,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink FROM Sources WHERE SourceType = {sourceTypeId};";
+                string commandText = $"SELECT Id, SourceName, Duration, ActualTime, State, Theme, SourceType, IsDownloaded, Description, SourceLink, CreatedOn, LastModifiedOn FROM Sources WHERE SourceType = {sourceTypeId};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -281,7 +289,9 @@ namespace UWP_PROJECT_06.Services
                         SourceType = query.GetByte(6),
                         IsDownloaded = query.GetBoolean(7),
                         Description = query.GetString(8),
-                        SourceLink = query.GetString(9)
+                        SourceLink = query.GetString(9),
+                        CreatedOn = query.GetDateTime(10),
+                        LastModifiedOn = query.GetDateTime(11)
                     });
                 }
 
@@ -303,7 +313,7 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE Sources SET SourceName = @SourceName, Duration = @Duration, ActualTime = @ActualTime, State = @State, Theme = @Theme, SourceType = @SourceType, IsDownloaded = @IsDownloaded, Description = @Description, SourceLink = @SourceLink WHERE Id = @Id;";
+                sqliteCommand.CommandText = "UPDATE Sources SET SourceName = @SourceName, Duration = @Duration, ActualTime = @ActualTime, State = @State, Theme = @Theme, SourceType = @SourceType, IsDownloaded = @IsDownloaded, Description = @Description, SourceLink = @SourceLink, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", source.Id);
                 sqliteCommand.Parameters.AddWithValue("@SourceName", source.SourceName);
                 sqliteCommand.Parameters.AddWithValue("@Duration", source.Duration);
@@ -314,6 +324,8 @@ namespace UWP_PROJECT_06.Services
                 sqliteCommand.Parameters.AddWithValue("@IsDownloaded", source.IsDownloaded);
                 sqliteCommand.Parameters.AddWithValue("@Description", source.Description);
                 sqliteCommand.Parameters.AddWithValue("@SourceLink", source.SourceLink);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", source.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", source.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 
@@ -481,11 +493,13 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "INSERT INTO Notes VALUES (NULL, @SourceID, @Stamp, @Title, @Note);";
+                sqliteCommand.CommandText = "INSERT INTO Notes VALUES (NULL, @SourceID, @Stamp, @Title, @Note, @CreatedOn, @LastModifiedOn);";
                 sqliteCommand.Parameters.AddWithValue("@SourceID", note.SourceID);
                 sqliteCommand.Parameters.AddWithValue("@Stamp", note.Stamp);
                 sqliteCommand.Parameters.AddWithValue("@Title", note.Title);
                 sqliteCommand.Parameters.AddWithValue("@Note", note.Note1);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", note.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", note.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 
@@ -501,7 +515,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note FROM Notes WHERE Id = {id};";
+                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note, CreatedOn, LastModifiedOn FROM Notes WHERE Id = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -514,7 +528,9 @@ namespace UWP_PROJECT_06.Services
                         SourceID = query.GetInt32(1),
                         Stamp = query.GetString(2),
                         Title = query.GetString(3),
-                        Note1 = query.GetString(4)
+                        Note1 = query.GetString(4),
+                        CreatedOn = query.GetDateTime(5),
+                        LastModifiedOn = query.GetDateTime(6)
                     };
                 }
 
@@ -532,7 +548,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note FROM Notes WHERE SourceID = {id};";
+                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note, CreatedOn, LastModifiedOn FROM Notes WHERE SourceID = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -545,7 +561,9 @@ namespace UWP_PROJECT_06.Services
                         SourceID = query.GetInt32(1),
                         Stamp = query.GetString(2),
                         Title = query.GetString(3),
-                        Note1 = query.GetString(4)
+                        Note1 = query.GetString(4),
+                        CreatedOn = query.GetDateTime(5),
+                        LastModifiedOn = query.GetDateTime(6)
                     });
                 }
 
@@ -564,12 +582,14 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE Notes SET SourceID = @SourceID, Stamp = @Stamp, Title = @Title, Note = @Note WHERE Id = @Id;";
+                sqliteCommand.CommandText = "UPDATE Notes SET SourceID = @SourceID, Stamp = @Stamp, Title = @Title, Note = @Note, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", note.Id);
                 sqliteCommand.Parameters.AddWithValue("@SourceID", note.SourceID);
                 sqliteCommand.Parameters.AddWithValue("@Stamp", note.Stamp);
                 sqliteCommand.Parameters.AddWithValue("@Title", note.Title);
                 sqliteCommand.Parameters.AddWithValue("@Note", note.Note1);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", note.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", note.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 
@@ -609,12 +629,14 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "INSERT INTO Quotes VALUES (NULL, @SourceID, @QuoteBegin, @QuoteEnd, @OriginalQuote, @TranslatedQuote);";
+                sqliteCommand.CommandText = "INSERT INTO Quotes VALUES (NULL, @SourceID, @QuoteBegin, @QuoteEnd, @OriginalQuote, @TranslatedQuote, @CreatedOn, @LastModifiedOn);";
                 sqliteCommand.Parameters.AddWithValue("@SourceID", quote.SourceID);
                 sqliteCommand.Parameters.AddWithValue("@QuoteBegin", quote.QuoteBegin);
                 sqliteCommand.Parameters.AddWithValue("@QuoteEnd", quote.QuoteEnd);
                 sqliteCommand.Parameters.AddWithValue("@OriginalQuote", quote.OriginalQuote);
                 sqliteCommand.Parameters.AddWithValue("@TranslatedQuote", quote.TranslatedQuote);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", quote.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", quote.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 
@@ -630,7 +652,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote FROM Quotes WHERE Id = {id};";
+                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote, CreatedOn, LastModifiedOn FROM Quotes WHERE Id = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -644,7 +666,9 @@ namespace UWP_PROJECT_06.Services
                         QuoteBegin = query.GetString(2),
                         QuoteEnd = query.GetString(3),
                         OriginalQuote = query.GetString(4),
-                        TranslatedQuote = query.GetString(5)
+                        TranslatedQuote = query.GetString(5),
+                        CreatedOn = query.GetDateTime(6),
+                        LastModifiedOn = query.GetDateTime(7)
                     };
                 }
 
@@ -662,7 +686,7 @@ namespace UWP_PROJECT_06.Services
             {
                 conn.Open();
 
-                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote FROM Quotes WHERE SourceID = {id};";
+                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote, CreatedOn, LastModifiedOn FROM Quotes WHERE SourceID = {id};";
                 SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
 
                 SqliteDataReader query = sqliteCommand.ExecuteReader();
@@ -676,7 +700,9 @@ namespace UWP_PROJECT_06.Services
                         QuoteBegin = query.GetString(2),
                         QuoteEnd = query.GetString(3),
                         OriginalQuote = query.GetString(4),
-                        TranslatedQuote = query.GetString(5)
+                        TranslatedQuote = query.GetString(5),
+                        CreatedOn = query.GetDateTime(6),
+                        LastModifiedOn = query.GetDateTime(7)
                     });
                 }
 
@@ -695,13 +721,15 @@ namespace UWP_PROJECT_06.Services
                 SqliteCommand sqliteCommand = new SqliteCommand();
                 sqliteCommand.Connection = conn;
 
-                sqliteCommand.CommandText = "UPDATE Quotes SET SourceID = @SourceID, QuoteBegin = @QuoteBegin, QuoteEnd = @QuoteEnd, OriginalQuote = @OriginalQuote, TranslatedQuote = @TranslatedQuote WHERE Id = @Id;";
+                sqliteCommand.CommandText = "UPDATE Quotes SET SourceID = @SourceID, QuoteBegin = @QuoteBegin, QuoteEnd = @QuoteEnd, OriginalQuote = @OriginalQuote, TranslatedQuote = @TranslatedQuote, CreatedOn = @CreatedOn, LastModifiedOn = @LastModifiedOn WHERE Id = @Id;";
                 sqliteCommand.Parameters.AddWithValue("@Id", quote.Id);
                 sqliteCommand.Parameters.AddWithValue("@SourceID", quote.SourceID);
                 sqliteCommand.Parameters.AddWithValue("@QuoteBegin", quote.QuoteBegin);
                 sqliteCommand.Parameters.AddWithValue("@QuoteEnd", quote.QuoteEnd);
                 sqliteCommand.Parameters.AddWithValue("@OriginalQuote", quote.OriginalQuote);
                 sqliteCommand.Parameters.AddWithValue("@TranslatedQuote", quote.TranslatedQuote);
+                sqliteCommand.Parameters.AddWithValue("@CreatedOn", quote.CreatedOn);
+                sqliteCommand.Parameters.AddWithValue("@LastModifiedOn", quote.LastModifiedOn);
 
                 sqliteCommand.ExecuteReader();
 

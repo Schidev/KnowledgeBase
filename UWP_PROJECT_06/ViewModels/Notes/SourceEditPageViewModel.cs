@@ -90,6 +90,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             source.IsDownloaded = IsDownloaded;
             source.Description = source.Id == 0 ? "" : source.Description;
             source.SourceLink = source.Id == 0 ? "" : source.SourceLink;
+            source.LastModifiedOn = source.Id == 0 ? DateTime.UtcNow : source.LastModifiedOn;
 
             #endregion
             #region States

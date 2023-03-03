@@ -22,6 +22,8 @@ namespace UWP_PROJECT_06.ViewModels.Settings
             await message.ShowAsync();
 
             await SettingsService.RecreateDictionaryVoult();
+            
+            await SettingsService.ClearVault();
             await SettingsService.RecreateSourcesVoult();
             
             message = new MessageDialog("Thanks for your patience. Data synchronization has successfully finished.", "We've done!");

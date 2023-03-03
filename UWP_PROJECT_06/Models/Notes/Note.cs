@@ -29,5 +29,8 @@ namespace UWP_PROJECT_06.Models.Notes
         [Required]
         [StringLength(5000)]
         public string Note1 { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastModifiedOn { get; set; }
     }
 }

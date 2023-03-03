@@ -340,7 +340,6 @@ namespace UWP_PROJECT_06.Services
             string vaultName = await SettingsService.ReadPath("vault");
             
             string F = "";
-            //List<string> types = NotesService.ReadSourceTypes();
             F = String.Format("{0}", NotesService.ReadSourceType(source.SourceType).ToLower());
 
             string folderName = await SettingsService.ReadPath(F);
@@ -367,7 +366,6 @@ namespace UWP_PROJECT_06.Services
             string vaultName = await SettingsService.ReadPath("vault");
 
             var F = "";
-            //List<string> types = NotesService.ReadSourceTypes();
             F = String.Format("{0}", NotesService.ReadSourceType(source.SourceType).ToLower());
 
             string folderName = await SettingsService.ReadPath(F);

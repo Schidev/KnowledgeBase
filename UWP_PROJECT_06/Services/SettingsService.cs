@@ -313,7 +313,14 @@ namespace UWP_PROJECT_06.Services
         {
             var timer = new System.Diagnostics.Stopwatch();
             timer.Start();
-            
+
+            string vault = await SettingsService.ReadPath("vault");
+            string dictionary= await SettingsService.ReadPath("dictionary");
+
+            StorageFolder folder = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(System.IO.Path.Combine(vault, dictionary), CreationCollisionOption.OpenIfExists);
+            await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFolderAsync(System.IO.Path.Combine(vault, dictionary), CreationCollisionOption.OpenIfExists);
+
             foreach (Word word in DictionaryService.ReadWords())
                 await MarkdownService.WriteWord(word, DictionaryService.ReadWordExtras(word.Id));
             

@@ -737,12 +737,15 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 SourceType = (byte)NotesService.ReadSourceType(SourceTypesDictionary[viewModel.Source.SourceType - 1]),
                 IsDownloaded = viewModel.IsDownloaded,
                 Description = viewModel.Source.Description,
-                SourceLink = viewModel.Source.SourceLink
+                SourceLink = viewModel.Source.SourceLink,
+                CreatedOn = viewModel.Source.CreatedOn,
+                LastModifiedOn = DateTime.UtcNow
             };
 
             
             if (IsAddingMode)
             {
+                tempSource.CreatedOn = DateTime.UtcNow;
                 NotesService.CreateSource(tempSource);
             }
             else
@@ -806,8 +809,13 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r\\r");
                 quote.SourceID = tempSource.Id;
 
+                quote.LastModifiedOn = DateTime.UtcNow;
+
                 if (!IsReadingMode || quote.Id == 0)
+                {
+                    quote.CreatedOn = DateTime.UtcNow;
                     NotesService.CreateQuote(quote);
+                }
                 else
                     NotesService.UpdateQuote(quote);
 
@@ -853,8 +861,14 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 note.Stamp = MarkdownService.CheckNoteStamp(note.Stamp);
                 note.SourceID = tempSource.Id;
 
+                
+                note.LastModifiedOn = DateTime.UtcNow;
+
                 if (!IsReadingMode || note.Id == 0)
+                {
+                    note.CreatedOn = DateTime.UtcNow;
                     NotesService.CreateNote(note);
+                }
                 else
                     NotesService.UpdateNote(note);
 

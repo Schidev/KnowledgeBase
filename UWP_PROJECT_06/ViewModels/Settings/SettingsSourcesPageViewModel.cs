@@ -48,27 +48,18 @@ namespace UWP_PROJECT_06.ViewModels.Settings
 
             foreach (string sourceType in NotesService.ReadSourceTypes())
             {
-                SourceTypes.Add(new Pair() 
-                { 
-                    Key = sourceType,
-                    Value = await SettingsService.ReadPath(sourceType.ToLower())
-                });
+                if (sourceType != "UNKNOWN" && sourceType != "VIDEO" && sourceType != "SOUND" && sourceType != "IMAGE" && sourceType != "DOCUMENT")
+                {
+                    SourceTypes.Add(new Pair()
+                    {
+                        Key = sourceType,
+                        Value = await SettingsService.ReadPath(sourceType.ToLower())
+                    });
+                }
             }
 
             SourceTypes.Add(new Pair() { Key = "", Value = ""});
         }
-
-        private async Task Reload(object arg)
-        {
-            ListView list = arg as ListView;
-            if (list == null) return;
-
-            SettingsSourcesPageViewModel viewModel = list.DataContext as SettingsSourcesPageViewModel;
-            if (viewModel == null) return;
-
-            viewModel.Load();
-        }
-
         async Task Save(object arg)
         {
             TextBox textBox = arg as TextBox;

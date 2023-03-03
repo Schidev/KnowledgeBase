@@ -33,5 +33,7 @@ namespace UWP_PROJECT_06.Models.Notes
         [StringLength(10000)]
         public string TranslatedQuote { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastModifiedOn { get; set; }
     }
 }

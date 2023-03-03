@@ -832,7 +832,7 @@ namespace UWP_PROJECT_06.ViewModels
                 Language = viewModel.LanguageSelectionComboBoxSelectedIndex,
                 Status = viewModel.StatusSelectionComboBoxSelectedIndex,
                 LastRepeatedOn = viewModel.SelectedDate.UtcDateTime,
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = viewModel.id == 0 ? DateTime.UtcNow : DictionaryService.ReadWord(viewModel.id).CreatedOn,
                 LastModifiedOn = DateTime.UtcNow,
                 PartOfSpeech = viewModel.PartOfSpeechSelectionComboBoxSelectedIndex,
                 Word1 = String.Format("{0}_{1}_{2}", MarkdownService.CheckWord(viewModel.CurrentWord), 
