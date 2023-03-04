@@ -46,6 +46,7 @@ namespace UWP_PROJECT_06.ViewModels
 
         #endregion
     
+        public AsyncCommand<object> OpenFirstPageCommand { get; }
         public AsyncCommand<object> OpenNotesPageCommand { get; }
         public AsyncCommand<object> OpenSettingsPageCommand { get; }
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
@@ -59,6 +60,7 @@ namespace UWP_PROJECT_06.ViewModels
             rightExtendedPanelVisibility = Visibility.Visible; // Into settings
             leftExtendedPanelVisibility = Visibility.Collapsed; // Ito settings
 
+            OpenFirstPageCommand = new AsyncCommand<object>(OpenFirstPage);
             OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
@@ -67,6 +69,26 @@ namespace UWP_PROJECT_06.ViewModels
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
         }
 
+        private async Task OpenFirstPage(object arg)
+        {
+            TabView tabControl = arg as TabView;
+
+            if (tabControl == null)
+                return;
+
+            Frame frame = new Frame();
+            frame.Navigate(typeof(FirstPage));
+
+            TabViewItem currentTab = new TabViewItem()
+            {
+                Header = "Blank page",
+                Name = "BlankPage",
+                Content = frame
+            };
+
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
+        }
         private async Task OpenNotesPage(object arg)
         {
             TabView tabControl = arg as TabView;
@@ -145,11 +167,11 @@ namespace UWP_PROJECT_06.ViewModels
                 return;
 
             Frame frame = new Frame();
-            frame.Navigate(typeof(DictionaryPage));
+            frame.Navigate(typeof(FirstPage));
 
             TabViewItem newTab = new TabViewItem()
             {
-                Header = "Dictionary Page",
+                Header = "New tab",
                 Name = "newTab",
                 Content = frame
             };

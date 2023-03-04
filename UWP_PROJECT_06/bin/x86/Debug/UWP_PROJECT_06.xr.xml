@@ -115,6 +115,7 @@
     <RootPropertyPathName Name="MenuMoreHotkeyName" />
     <RootPropertyPathName Name="MenuForwardHotkeyName" />
     <RootPropertyPathName Name="MenuBackHotkeyName" />
+    <RootPropertyPathName Name="OpenDictionaryCommand" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentSource" />
     <RootPropertyPathName Name="SourceName" />
@@ -257,8 +258,9 @@
       <RootProperty Name="KeyboardAccelerators" />
       <RootProperty Name="BorderThickness" />
       <RootProperty Name="BorderBrush" />
-      <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Resources" />
+      <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalContentAlignment" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
@@ -475,6 +477,7 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Background" />
       <RootProperty Name="Children" />
+      <RootProperty Name="VerticalAlignment" />
     </RootType>
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.GridSplitter">
       <RootProperty Name="Visibility" />
@@ -505,10 +508,6 @@
       <RootProperty Name="BackgroundSizing" />
       <RootProperty Name="Background" />
       <RootProperty Name="Content" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.WebView">
-      <RootProperty Name="Margin" />
-      <RootProperty Name="Source" />
     </RootType>
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.Menu">
       <RootProperty Name="Orientation" />
@@ -605,6 +604,8 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListViewHeaderItem" />
     <RootType FullName="UWP_PROJECT_06.Views.DictionaryPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.FirstPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Views.FirstPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Notes.SourceCardPageViewModel" />
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock">
       <RootProperty Name="Padding" />

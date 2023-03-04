@@ -8,6 +8,8 @@
     xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
     Background="{StaticResource TopMenuBackground}">
 
@@ -425,8 +427,6 @@
                                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
                                 </Button>
                             </Grid>
-
-                            <WebView x:Name="wv" Grid.Row="2" Margin="0,0,0,0" Source="http://www.google.com"/>
                         </Grid>
                     </muxc:TabViewItem>
                 </muxc:TabView>

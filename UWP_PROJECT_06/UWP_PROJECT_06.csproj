@@ -181,6 +181,7 @@
     <Compile Include="Services\ProblemsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\Dictionary\DictionaryPageViewModel.cs" />
+    <Compile Include="ViewModels\FirstPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\Notes\SourceCardPageViewModel.cs" />
     <Compile Include="ViewModels\Notes\SourceEditPageViewModel.cs" />
@@ -197,6 +198,9 @@
     <Compile Include="ViewModels\Dictionary\WordEditPageViewModel.cs" />
     <Compile Include="Views\Dictionary\DictionaryPage.xaml.cs">
       <DependentUpon>DictionaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstPage.xaml.cs">
+      <DependentUpon>FirstPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Notes\SourceCardPage.xaml.cs">
       <DependentUpon>SourceCardPage.xaml</DependentUpon>
@@ -317,6 +321,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Dictionary\DictionaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

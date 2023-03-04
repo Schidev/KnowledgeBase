@@ -1,0 +1,83 @@
+﻿<Page
+    x:Class="UWP_PROJECT_06.Views.FirstPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    Background="{StaticResource colorWhite}">
+
+    <Page.DataContext>
+        <viewmodels:FirstPageViewModel/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <converters:SettingsHotkeysTipConverter x:Key="SettingsHotkeysTipConverter" />
+        <converters:SettingsHotkeysModifiersConverter x:Key="SettingsHotkeysModifiersConverter" />
+        <converters:SettingsHotkeysKeyConverter x:Key="SettingsHotkeysKeyConverter" />
+    </Page.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <TextBlock Text="No file is open" FontSize="30" FontWeight="SemiBold" 
+                       HorizontalAlignment="Center" Margin="5"/>
+
+            <Button Content="{Binding OpenDictionaryHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}}"
+                    Background="{StaticResource colorTransparent}" Foreground="{StaticResource colorPrimary}"
+                    BorderBrush="{StaticResource colorTransparent}" BorderThickness="0" 
+                    HorizontalAlignment="Center" Margin="5" 
+                    Command="{Binding OpenDictionaryCommand}" CommandParameter="{Binding OpenDictionaryHotkeyName}">
+                
+                <Button.Resources>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#8B6CEF"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent"/>
+                </Button.Resources>
+            
+            </Button>
+
+            <Button Content="{Binding OpenNotesHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}}"
+                    Background="{StaticResource colorTransparent}" Foreground="{StaticResource colorPrimary}"
+                    BorderBrush="{StaticResource colorTransparent}" BorderThickness="0" 
+                    HorizontalAlignment="Center" Margin="5">
+            
+                <Button.Resources>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#8B6CEF"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent"/>
+                </Button.Resources>
+            
+            </Button>
+
+            <Button Content="{Binding OpenSettingsHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}}"
+                    Background="{StaticResource colorTransparent}" Foreground="{StaticResource colorPrimary}"
+                    BorderBrush="{StaticResource colorTransparent}" BorderThickness="0" 
+                    HorizontalAlignment="Center" Margin="5">
+                
+                <Button.Resources>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#8B6CEF"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent"/>
+                </Button.Resources>
+            
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+    
+</Page>

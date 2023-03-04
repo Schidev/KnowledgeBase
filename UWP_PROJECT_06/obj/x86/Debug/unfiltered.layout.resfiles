@@ -57,6 +57,7 @@ UWP_PROJECT_06.xr.xml
 Views\Dictionary\DictionaryPage.xbf
 Views\Dictionary\WordCardPage.xbf
 Views\Dictionary\WordEditPage.xbf
+Views\FirstPage.xbf
 Views\Notes\SourceCardPage.xbf
 Views\Notes\SourceEditPage.xbf
 Views\Notes\SourcesPage.xbf
