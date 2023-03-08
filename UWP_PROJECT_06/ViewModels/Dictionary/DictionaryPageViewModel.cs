@@ -778,13 +778,13 @@ namespace UWP_PROJECT_06.ViewModels
 
                 return;
             }
-            if (viewModel.SelectedDate.UtcDateTime.Date < DateTime.UtcNow.Date)
-            {
-                message = new MessageDialog("The past is not your concern.", "Woops...");
-                await message.ShowAsync();
+            //if (viewModel.SelectedDate.UtcDateTime.Date < DateTime.UtcNow.Date)
+            //{
+            //    message = new MessageDialog("The past is not your concern.", "Woops...");
+            //    await message.ShowAsync();
 
-                return;
-            }
+            //    return;
+            //}
             if (viewModel.PartOfSpeechSelectionComboBoxSelectedIndex == 0)
             {
                 message = new MessageDialog("You need to choose part of speech from the offered.", "Woops...");
@@ -833,7 +833,7 @@ namespace UWP_PROJECT_06.ViewModels
                 Status = viewModel.StatusSelectionComboBoxSelectedIndex,
                 LastRepeatedOn = viewModel.SelectedDate.UtcDateTime,
                 CreatedOn = viewModel.id == 0 ? DateTime.UtcNow : DictionaryService.ReadWord(viewModel.id).CreatedOn,
-                LastModifiedOn = DateTime.UtcNow,
+                LastModifiedOn = viewModel.SelectedDate.UtcDateTime,
                 PartOfSpeech = viewModel.PartOfSpeechSelectionComboBoxSelectedIndex,
                 Word1 = String.Format("{0}_{1}_{2}", MarkdownService.CheckWord(viewModel.CurrentWord), 
                     partsOfSpeechDic[viewModel.PartOfSpeechSelectionComboBoxSelectedIndex], 

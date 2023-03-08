@@ -71,7 +71,7 @@ namespace UWP_PROJECT_06.ViewModels
             LanguageSelectionComboBoxSelectedIndex = word.Language;
             StatusSelectionComboBoxSelectedIndex = word.Status;
             PartOfSpeechSelectionComboBoxSelectedIndex = word.PartOfSpeech;
-            SelectedDate = id == 0 ? DateTime.UtcNow : word.LastRepeatedOn;
+            SelectedDate = id == 0 ? DateTime.UtcNow : word.LastModifiedOn;
 
             #endregion
             #region Languages

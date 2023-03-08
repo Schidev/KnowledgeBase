@@ -64,6 +64,18 @@
             
             </Button>
 
+            <Button Content="{Binding OpenSpaceRepetitionHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}}"
+                    Background="{StaticResource colorTransparent}" Foreground="{StaticResource colorPrimary}"
+                    BorderBrush="{StaticResource colorTransparent}" BorderThickness="0" 
+                    HorizontalAlignment="Center" Margin="5">
+
+                <Button.Resources>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#8B6CEF"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent"/>
+                </Button.Resources>
+
+            </Button>
+
             <Button Content="{Binding OpenSettingsHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}}"
                     Background="{StaticResource colorTransparent}" Foreground="{StaticResource colorPrimary}"
                     BorderBrush="{StaticResource colorTransparent}" BorderThickness="0" 

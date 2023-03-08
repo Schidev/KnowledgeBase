@@ -1,0 +1,756 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="UWP_PROJECT_06.Views.SpaceRepetitionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    Background="{StaticResource colorWhite}"
+    HorizontalAlignment="Stretch">
+
+    <Page.DataContext>
+        <viewmodels:SpaceRepetitionPageViewModel/>
+    </Page.DataContext>
+
+    <Page.Resources>
+
+        <CollectionViewSource x:ConnectionId='2' x:Name="Words" Source="{Binding Words, Mode=TwoWay}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:ConnectionId='3' x:Name="Sources" Source="{Binding Sources, Mode=TwoWay}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:ConnectionId='4' x:Name="Notes" Source="{Binding Notes, Mode=TwoWay}" IsSourceGrouped="True"/>
+        <CollectionViewSource x:ConnectionId='5' x:Name="Quotes" Source="{Binding Quotes, Mode=TwoWay}" IsSourceGrouped="True"/>
+
+        <converters:LanguageConverter x:Key="LanguageConverter" />
+        <converters:StatusConverter x:Key="StatusConverter" />
+        <converters:DateConverter x:Key="DateConverter" />
+        <converters:WordColorAccentConverter x:Key="WordColorAccentConverter" />
+        <converters:WordColorLightConverter x:Key="WordColorLightConverter" />
+        <converters:ForegroundButtonConverter x:Key="ForegroundButtonConverter" />
+        <converters:ReadingModeIconConverter x:Key="ReadingModeIconConverter" />
+
+        <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter" />
+
+        <converters:SettingsHotkeysTipConverter x:Key="SettingsHotkeysTipConverter" />
+        <converters:SettingsHotkeysModifiersConverter x:Key="SettingsHotkeysModifiersConverter" />
+        <converters:SettingsHotkeysKeyConverter x:Key="SettingsHotkeysKeyConverter" />
+
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Navigation Menu-->
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuBackHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
+
+            </Button>
+
+            <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuForwardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
+
+            </Button>
+
+            <TextBlock Grid.Column="2" Text="SPACE REPETITION" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                    ToolTipService.ToolTip="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding MenuMoreHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                </Button.KeyboardAccelerators>
+
+            </Button>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="50,0,50,30" Padding="0,0,0,0.5" CornerRadius="10" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.5"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+
+                <AutoSuggestBox x:ConnectionId='16' x:Name="Autosuggest" Grid.Row="0" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}"
+                                    PlaceholderText="Tap to start searching..."
+                                    VerticalContentAlignment="Center" Margin="10,10,0,0" Padding="10" CornerRadius="10,0,0,10"
+                                    BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5" Foreground="{StaticResource colorDimGray}">
+
+                    <AutoSuggestBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#E9E9E9"/>
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                    </AutoSuggestBox.Resources>
+
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="TextChanged">
+                            <core:InvokeCommandAction x:ConnectionId='59' Command="{Binding SearchTextChangedCommand}"                                        />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+
+                </AutoSuggestBox>
+                <ComboBox x:ConnectionId='17' Grid.Row="0" Grid.Column="1" x:Name="CardTypesComboBox" Margin="0,10,10,0" Padding="10" CornerRadius="0,10,10,0" 
+                              Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5"
+                              ItemsSource="{Binding CardTypes}" SelectedIndex="{Binding SelectedCardType, Mode=TwoWay}">
+
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction x:ConnectionId='58' Command="{Binding CardTypeSelectedCommand}"                                              />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+
+                </ComboBox>
+
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="10">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Padding="10" CornerRadius="10,0,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0,0.5"
+                            Content="{Binding DateBegin.Date, Mode=TwoWay, Converter={StaticResource DateConverter}}" >
+                        <Button.Flyout>
+                            <DatePickerFlyout Date="{Binding DateBegin, Mode=TwoWay}" AreOpenCloseAnimationsEnabled="False">
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="DatePicked">
+                                        <core:InvokeCommandAction Command="{Binding ReloadCommand}"/>
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </DatePickerFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <ComboBox x:ConnectionId='50' Grid.Column="1" x:Name="LanguagesComboBox" Padding="10" CornerRadius="0" VerticalAlignment="Stretch"
+                              Background="{StaticResource colorWhite}" Visibility="{Binding IsDictionarySelected, Mode=TwoWay}"
+                              BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0,0.5"
+                              ItemsSource="{Binding Languages}" SelectedIndex="{Binding SelectedLanguage, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction x:ConnectionId='57' Command="{Binding LanguageSelectedCommand}"                                              />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </ComboBox>
+
+                    <ComboBox x:ConnectionId='51' Grid.Column="2" x:Name="SourceTypesComboBox" Padding="10" CornerRadius="0" VerticalAlignment="Stretch"
+                              Background="{StaticResource colorWhite}" Visibility="{Binding IsSourcesSelected, Mode=TwoWay}" 
+                              BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0,0.5"
+                              ItemsSource="{Binding SourceTypes}" SelectedIndex="{Binding SelectedSourceType, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction x:ConnectionId='56' Command="{Binding SourceTypeSelectedCommand}"                                                />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </ComboBox>
+
+                    <ComboBox x:ConnectionId='52' Grid.Column="3" x:Name="NotesComboBox" Padding="10" CornerRadius="0" VerticalAlignment="Stretch"
+                              Background="{StaticResource colorWhite}" Visibility="{Binding IsNotesSelected, Mode=TwoWay}"
+                              BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0,0.5"
+                              ItemsSource="{Binding NotesSourcesNames}" SelectedIndex="{Binding SelectedNoteSource, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction x:ConnectionId='55' Command="{Binding NoteSourceNameSelectedCommand}"                                          />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </ComboBox>
+
+                    <ComboBox x:ConnectionId='53' Grid.Column="4" x:Name="QuotesComboBox" Padding="10" CornerRadius="0" VerticalAlignment="Stretch"
+                              Background="{StaticResource colorWhite}" Visibility="{Binding IsQuotesSelected, Mode=TwoWay}"
+                              BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0,0.5"
+                              ItemsSource="{Binding QuotesSourcesNames}" SelectedIndex="{Binding SelectedQuoteSource, Mode=TwoWay}">
+
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction x:ConnectionId='54' Command="{Binding QuoteSourceNameSelectedCommand}"                                           />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </ComboBox>
+
+                    <Button Grid.Column="5" Padding="10" CornerRadius="0,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Background="{StaticResource colorWhite}" BorderBrush="{StaticResource SplitterColor}" BorderThickness="0.5,0.5,0.5,0.5"
+                            Content="{Binding DateEnd.Date, Mode=TwoWay, Converter={StaticResource DateConverter}}">
+                        <Button.Flyout>
+                            <DatePickerFlyout Date="{Binding DateEnd, Mode=TwoWay}" AreOpenCloseAnimationsEnabled="False">
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="DatePicked">
+                                        <core:InvokeCommandAction Command="{Binding ReloadCommand}"/>
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </DatePickerFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                </Grid>
+
+
+                <ScrollViewer  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
+                    <StackPanel Orientation="Vertical">
+                        <ListView x:ConnectionId='18' x:Name="WordsList" Margin="20,0,20,0" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" CanBeScrollAnchor="True" 
+                          ItemsSource="{Binding Source={StaticResource Words}}">
+
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="SelectionChanged">
+                                    <core:InvokeCommandAction x:ConnectionId='43' Command="{Binding WordSelectedCommand}"                                      />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Word1, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.Resources>
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                            </ListView.Resources>
+
+                            <ListView.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="0.5"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"  VerticalAlignment="Center" Text="{Binding Key}" HorizontalAlignment="Center" Margin="0" Foreground="Black" FontWeight="Bold" />
+                                                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+
+                                    <GroupStyle.HeaderContainerStyle>
+                                        <Style TargetType="ListViewHeaderItem">
+                                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                            <Setter Property="FontSize" Value="12" />
+                                            <Setter Property="Background" Value="{StaticResource colorTransparent}" />
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                                        <ContentPresenter x:Name="ContentPresenter"
+                                                    Background="{TemplateBinding Background}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.HeaderContainerStyle>
+
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+
+                        </ListView>
+                        <ListView x:ConnectionId='19' x:Name="SourcesList" Margin="20,0,20,0" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding Source={StaticResource Sources}}">
+
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="SelectionChanged">
+                                    <core:InvokeCommandAction x:ConnectionId='36' Command="{Binding SourceSelectedCommand}"                                        />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SourceName, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.Resources>
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                            </ListView.Resources>
+
+                            <ListView.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="0.5"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"  VerticalAlignment="Center" Text="{Binding Key}" HorizontalAlignment="Center" Margin="0" Foreground="Black" FontWeight="Bold" />
+                                                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+
+                                    <GroupStyle.HeaderContainerStyle>
+                                        <Style TargetType="ListViewHeaderItem">
+                                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                            <Setter Property="FontSize" Value="12" />
+                                            <Setter Property="Background" Value="{StaticResource colorTransparent}" />
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                                        <ContentPresenter x:Name="ContentPresenter"
+                                                    Background="{TemplateBinding Background}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.HeaderContainerStyle>
+
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+
+                        </ListView>
+                        <ListView x:ConnectionId='20' x:Name="NotesList" Margin="20,0,20,0" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding Source={StaticResource Notes}}">
+
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="SelectionChanged">
+                                    <core:InvokeCommandAction x:ConnectionId='29' Command="{Binding NoteSelectedCommand}"                                      />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.Resources>
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                            </ListView.Resources>
+
+                            <ListView.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="0.5"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"  VerticalAlignment="Center" Text="{Binding Key}" HorizontalAlignment="Center" Margin="0" Foreground="Black" FontWeight="Bold" />
+                                                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+
+                                    <GroupStyle.HeaderContainerStyle>
+                                        <Style TargetType="ListViewHeaderItem">
+                                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                            <Setter Property="FontSize" Value="12" />
+                                            <Setter Property="Background" Value="{StaticResource colorTransparent}" />
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                                        <ContentPresenter x:Name="ContentPresenter"
+                                                    Background="{TemplateBinding Background}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.HeaderContainerStyle>
+
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+
+                        </ListView>
+                        <ListView x:ConnectionId='21' x:Name="QuotesList" Margin="20,0,20,0" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding Source={StaticResource Quotes}}">
+
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="SelectionChanged">
+                                    <core:InvokeCommandAction x:ConnectionId='22' Command="{Binding QuoteSelectedCommand}"                                       />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Margin="0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding OriginalQuote, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.Resources>
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                            </ListView.Resources>
+
+                            <ListView.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="0.5"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"  VerticalAlignment="Center" Text="{Binding Key}" HorizontalAlignment="Center" Margin="0" Foreground="Black" FontWeight="Bold" />
+                                                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+
+                                    <GroupStyle.HeaderContainerStyle>
+                                        <Style TargetType="ListViewHeaderItem">
+                                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                            <Setter Property="FontSize" Value="12" />
+                                            <Setter Property="Background" Value="{StaticResource colorTransparent}" />
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                                        <ContentPresenter x:Name="ContentPresenter"
+                                                    Background="{TemplateBinding Background}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.HeaderContainerStyle>
+
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+
+                        </ListView>
+                    </StackPanel>
+                </ScrollViewer>
+                <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="0.5" Margin="20,0,20,0"  StrokeThickness="0.5" Stroke="{StaticResource SplitterColor}"/>
+
+            </Grid>
+
+            <controls:GridSplitter Grid.Column="1" VerticalAlignment="Stretch" ResizeDirection="Columns" Background="{StaticResource SplitterColor}" Width="0.5"/>
+            
+            <Grid x:ConnectionId='6' x:Name="cardGrid" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="30,0,40,30" Padding="0.5" CornerRadius="10" BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.5"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="0.5"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Frame x:ConnectionId='7' x:Name="DictionaryFrame" Grid.Row="0" CornerRadius="10,10,0,0" Content="{Binding FrameContent, Mode=TwoWay}" 
+                       BorderBrush="{StaticResource colorPrimaryDark}"/>
+
+                <Rectangle Grid.Row="1" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}"/>
+
+                <Grid Grid.Row="4" Background="{StaticResource colorWhite}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Btn Open Next Card-->
+                    <Button x:ConnectionId='15' Grid.Column="0" x:Name="NextCardBtn"  Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding OpenNextCommand}"                                        
+                            ToolTipService.ToolTip="{Binding StartRepeatingHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE8EB;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding StartRepeatingHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding StartRepeatingHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+                    
+                    <!-- Selected Card File name-->
+                    <TextBlock Grid.Column="1" Text="{Binding SelectedCard, Mode=TwoWay}" TextAlignment="Center" FontSize="12" VerticalAlignment="Center"/>
+
+                    <!-- Btn Open Reading/Writing Mode-->
+                    <Button Grid.Column="2" Style="{StaticResource CustomButtonColorsStyle}"  Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding ChangeModeCommand}"
+                            ToolTipService.ToolTip="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="{Binding IsWritingMode, Converter={StaticResource ReadingModeIconConverter}}" 
+                                  Foreground="{Binding IsReadingMode, Converter={StaticResource ForegroundButtonConverter}}"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding ChangeModeHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Save-->
+                    <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}"
+                            Command="{Binding SaveCommand}"
+                            ToolTipService.ToolTip="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE792;"/>
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding SaveCardHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                </Grid>
+
+                <Rectangle Grid.Row="3" StrokeThickness="0.5" Height="0.5" Margin="0" Stroke="{StaticResource SplitterColor}"/>
+
+                <Grid Grid.Row="2" Background="{StaticResource colorWhite}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Btn Start Repeating -->
+                    <Button x:ConnectionId='8' Grid.Column="0" x:Name="BtnAfterOneDay" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="1" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterOneDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                           >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterOneDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterOneDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after three days -->
+                    <Button x:ConnectionId='9' Grid.Column="1" x:Name="BtnAfterThreeDays" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="3" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterThreeDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                              >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterThreeDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterThreeDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after seven days -->
+                    <Button x:ConnectionId='10' Grid.Column="2" x:Name="BtnAfterSevenDays" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="7" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterSevenDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                              >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterSevenDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterSevenDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after thirdteen days -->
+                    <Button x:ConnectionId='11' Grid.Column="3" x:Name="BtnAfterThirteenDays" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="13" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterThirdteenDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                                 >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterThirdteenDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterThirdteenDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after twenty nine days -->
+                    <Button x:ConnectionId='12' Grid.Column="4" x:Name="BtnAfterTwentyNineDays" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="29" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterTwentyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                                   >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterTwentyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterTwentyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after fifty nine days -->
+                    <Button x:ConnectionId='13' Grid.Column="5" x:Name="BtnAfterFiftyNineDays" Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="59" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterFiftyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                                  >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterFiftyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterFiftyNineDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+
+                    <!-- Btn Repeat after sixty one days -->
+                    <Button x:ConnectionId='14' Grid.Column="6" x:Name="BtnAfterSixtyOneDays"  Style="{StaticResource CustomButtonColorsStyle}" Background="{StaticResource colorWhite}" 
+                            Content="61" FontSize="12" Margin="5" Padding="10,5,10,5" CornerRadius="5" 
+                            ToolTipService.ToolTip="{Binding RepeatAfterSixtyOneDayHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Bottom"
+                            Command="{Binding OpenNextCommand}"                                                 >
+
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="{Binding RepeatAfterSixtyOneDayHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                         Key="{Binding RepeatAfterSixtyOneDayHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                        </Button.KeyboardAccelerators>
+
+                    </Button>
+                </Grid>
+                
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Page>
+

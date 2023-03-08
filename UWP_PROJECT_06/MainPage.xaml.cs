@@ -155,5 +155,12 @@ namespace UWP_PROJECT_06
 
             tabView.SelectedIndex = tabView.TabItems.Count - 1;
         }
+
+        private async void tabView_Loaded(object sender, RoutedEventArgs e)
+        {
+            TabView tabView = sender as TabView;
+            var viewModel = tabView.DataContext as MainPageViewModel;
+            await viewModel.AddNewTabCommand.ExecuteAsync(sender);
+        }
     }
 }

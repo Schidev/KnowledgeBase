@@ -384,6 +384,12 @@
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\FirstPage.xbf">
       <PackagePath>Views\FirstPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\NoteEditPage.xbf">
+      <PackagePath>Views\Notes\NoteEditPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\QuoteEditPage.xbf">
+      <PackagePath>Views\Notes\QuoteEditPage.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Notes\SourceCardPage.xbf">
       <PackagePath>Views\Notes\SourceCardPage.xbf</PackagePath>
     </AppxPackagedFile>
@@ -419,6 +425,9 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\Settings\SettingsSourcesPage.xbf">
       <PackagePath>Views\Settings\SettingsSourcesPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\SpaceRepetitionPage.xbf">
+      <PackagePath>Views\SpaceRepetitionPage.xbf</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Q\Documents\00000_EVERYTHING\20000_MEDIA\26000_PROGRAMMING\26100_PROJECTS\26110_C_SHARP\26111_UWP\UWP_PROJECT_06\UWP_PROJECT_06\bin\x86\Debug\Views\VideoListPage.xbf">
       <PackagePath>Views\VideoListPage.xbf</PackagePath>

@@ -1,0 +1,121 @@
+﻿<Page
+    x:Class="UWP_PROJECT_06.Views.Notes.NoteEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_PROJECT_06.Views.Notes"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:viewmodels="using:UWP_PROJECT_06.ViewModels.Notes"
+    xmlns:converters="using:UWP_PROJECT_06.Services.Converters"
+    Background="{StaticResource colorWhite}">
+
+    <Page.Resources>
+        <converters:SourceIdToNameConverter x:Key="SourceIdToNameConverter"/>
+    </Page.Resources>
+
+    <Grid x:Name="NotesGrid" CornerRadius="10" Margin="10,10,10,10" VerticalAlignment="Center" 
+          BorderBrush="{StaticResource colorDimGrey}" BorderThickness="0.5" 
+          Padding="0,0,0.5,0" Background="{StaticResource colorWhite}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0.5"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding SelectedNote.Title, Mode=TwoWay}" 
+                                          BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="10,10,0,10" 
+                                             PlaceholderText="Start typing new quote...">
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                    <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                </TextBox.Resources>
+
+            </TextBox>
+
+            <Rectangle Grid.Column="1" Stroke="{StaticResource colorTransparent}" StrokeThickness="0.5"/>
+
+            <TextBox Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding SelectedNote.Note1, Mode=TwoWay}"
+                                         BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" Margin="0,10,10,10"
+                                             PlaceholderText="Start typing translation...">
+
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                    <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                </TextBox.Resources>
+
+            </TextBox>
+
+        </Grid>
+
+        <Rectangle Grid.Row="1" Stroke="{StaticResource SplitterColor}" StrokeThickness="0.5"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Button Grid.Column="0" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Take a screenshot" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            >
+                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE722;"/>
+
+            </Button>
+
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding SelectedNote.SourceID, Converter={StaticResource SourceIdToNameConverter}}"/>
+
+            <TextBox Grid.Column="2" Margin="0,0,5,0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                             Text="{Binding SelectedNote.Stamp, Mode=TwoWay}" BorderBrush="{StaticResource colorTransparent}" BorderThickness="0.5" 
+                                             PlaceholderText="HH:mm:ss-HH:mm:ss...">
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#ede7f6"/>
+                    <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#836fa9"/>
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#434343"/>
+
+                </TextBox.Resources>
+            </TextBox>
+
+            <Button Grid.Column="3" Margin="5,5,5,5" Style="{StaticResource CustomButtonColorsStyle}" Padding="5" 
+                                            CornerRadius="5"  Background="{StaticResource colorWhite}" 
+                                            ToolTipService.ToolTip="Delete quote" ToolTipService.Placement="Top" VerticalAlignment="Bottom"
+                                            >
+                <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="15" Glyph="&#xE74D;"/>
+
+            </Button>
+
+
+        </Grid>
+    </Grid>
+</Page>

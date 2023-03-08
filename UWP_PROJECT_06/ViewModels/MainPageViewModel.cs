@@ -25,6 +25,7 @@ namespace UWP_PROJECT_06.ViewModels
        
         public string OpenDictionaryHotkeyName { get => "OpenDictionary"; }
         public string OpenNotesHotkeyName { get => "OpenNotes"; }
+        public string OpenSpaceRepetitionHotkeyName { get => "OpenSpaceRepetition"; }
         public string OpenSettingsHotkeyName { get => "OpenSettings"; }
         public string OpenHistoryHotkeyName { get => "OpenHistory"; }
 
@@ -46,10 +47,10 @@ namespace UWP_PROJECT_06.ViewModels
 
         #endregion
     
-        public AsyncCommand<object> OpenFirstPageCommand { get; }
         public AsyncCommand<object> OpenNotesPageCommand { get; }
         public AsyncCommand<object> OpenSettingsPageCommand { get; }
         public AsyncCommand<object> OpenDictionaryPageCommand { get; }
+        public AsyncCommand<object> OpenSpaceRepetitonPageCommand { get; }
 
         public AsyncCommand<object> AddNewTabCommand { get; }
         public AsyncCommand<object> OpenCloseExtraPaneCommand { get; }
@@ -58,37 +59,17 @@ namespace UWP_PROJECT_06.ViewModels
         public MainPageViewModel()
         {
             rightExtendedPanelVisibility = Visibility.Visible; // Into settings
-            leftExtendedPanelVisibility = Visibility.Collapsed; // Ito settings
+            leftExtendedPanelVisibility = Visibility.Collapsed; // Into settings
 
-            OpenFirstPageCommand = new AsyncCommand<object>(OpenFirstPage);
             OpenNotesPageCommand = new AsyncCommand<object>(OpenNotesPage);
             OpenSettingsPageCommand = new AsyncCommand<object>(OpenSettingsPage);
             OpenDictionaryPageCommand = new AsyncCommand<object>(OpenDictionaryPage);
+            OpenSpaceRepetitonPageCommand = new AsyncCommand<object>(OpenSpaceRepetitonPage);
 
             AddNewTabCommand = new AsyncCommand<object>(AddNewTab);
             OpenCloseExtraPaneCommand = new AsyncCommand<object>(OpenCloseExtraPane);
         }
 
-        private async Task OpenFirstPage(object arg)
-        {
-            TabView tabControl = arg as TabView;
-
-            if (tabControl == null)
-                return;
-
-            Frame frame = new Frame();
-            frame.Navigate(typeof(FirstPage));
-
-            TabViewItem currentTab = new TabViewItem()
-            {
-                Header = "Blank page",
-                Name = "BlankPage",
-                Content = frame
-            };
-
-            tabControl.TabItems.Add(currentTab);
-            tabControl.SelectedItem = currentTab;
-        }
         private async Task OpenNotesPage(object arg)
         {
             TabView tabControl = arg as TabView;
@@ -158,6 +139,26 @@ namespace UWP_PROJECT_06.ViewModels
             tabControl.TabItems.Add(currentTab);
             tabControl.SelectedItem = currentTab;
         }
+        private async Task OpenSpaceRepetitonPage(object arg)
+        {
+            var tabControl = arg as TabView;
+
+            if (tabControl == null)
+                return;
+
+            Frame frame = new Frame();
+            frame.Navigate(typeof(SpaceRepetitionPage));
+
+            TabViewItem currentTab = new TabViewItem()
+            {
+                Header = "Space Repetition",
+                Name = "SpaceRepetitionPage",
+                Content = frame
+            };
+
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
+        }
 
         private async Task AddNewTab(object arg)
         {
@@ -169,15 +170,15 @@ namespace UWP_PROJECT_06.ViewModels
             Frame frame = new Frame();
             frame.Navigate(typeof(FirstPage));
 
-            TabViewItem newTab = new TabViewItem()
+            TabViewItem currentTab = new TabViewItem()
             {
-                Header = "New tab",
-                Name = "newTab",
+                Header = "Blank page",
+                Name = "BlankPage",
                 Content = frame
             };
 
-            tabControl.TabItems.Add(newTab);
-            tabControl.SelectedItem = newTab;
+            tabControl.TabItems.Add(currentTab);
+            tabControl.SelectedItem = currentTab;
         }
         private async Task OpenCloseExtraPane(object arg)
         {

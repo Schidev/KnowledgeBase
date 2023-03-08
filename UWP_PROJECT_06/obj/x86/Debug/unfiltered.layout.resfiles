@@ -58,6 +58,8 @@ Views\Dictionary\DictionaryPage.xbf
 Views\Dictionary\WordCardPage.xbf
 Views\Dictionary\WordEditPage.xbf
 Views\FirstPage.xbf
+Views\Notes\NoteEditPage.xbf
+Views\Notes\QuoteEditPage.xbf
 Views\Notes\SourceCardPage.xbf
 Views\Notes\SourceEditPage.xbf
 Views\Notes\SourcesPage.xbf
@@ -70,6 +72,7 @@ Views\Settings\SettingsHotkeysPage.xbf
 Views\Settings\SettingsPage.xbf
 Views\Settings\SettingsRecoveryPage.xbf
 Views\Settings\SettingsSourcesPage.xbf
+Views\SpaceRepetitionPage.xbf
 Views\VideoListPage.xbf
 Views\WordPage.xbf
 Properties\Default.rd.xml

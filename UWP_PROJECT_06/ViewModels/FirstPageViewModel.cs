@@ -16,6 +16,7 @@ namespace UWP_PROJECT_06.ViewModels
     {
         public string OpenDictionaryHotkeyName { get => "OpenDictionary"; }
         public string OpenNotesHotkeyName { get => "OpenNotes"; }
+        public string OpenSpaceRepetitionHotkeyName { get => "OpenSpaceRepetition"; }
         public string OpenSettingsHotkeyName { get => "OpenSettings"; }
 
 

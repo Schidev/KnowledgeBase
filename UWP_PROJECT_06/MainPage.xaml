@@ -228,11 +228,21 @@
                 <Button Grid.Row="5" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
                     <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE7C4;"/>
                 </Button>
+-->
+                <!-- Space Repetition Button -->
 
-                --><!-- Space Repetition Button --><!--
-                <Button Grid.Row="6" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xE787;"/>
-                </Button>-->
+                <Button Grid.Row="6" Style="{StaticResource CustomButtonColorsStyle}" 
+                        Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource SideMenuBackground}"
+                        Command="{Binding OpenSpaceRepetitonPageCommand}" CommandParameter="{x:Bind tabView}"
+                        ToolTipService.ToolTip="{Binding OpenSpaceRepetitionHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}" ToolTipService.Placement="Right">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="18" Glyph="&#xEE93;"/>
+
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="{Binding OpenSpaceRepetitionHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
+                                             Key="{Binding OpenSpaceRepetitionHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"/>
+                    </Button.KeyboardAccelerators>
+
+                </Button>
 
                 <Border Grid.Row="7" BorderThickness="0">
 
@@ -299,18 +309,19 @@
 
                 <muxc:TabView x:Name="tabView" Grid.Row="0" VerticalAlignment="Stretch"
                               TabCloseRequested="tabView_TabCloseRequested"
+                              Loaded="tabView_Loaded"
                               AddTabButtonCommand="{Binding AddNewTabCommand}"
                               AddTabButtonCommandParameter="{x:Bind tabView}"
                               Foreground="{StaticResource colorDarkerGrey}" >
-                    
+
                     <muxc:TabView.KeyboardAccelerators>
-                        
+
                         <KeyboardAccelerator Modifiers="{Binding CloseCurrentTabHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
                                              Key="{Binding CloseCurrentTabHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"
                                              ToolTipService.ToolTip="{Binding CloseCurrentTabHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}"
                                              ToolTipService.Placement="Right" 
                                              Invoked="CloseSelectedTabKeyboardAccelerator_Invoked"/>
-                        
+
                         <KeyboardAccelerator Modifiers="{Binding AddNewTabHotkeyName, Converter={StaticResource SettingsHotkeysModifiersConverter}, Mode=OneWay}" 
                                              Key="{Binding AddNewTabHotkeyName, Converter={StaticResource SettingsHotkeysKeyConverter}, Mode=OneWay}"
                                              ToolTipService.ToolTip="{Binding AddNewTabHotkeyName, Converter={StaticResource SettingsHotkeysTipConverter}, Mode=OneWay}"
@@ -398,37 +409,6 @@
                                              Invoked="NavigateToNumberedTabKeyboardAccelerator_Invoked"/>
 
                     </muxc:TabView.KeyboardAccelerators>
-                    
-                    <muxc:TabViewItem Header="New tab" BackgroundSizing="OuterBorderEdge" Background="{StaticResource colorWhite}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Button Grid.Column="0" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEC52;"/>
-                                </Button>
-
-                                <Button Grid.Column="1" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xEBE7;"/>
-                                </Button>
-
-                                <Button Grid.Column="3" Style="{StaticResource CustomButtonColorsStyle}" Margin="5" Padding="5" CornerRadius="5" Background="{StaticResource colorWhite}">
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE712;"/>
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </muxc:TabViewItem>
                 </muxc:TabView>
             </Grid>
 

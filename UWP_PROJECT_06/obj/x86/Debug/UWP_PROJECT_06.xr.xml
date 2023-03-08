@@ -55,6 +55,8 @@
     <RootPropertyPathName Name="LeftExtendedPanelVisibility" />
     <RootPropertyPathName Name="OpenSettingsHotkeyName" />
     <RootPropertyPathName Name="OpenSettingsPageCommand" />
+    <RootPropertyPathName Name="OpenSpaceRepetitonPageCommand" />
+    <RootPropertyPathName Name="OpenSpaceRepetitionHotkeyName" />
     <RootPropertyPathName Name="OpenNotesHotkeyName" />
     <RootPropertyPathName Name="OpenNotesPageCommand" />
     <RootPropertyPathName Name="OpenDictionaryHotkeyName" />
@@ -102,7 +104,6 @@
     <RootPropertyPathName Name="UnknownWordTextChangedCommand" />
     <RootPropertyPathName Name="SelectedWord" />
     <RootPropertyPathName Name="WordSelectedCommand" />
-    <RootPropertyPathName Name="LastRepeatedOn" />
     <RootPropertyPathName Name="Status" />
     <RootPropertyPathName Name="Word1" />
     <RootPropertyPathName Name="PartOfSpeech" />
@@ -116,6 +117,8 @@
     <RootPropertyPathName Name="MenuForwardHotkeyName" />
     <RootPropertyPathName Name="MenuBackHotkeyName" />
     <RootPropertyPathName Name="OpenDictionaryCommand" />
+    <RootPropertyPathName Name="SelectedNote" />
+    <RootPropertyPathName Name="SelectedQuote" />
     <RootPropertyPathName Name="MarkdownText" />
     <RootPropertyPathName Name="CurrentSource" />
     <RootPropertyPathName Name="SourceName" />
@@ -180,6 +183,37 @@
     <RootPropertyPathName Name="SynchronizeCommand" />
     <RootPropertyPathName Name="IsRenaming" />
     <RootPropertyPathName Name="RenameCommand" />
+    <RootPropertyPathName Name="Words" />
+    <RootPropertyPathName Name="RepeatAfterSixtyOneDayHotkeyName" />
+    <RootPropertyPathName Name="OpenNextCommand" />
+    <RootPropertyPathName Name="RepeatAfterFiftyNineDayHotkeyName" />
+    <RootPropertyPathName Name="RepeatAfterTwentyNineDayHotkeyName" />
+    <RootPropertyPathName Name="RepeatAfterThirdteenDayHotkeyName" />
+    <RootPropertyPathName Name="RepeatAfterSevenDayHotkeyName" />
+    <RootPropertyPathName Name="RepeatAfterThreeDayHotkeyName" />
+    <RootPropertyPathName Name="RepeatAfterOneDayHotkeyName" />
+    <RootPropertyPathName Name="SelectedCard" />
+    <RootPropertyPathName Name="StartRepeatingHotkeyName" />
+    <RootPropertyPathName Name="QuoteSelectedCommand" />
+    <RootPropertyPathName Name="NoteSelectedCommand" />
+    <RootPropertyPathName Name="DateEnd" />
+    <RootPropertyPathName Name="IsQuotesSelected" />
+    <RootPropertyPathName Name="QuotesSourcesNames" />
+    <RootPropertyPathName Name="SelectedQuoteSource" />
+    <RootPropertyPathName Name="QuoteSourceNameSelectedCommand" />
+    <RootPropertyPathName Name="IsNotesSelected" />
+    <RootPropertyPathName Name="NotesSourcesNames" />
+    <RootPropertyPathName Name="SelectedNoteSource" />
+    <RootPropertyPathName Name="NoteSourceNameSelectedCommand" />
+    <RootPropertyPathName Name="IsSourcesSelected" />
+    <RootPropertyPathName Name="IsDictionarySelected" />
+    <RootPropertyPathName Name="SelectedLanguage" />
+    <RootPropertyPathName Name="DateBegin" />
+    <RootPropertyPathName Name="CardTypes" />
+    <RootPropertyPathName Name="SelectedCardType" />
+    <RootPropertyPathName Name="CardTypeSelectedCommand" />
+    <RootPropertyPathName Name="SearchText" />
+    <RootPropertyPathName Name="SearchTextChangedCommand" />
     <RootPropertyPathName Name="CurrentWord" />
     <RootPropertyPathName Name="IsFrench" />
     <RootPropertyPathName Name="IsItalian" />
@@ -262,6 +296,7 @@
       <RootProperty Name="Resources" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="HorizontalContentAlignment" />
+      <RootProperty Name="Flyout" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Margin" />
@@ -272,6 +307,7 @@
       <RootProperty Name="Resources" />
       <RootProperty Name="GroupStyle" />
       <RootProperty Name="Style" />
+      <RootProperty Name="CanBeScrollAnchor" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ItemsControl">
       <RootProperty Name="ItemContainerStyle" />
@@ -500,14 +536,8 @@
       <RootProperty Name="AddTabButtonCommandParameter" />
       <RootProperty Name="Foreground" />
       <RootProperty Name="KeyboardAccelerators" />
-      <RootProperty Name="TabItems" />
       <RootEvent Name="TabCloseRequested" />
-    </RootType>
-    <RootType FullName="Microsoft.UI.Xaml.Controls.TabViewItem">
-      <RootProperty Name="Header" />
-      <RootProperty Name="BackgroundSizing" />
-      <RootProperty Name="Background" />
-      <RootProperty Name="Content" />
+      <RootEvent Name="Loaded" />
     </RootType>
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.Menu">
       <RootProperty Name="Orientation" />
@@ -585,6 +615,8 @@
       <RootProperty Name="ItemsSource" />
       <RootProperty Name="SelectedIndex" />
       <RootProperty Name="KeyboardAccelerators" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Visibility" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
       <RootProperty Name="VerticalScrollBarVisibility" />
@@ -606,6 +638,9 @@
     <RootType FullName="UWP_PROJECT_06.Views.DictionaryPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.FirstPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.FirstPage" />
+    <RootType FullName="UWP_PROJECT_06.Views.Notes.NoteEditPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.Notes.QuoteEditPageViewModel" />
+    <RootType FullName="UWP_PROJECT_06.Views.Notes.QuoteEditPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Notes.SourceCardPageViewModel" />
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock">
       <RootProperty Name="Padding" />
@@ -642,6 +677,12 @@
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsRecoveryPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.Settings.SettingsSourcesPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.Settings.SettingsSourcesPage" />
+    <RootType FullName="UWP_PROJECT_06.ViewModels.SpaceRepetitionPageViewModel" />
+    <RootType FullName="Windows.UI.Xaml.Controls.DatePickerFlyout">
+      <RootProperty Name="Date" />
+      <RootProperty Name="AreOpenCloseAnimationsEnabled" />
+    </RootType>
+    <RootType FullName="UWP_PROJECT_06.Views.SpaceRepetitionPage" />
     <RootType FullName="UWP_PROJECT_06.Views.VideoListPage" />
     <RootType FullName="UWP_PROJECT_06.ViewModels.WordCardPageViewModel" />
     <RootType FullName="UWP_PROJECT_06.Views.WordCardPage" />

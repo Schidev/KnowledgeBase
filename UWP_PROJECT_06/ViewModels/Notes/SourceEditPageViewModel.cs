@@ -376,7 +376,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                     {
                         if (qu.Id != 0)
                         {
-                            NotesService.DeleteNote(qu.Id);
+                            NotesService.DeleteQuote(qu.Id);
 
                             await MarkdownService.WriteSource(NotesService.ReadSource(qu.SourceID),
                                 NotesService.ReadQuotes(qu.SourceID),

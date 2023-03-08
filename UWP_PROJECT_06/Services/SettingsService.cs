@@ -128,6 +128,7 @@ namespace UWP_PROJECT_06.Services
 
                             new Hotkey { Name = "OpenDictionary", Modifiers = "Menu", Key = "Number1", Tip = "Open dictionary (Alt+1)" },
                             new Hotkey { Name = "OpenNotes", Modifiers = "Menu", Key = "Number2", Tip = "Open notes (Alt+2)" },
+                            new Hotkey { Name = "OpenSpaceRepetition", Modifiers = "Menu", Key = "Number3", Tip = "Open space repetition (Alt+3)" },
                             new Hotkey { Name = "OpenSettings", Modifiers = "Menu", Key = "Number0", Tip = "Open settings (Alt+0)" },
                             new Hotkey { Name = "OpenHistory", Modifiers = "Control", Key = "H", Tip = "Open history (Ctrl+H)" },
 
@@ -146,7 +147,18 @@ namespace UWP_PROJECT_06.Services
                             new Hotkey { Name = "OpenSeventhTab", Modifiers = "Control", Key = "Number7", Tip = "Navigation seventh tab (Ctrl+7)" },
                             new Hotkey { Name = "OpenEighthTab", Modifiers = "Control", Key = "Number8", Tip = "Navigation eight tab (Ctrl+8)" },
                             
-                            new Hotkey { Name = "OpenLastTab", Modifiers = "Control", Key = "Number9", Tip = "Navigation last tab (Ctrl+9)" }
+                            new Hotkey { Name = "OpenLastTab", Modifiers = "Control", Key = "Number9", Tip = "Navigation last tab (Ctrl+9)" },
+                            
+                            new Hotkey { Name = "StartRepeating", Modifiers = "None", Key = "None", Tip = "Start repeating" },
+                          
+                            new Hotkey { Name = "RepeatAfterOneDay", Modifiers = "Shift", Key = "Number1", Tip = "Repeat tomorrow (Shift+1)" },
+                            new Hotkey { Name = "RepeatAfterThreeDay", Modifiers = "Shift", Key = "Number2", Tip = "Repeat after three days (Shift+2)" },
+                            new Hotkey { Name = "RepeatAfterSevenDay", Modifiers = "Shift", Key = "Number3", Tip = "Repeat after seven days (Shift+3)" },
+                            new Hotkey { Name = "RepeatAfterThirdteenDay", Modifiers = "Shift", Key = "Number4", Tip = "Repeat after thirteen days (Shift+4)" },
+                            new Hotkey { Name = "RepeatAfterTwentyNineDay", Modifiers = "Shift", Key = "Number5", Tip = "Repeat after twenty nine days (Shift+5)" },
+                            new Hotkey { Name = "RepeatAfterFiftyNineDay", Modifiers = "Shift", Key = "Number6", Tip = "Repeat after fifty nine days (Shift+6)" },
+                            new Hotkey { Name = "RepeatAfterSixtyOneDay", Modifiers = "Shift", Key = "Number7", Tip = "Repeat after sixty one days (Shift+7)" },
+
                         };
 
                                 foreach (Hotkey hotkey in hotkeys)

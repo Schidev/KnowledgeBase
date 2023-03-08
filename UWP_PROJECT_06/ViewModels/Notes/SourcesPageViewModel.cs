@@ -69,7 +69,6 @@ namespace UWP_PROJECT_06.ViewModels.Notes
 
         #endregion
 
-
         public ObservableCollection<Grouping<string, Source>> Sources { get; set; }
         public ObservableCollection<Grouping<string, UnknownSource>> UnknownSources { get; set; }
         public ObservableRangeCollection<string> SourceTypes { get; set; }
@@ -179,7 +178,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
             foreach (int sourceType in sourceTypes)
             {
                 string source_type = NotesService.ReadSourceType(sourceType);
-
+                
                 Sources.Add(new Grouping<string, Source>(
                     source_type,
                     sources.Where(e => e.SourceType == sourceType)));
@@ -739,7 +738,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 Description = viewModel.Source.Description,
                 SourceLink = viewModel.Source.SourceLink,
                 CreatedOn = viewModel.Source.CreatedOn,
-                LastModifiedOn = DateTime.UtcNow
+                LastModifiedOn = DateTime.UtcNow.AddDays(1)
             };
 
             
@@ -809,7 +808,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 quote.TranslatedQuote = quote.TranslatedQuote.Replace("<br>", "\\r\\r");
                 quote.SourceID = tempSource.Id;
 
-                quote.LastModifiedOn = DateTime.UtcNow;
+                quote.LastModifiedOn = DateTime.UtcNow.AddDays(1);
 
                 if (!IsReadingMode || quote.Id == 0)
                 {
@@ -861,8 +860,7 @@ namespace UWP_PROJECT_06.ViewModels.Notes
                 note.Stamp = MarkdownService.CheckNoteStamp(note.Stamp);
                 note.SourceID = tempSource.Id;
 
-                
-                note.LastModifiedOn = DateTime.UtcNow;
+                note.LastModifiedOn = DateTime.UtcNow.AddDays(1);
 
                 if (!IsReadingMode || note.Id == 0)
                 {

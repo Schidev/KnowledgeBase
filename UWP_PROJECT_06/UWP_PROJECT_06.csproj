@@ -183,6 +183,8 @@
     <Compile Include="ViewModels\Dictionary\DictionaryPageViewModel.cs" />
     <Compile Include="ViewModels\FirstPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\Notes\NoteEditPageViewModel.cs" />
+    <Compile Include="ViewModels\Notes\QuoteEditPageViewModel.cs" />
     <Compile Include="ViewModels\Notes\SourceCardPageViewModel.cs" />
     <Compile Include="ViewModels\Notes\SourceEditPageViewModel.cs" />
     <Compile Include="ViewModels\Notes\SourcesPageViewModel.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="ViewModels\Settings\SettingsHotkeysPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsRecoveryPageViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsSourcesPageViewModel.cs" />
+    <Compile Include="ViewModels\SpaceRepetitionPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Dictionary\WordCardPageViewModel.cs" />
     <Compile Include="ViewModels\Dictionary\WordEditPageViewModel.cs" />
@@ -201,6 +204,12 @@
     </Compile>
     <Compile Include="Views\FirstPage.xaml.cs">
       <DependentUpon>FirstPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notes\NoteEditPage.xaml.cs">
+      <DependentUpon>NoteEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notes\QuoteEditPage.xaml.cs">
+      <DependentUpon>QuoteEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Notes\SourceCardPage.xaml.cs">
       <DependentUpon>SourceCardPage.xaml</DependentUpon>
@@ -237,6 +246,9 @@
     </Compile>
     <Compile Include="Views\Settings\SettingsSourcesPage.xaml.cs">
       <DependentUpon>SettingsSourcesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpaceRepetitionPage.xaml.cs">
+      <DependentUpon>SpaceRepetitionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VideoListPage.xaml.cs">
       <DependentUpon>VideoListPage.xaml</DependentUpon>
@@ -328,6 +340,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Notes\NoteEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Notes\QuoteEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Notes\SourceCardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -373,6 +393,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\SettingsSourcesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SpaceRepetitionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

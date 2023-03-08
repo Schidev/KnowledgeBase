@@ -539,6 +539,39 @@ namespace UWP_PROJECT_06.Services
 
             return note;
         }
+        public static List<Note> ReadNotes()
+        {
+            List<Note> notes = new List<Note>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, Stamp, Title, Note, CreatedOn, LastModifiedOn FROM Notes;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    notes.Add(new Note()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        Stamp = query.GetString(2),
+                        Title = query.GetString(3),
+                        Note1 = query.GetString(4),
+                        CreatedOn = query.GetDateTime(5),
+                        LastModifiedOn = query.GetDateTime(6)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return notes;
+        }
         public static List<Note> ReadNotes(int id)
         {
             List<Note> notes = new List<Note>();
@@ -677,6 +710,42 @@ namespace UWP_PROJECT_06.Services
 
             return quote;
         }
+
+        public static List<Quote> ReadQuotes()
+        {
+            List<Quote> quotes = new List<Quote>();
+
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FileName);
+            using (SqliteConnection conn = new SqliteConnection($"Filename={dbPath}"))
+            {
+                conn.Open();
+
+                string commandText = $"SELECT Id, SourceID, QuoteBegin, QuoteEnd, OriginalQuote, TranslatedQuote, CreatedOn, LastModifiedOn FROM Quotes;";
+                SqliteCommand sqliteCommand = new SqliteCommand(commandText, conn);
+
+                SqliteDataReader query = sqliteCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    quotes.Add(new Quote()
+                    {
+                        Id = query.GetInt32(0),
+                        SourceID = query.GetInt32(1),
+                        QuoteBegin = query.GetString(2),
+                        QuoteEnd = query.GetString(3),
+                        OriginalQuote = query.GetString(4),
+                        TranslatedQuote = query.GetString(5),
+                        CreatedOn = query.GetDateTime(6),
+                        LastModifiedOn = query.GetDateTime(7)
+                    });
+                }
+
+                conn.Close();
+            }
+
+            return quotes;
+        }
+
         public static List<Quote> ReadQuotes(int id)
         {
             List<Quote> quotes = new List<Quote>();
